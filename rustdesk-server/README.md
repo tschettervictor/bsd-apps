@@ -1,7 +1,13 @@
 ### Self Hosted Rustdesk Server
 https://rustdesk.com/
 
-Mount points (these should be mounted outside the jail)
+# Variables
 
-  Key directory (needed for encrypted connections)
-  - /var/db/rustdesk-server
+SERVER 
+  - should be set to your jail IP or hostname
+
+# Mount points
+  - should be mounted outside the jail
+
+`/var/db/rustdesk-server` - key file directory
+
