@@ -1,5 +1,5 @@
 ### Self Hosted Rustdesk Server
-# https://rustdesk.com/
+https://rustdesk.com/
 
 Mount points (these should be mounted outside the jail)
 
