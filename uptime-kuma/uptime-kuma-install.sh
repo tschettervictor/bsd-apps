@@ -15,21 +15,21 @@ pkg install -y git-lite npm-node${NODE_VERSION}
 # Create directories
 mkdir -p /mnt/data
 mkdir -p /usr/local/etc/rc.d/
-mkdir -p /var/run/uptimekuma/
+mkdir -p /var/run/uptime-kuma/
 
 # Install Uptime-Kuma
-pw user add uptimekuma -c uptimekuma -u 3001 -d /nonexistent -s /usr/bin/nologin
+pw user add uptime-kuma -c uptime-kuma -u 3001 -d /nonexistent -s /usr/bin/nologin
 npm install npm -g
 cd /usr/local/ && git clone https://github.com/louislam/uptime-kuma.git
-cd /usr/local/uptimekuma && npm run setup
+cd /usr/local/uptime-kuma && npm run setup
 sed -i '' "s|console.log(\"Welcome to Uptime Kuma\");|process.chdir('/usr/local/uptime-kuma');\n&|" /usr/local/uptime-kuma/server/server.js
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/usr/local/etc/rc.d/uptimekuma /usr/local/etc/rc.d/
-chown -R uptimekuma:uptimekuma /usr/local/uptime-kuma
-chown -R uptimekuma:uptimekuma /var/run/uptime-kuma
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/usr/local/etc/rc.d/uptime-kuma /usr/local/etc/rc.d/
+chown -R uptime-kuma:uptime-kuma /usr/local/uptime-kuma
+chown -R uptime-kuma:uptime-kuma /var/run/uptime-kuma
 
 # Enable and start services
-sysrc uptimekuma_enable="YES"
-service uptimekuma start
+sysrc uptime_kuma_enable="YES"
+service uptime-kuma start
 
 echo "---------------"
 echo "Installation Complete!"
