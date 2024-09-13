@@ -6,17 +6,20 @@ Each application has a README file which explains some necessary steps before ru
 # Setup
 
 These scripts are designed to work inside any jail manager or FreeBSD host system. In order to get up and running, here are the necessary steps
-  1. Create a jail using your preffered jail manager
+  1. Create a jail using your preferred jail manager
   2. Read the insructions in each apps README file to see
      - which jail properties need to be set, if any
      - which directories need to be mounted, if you so choose
-     - which VARIABLES nedd to be set, if any
+     - which variables nedd to be set, if any
   3. Mount your directories and set your properties and variables as needed
-  4. Start the jail, fetcht the script, and run it
+     - the variables are set at the top of the app script
+  4. Start the jail, fetch the script, and run it
+
+All jail managers have a way to set jail properties and mount directories. Check documentation.
 
 # Tips
 
-I like to structure my data as below
+I like to structure my data directories that I am mounting as below
 
   - apps
     - app1
