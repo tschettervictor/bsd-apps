@@ -2,7 +2,7 @@
 https://github.com/louislam/uptime-kuma
 
 ### Command to fetch script
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/uptime-kuma-install.sh
+`fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/uptime-kuma-install.sh`
 
 # Variables
 
