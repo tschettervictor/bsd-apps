@@ -20,8 +20,6 @@ RABBITMQ_PASSWORD=$(openssl rand -base64 15)
 # Install packages
 pkg install -y onlyoffice-documentserver postgresql"${PG_VERSION}"-server postgresql"${PG_VERSION}"-client
 
-iocage set allow.sysvipc=1 "${JAIL_NAME}"
-
 # Create and configure database
 sysrc postgresql_enable="YES"
 fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/onlyoffice-documentserver/pgpass
