@@ -16,7 +16,7 @@ DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
 
 # Check for reinstall
-if [ "$(ls -f "${DB_PATH}")" ]; then
+if [ "$(ls -A "${DB_PATH}")" ]; then
 	echo "Existing Guacamole database detected. Checking compatability for reinstall."
 	if [ "$(ls -A "${DB_PATH}/${DATABASE}")" ]; then
 		echo "Database is compatible, continuing..."
