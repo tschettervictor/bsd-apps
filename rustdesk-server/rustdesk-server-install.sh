@@ -19,7 +19,7 @@ sysrc rustdesk_hbbs_ip="${SERVER}"
 
 # Start services
 service rustdesk-hbbr start
-service ristdesk-hbbs start
+service rustdesk-hbbs start
 
 echo "---------------"
 echo "Installation Complete!"
