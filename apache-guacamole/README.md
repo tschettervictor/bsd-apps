@@ -12,9 +12,7 @@ chmod +x apache-guacamole-install.sh
 ```
 
 ## Variables
-
-MARIADB_VERSION
-  - mariadb version to use (currently defaluts to 106)
+  - none
 
 ## Mount points (should be mounted outside the jail)
   - `/var/db/mysql` - database directory
