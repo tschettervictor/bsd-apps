@@ -1,0 +1,55 @@
+{
+	# debug
+}
+
+yourhostnamehere:80, jail_ip:80 {
+	root * /usr/local/www/nextcloud
+	file_server
+	log {
+		output file /var/log/yourhostnamehere.log
+	}
+
+	php_fastcgi 127.0.0.1:9000 {
+		env front_controller_active true
+	}
+
+	# client support (e.g. os x calendar / contacts)
+	redir /.well-known/carddav /remote.php/dav/ 301
+	redir /.well-known/caldav /remote.php/dav/ 301
+	redir /.well-known/webfinger /index.php/.well-known/webfinger 301
+	redir /.well-known/nodeinfo /index.php/.well-known/nodeinfo 301
+
+	# Required for legacy
+	@notlegacy {
+		path *.php
+		not path /index*
+		not path /remote*
+		not path /public*
+		not path /cron*
+		not path /core/ajax/update*
+		not path /status*
+		not path /ocs/v1*
+		not path /ocs/v2*
+		not path /updater/*
+		not path /ocs-provider/*
+		not path */richdocumentscode/proxy*
+	}
+	rewrite @notlegacy /index.php{uri}
+
+	# .htaccess / data / config / ... shouldn't be accessible from outside
+	@forbidden {
+		path /.htaccess
+		path /data/*
+		path /config/*
+		path /db_structure
+		path /.xml
+		path /README
+		path /3rdparty/*
+		path /lib/*
+		path /templates/*
+		path /occ
+		path /console.php
+	}
+
+	respond @forbidden 404
+}
