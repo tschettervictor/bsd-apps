@@ -1,5 +1,5 @@
-# MeshCentral Management Server
-https://meshcentral.com/
+# OnlyOffice Document Server
+https://onlyoffice.com
 
 ### Command to fetch script
 ```
