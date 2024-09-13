@@ -19,7 +19,7 @@ pw user add meshcentral -c meshcentral -u 6374 -s /usr/sbin/nologin -d /home/mes
 cd /usr/local/meshcentral && npm install meshcentral
 chown -R meshcentral:meshcentral /usr/local/meshcentral
 chown -R meshcentral:meshcentral /var/run/meshcentral
-fetch -i https://github.com/tschettervictor/bsd-apps/blob/main/meshcentral/usr/local/etc/rc.d/meshcentral /usr/local/etc/rc.d/meshcentral
+fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/meshcentral/usr/local/etc/rc.d/meshcentral
 
 # Enable and start services
 sysrc meshcentral_enable="YES"
@@ -27,4 +27,5 @@ service meshcentral start && sleep 5
 
 echo "---------------"
 echo "Installation complete."
+echo "MeshCentral is running on port 1025"
 echo "---------------"
