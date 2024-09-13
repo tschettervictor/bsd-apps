@@ -212,40 +212,41 @@ sysrc php_fpm_enable="YES"
 if [ $SELFSIGNED_CERT -eq 1 ]; then
   mkdir -p /usr/local/etc/pki/tls/private
   mkdir -p /usr/local/etc/pki/tls/certs
-  openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=${HOST_NAME}" -keyout "${INCLUDES_PATH}"/privkey.pem -out "${INCLUDES_PATH}"/fullchain.pem
-  cp /mnt/includes/privkey.pem /usr/local/etc/pki/tls/private/privkey.pem
-  cp /mnt/includes/fullchain.pem /usr/local/etc/pki/tls/certs/fullchain.pem
+  openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=${HOST_NAME}" -keyout /tmp/privkey.pem -out /tmp/fullchain.pem
+  cp /tmp/privkey.pem /usr/local/etc/pki/tls/private/privkey.pem
+  cp /tmp/fullchain.pem /usr/local/etc/pki/tls/certs/fullchain.pem
 fi
 
 # Copy and edit pre-written config files
-if ! cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
+if ! fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/php.ini
 then
-	echo "Failed to copy php.ini"
+	echo "Failed to fetch php.ini"
 	exit 1
 fi
 chown -R www:www /usr/local/etc/php.ini
-cp -f /mnt/includes/redis.conf /usr/local/etc/redis.conf
-cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
+fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/redis.conf
+fetch -o /usr/local/etc/php-fpm.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/www.conf
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
-  cp -f /mnt/includes/remove-staging.sh /root/
+  fetch -o /root/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/remove-staging.sh
 fi
 if [ $NO_CERT -eq 1 ]; then
   echo "Copying Caddyfile for no SSL"
-  cp -f /mnt/includes/Caddyfile-nossl /usr/local/www/Caddyfile
+  fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/Caddyfile-nossl
 elif [ $SELFSIGNED_CERT -eq 1 ]; then
   echo "Copying Caddyfile for self-signed cert"
-  cp -f /mnt/includes/Caddyfile-selfsigned /usr/local/www/Caddyfile
+  fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/Caddyfile-selfsigned
 elif [ $DNS_CERT -eq 1 ]; then
   echo "Copying Caddyfile for Let's Encrypt DNS cert"
-  cp -f /mnt/includes/Caddyfile-dns /usr/local/www/Caddyfile
+  fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/Caddyfile-dns
 else
   echo "Copying Caddyfile for Let's Encrypt cert"
-  cp -f /mnt/includes/Caddyfile /usr/local/www/
+  fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/Caddyfile
 fi
-cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
+fetch -o /usr/local/etc/rc.d/caddy https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/caddy
+chmod +x /usr/local/etc/rc.d/caddy
 
 if [ "${DATABASE}" = "mariadb" ]; then
-  cp -f /mnt/includes/my-system.cnf /usr/local/etc/mysql/conf.d/nextcloud.cnf
+  fetch -o /usr/local/etc/mysql/conf.d/nextcloud.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/my-system.cnf
 fi
 sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/local/www/Caddyfile
 sed -i '' "s/dns_plugin/${DNS_PLUGIN}/" /usr/local/www/Caddyfile
@@ -262,7 +263,7 @@ chmod 777 /var/run/redis/redis.sock
 if [ "${REINSTALL}" == "true" ]; then
 	echo "Reinstall detected, skipping generation of new config and database"
 	if [ "${DATABASE}" = "mariadb" ]; then
-	cp -f /mnt/includes/my.cnf /root/.my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 	fi
 else
@@ -280,10 +281,10 @@ if [ "${DATABASE}" = "mariadb" ]; then
   mysql -u root -e "DROP DATABASE IF EXISTS test;"
   mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
   mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-  cp -f /mnt/includes/my.cnf /root/.my.cnf
+  fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/my.cnf
   sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 elif [ "${DATABASE}" = "pgsql" ]; then
-  cp -f /mnt/includes/pgpass /root/.pgpass
+  fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/pgpass
   chmod 600 /root/.pgpass
   chown postgres /var/db/postgres/
   /usr/local/etc/rc.d/postgresql initdb
@@ -352,7 +353,8 @@ su -m www -c "php /usr/local/www/nextcloud/occ config:system:set trusted_proxies
 su -m www -c 'php /usr/local/www/nextcloud/occ background:cron'
 fi
 su -m www -c 'php -f /usr/local/www/nextcloud/cron.php'
-crontab -u www /mnt/includes/www-crontab
+fetch -o /tmp/www-crontab https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/www-crontab
+crontab -u www /tmp/www-crontab
 su -m www -c "php /usr/local/www/nextcloud/occ config:system:set maintenance_window_start --type=integer --value=${MX_WINDOW}"
 
 
