@@ -46,7 +46,7 @@ sysrc rabbitmq_enable="YES"
 service rabbitmq start
 rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) add_user ${RABBITMQ_USER} ${RABBITMQ_PASSWORD}
 rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) set_user_tags ${RABBITMQ_USER} administrator
-rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) set_permissions -p /  ${RABBITMQ_USER} ".*" ".*" ".*"
+rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) set_permissions -p / ${RABBITMQ_USER} ".*" ".*" ".*"
 sed -i '' -e "s|guest:guest@localhost|${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@localhost|g" /usr/local/etc/onlyoffice/documentserver/local.json
 service rabbitmq restart
 
