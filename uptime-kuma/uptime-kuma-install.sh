@@ -28,7 +28,7 @@ cd /usr/local/ && git clone https://github.com/louislam/uptime-kuma.git
 cd /usr/local/uptime-kuma && npm run setup
 sed -i '' "s|console.log(\"Welcome to Uptime Kuma\");|process.chdir('/usr/local/uptime-kuma');\n&|" /usr/local/uptime-kuma/server/server.js
 fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptimekuma/usr/local/etc/rc.d/uptimekuma
-if [ ${REINSTALL} -ne 1 ]; then
+if [ "${REINSTALL}" != "1" ]; then
    cp -R /usr/local/uptime-kuma/data/* /mnt/data/
 fi
 rm -R /usr/local/uptime-kuma/data
