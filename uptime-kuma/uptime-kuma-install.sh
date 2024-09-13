@@ -29,9 +29,9 @@ cd /usr/local/uptime-kuma && npm run setup
 sed -i '' "s|console.log(\"Welcome to Uptime Kuma\");|process.chdir('/usr/local/uptime-kuma');\n&|" /usr/local/uptime-kuma/server/server.js
 fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/usr/local/etc/rc.d/uptimekuma
 if [ "${REINSTALL}" != "1" ]; then
-   cp -R /usr/local/uptime-kuma/data/* /mnt/data/
+   cp -r /usr/local/uptime-kuma/data* /mnt/data
 fi
-rm -R /usr/local/uptime-kuma/data
+rm -r /usr/local/uptime-kuma/data
 
 # Change directory ownership
 chown -R uptimekuma:uptimekuma /var/run/uptimekuma
