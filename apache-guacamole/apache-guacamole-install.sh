@@ -10,7 +10,6 @@ fi
 APP_NAME="guacamole"
 MARIADB_VERSION="106"
 DB_PATH="/var/db/mysql"
-DATABASE="mariadb"
 DB_NAME="guacamole"
 DB_USER="guacamole"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
@@ -71,7 +70,7 @@ if [ "${REINSTALL}" == "true" ]; then
   sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
-		echo "Failed to create MariaDB database, aborting"
+		echo "Failed to create database, aborting..."
 		exit 1
 	fi
 		mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
