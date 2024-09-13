@@ -20,4 +20,4 @@ PG_VERSION
   - none
 
 ## Jail Properties
-  - allow.sysvipc=1
+  - allow_sysvipc=1
