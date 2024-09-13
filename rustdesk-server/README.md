@@ -10,4 +10,3 @@ SERVER
   - should be mounted outside the jail
 
 `/var/db/rustdesk-server` - key file directory
-
