@@ -1,0 +1,398 @@
+#!/bin/sh
+# Install Nextcloud
+
+# Check for root privileges
+if ! [ $(id -u) = 0 ]; then
+   echo "This script must be run with root privileges"
+   exit 1
+fi
+
+HOST_NAME=""
+TIME_ZONE=""
+STANDALONE_CERT=0
+SELFSIGNED_CERT=0
+DNS_CERT=0
+NO_CERT=1
+CERT_EMAIL=""
+
+APP_NAME="nextcloud"
+DATABASE="mariadb"
+DB_PATH="/var/db/mysql"
+FILES_PATH="/mnt/files"
+NEXTCLOUD_VERSION="29"
+PHP_VERSION="83"
+COUNTRY_CODE="CA"
+MX_WINDOW="5"
+ADMIN_PASSWORD=$(openssl rand -base64 12)
+DB_ROOT_PASSWORD=$(openssl rand -base64 16)
+DB_NAME="nextcloud"
+DB_PASSWORD=$(openssl rand -base64 16)
+
+# Sanity checks
+if [ -z "${TIME_ZONE}" ]; then
+  echo 'Configuration error: TIME_ZONE must be set'
+  exit 1
+fi
+if [ -z "${HOST_NAME}" ]; then
+  echo 'Configuration error: HOST_NAME must be set'
+  exit 1
+fi
+if [ $STANDALONE_CERT -eq 0 ] && [ $DNS_CERT -eq 0 ] && [ $NO_CERT -eq 0 ] && [ $SELFSIGNED_CERT -eq 0 ]; then
+  echo 'Configuration error: Either STANDALONE_CERT, DNS_CERT, NO_CERT,'
+  echo 'or SELFSIGNED_CERT must be set to 1.'
+  exit 1
+fi
+if [ $STANDALONE_CERT -eq 1 ] && [ $DNS_CERT -eq 1 ] ; then
+  echo 'Configuration error: Only one of STANDALONE_CERT and DNS_CERT'
+  echo 'may be set to 1.'
+  exit 1
+fi
+
+if [ $DNS_CERT -eq 1 ] && [ -z "${DNS_PLUGIN}" ] ; then
+  echo "DNS_PLUGIN must be set to a supported DNS provider."
+  echo "See https://caddyserver.com/download for available plugins."
+  echo "Use only the last part of the name.  E.g., for"
+  echo "\"github.com/caddy-dns/cloudflare\", enter \"coudflare\"."
+  exit 1
+fi
+
+if [ $DNS_CERT -eq 1 ] && [ "${CERT_EMAIL}" = "" ] ; then
+  echo "CERT_EMAIL must be set when using Let's Encrypt certs."
+  exit 1
+fi
+
+if [ $STANDALONE_CERT -eq 1 ] && [ "${CERT_EMAIL}" = "" ] ; then
+  echo "CERT_EMAIL must be set when using Let's Encrypt certs."
+  exit 1
+fi
+
+# Check for reinstall
+if [ "$(ls -A "${CONFIG_PATH}")" ]; then
+	echo "Existing Nextcloud config detected... Checking Database compatibility for reinstall"
+	if [ "$(ls -A "${DB_PATH}/${DB_NAME}")" ]; then
+		echo "Database is compatible, continuing..."
+		REINSTALL="true"
+	else
+		echo "ERROR: You can not reinstall without the previous database"
+		echo "Please try again after removing your config files or using the same database used previously"
+		exit 1
+	fi
+fi
+
+# Package installation
+pkg install -y \
+    sudo \
+    vim \
+    redis \
+    gnupg \
+    bash \
+    go \
+    git \
+    ffmpeg \
+    perl5 \
+    p5-Locale-gettext \
+    help2man \
+    texinfo \ 
+    m4 \
+    autoconf \
+    openssh \
+    php${PHP_VERSION} \
+    php${PHP_VERSION}-ctype \
+    php${PHP_VERSION}-curl \
+    php${PHP_VERSION}-dom \
+    php${PHP_VERSION}-filter \
+    php${PHP_VERSION}-gd \
+    php${PHP_VERSION}-xml \
+    php${PHP_VERSION}-mbstring \
+    php${PHP_VERSION}-posix \
+    php${PHP_VERSION}-session \
+    php${PHP_VERSION}-simplexml \
+    php${PHP_VERSION}-xmlreader \
+    php${PHP_VERSION}-xmlwriter \
+    php${PHP_VERSION}-zip \
+    php${PHP_VERSION}-zlib \
+    php${PHP_VERSION}-fileinfo \
+    php${PHP_VERSION}-bz2 \
+    php${PHP_VERSION}-intl \
+    php${PHP_VERSION}-ldap \
+    php${PHP_VERSION}-pecl-smbclient \
+    php${PHP_VERSION}-ftp \
+    php${PHP_VERSION}-imap \
+    php${PHP_VERSION}-bcmath \
+    php${PHP_VERSION}-gmp \
+    php${PHP_VERSION}-exif \
+    php${PHP_VERSION}-pecl-APCu \
+    php${PHP_VERSION}-pecl-memcache \
+    php${PHP_VERSION}-pecl-redis \
+    php${PHP_VERSION}-pecl-imagick \
+    php${PHP_VERSION}-pcntl \
+    php${PHP_VERSION}-phar \
+    php${PHP_VERSION}-iconv \
+    php${PHP_VERSION}-sodium \
+    php${PHP_VERSION}-sysvsem \
+    php${PHP_VERSION}-xsl \
+    php${PHP_VERSION}-opcache
+
+# Create directories
+if [ "${DATABASE}" = "mariadb" ]; then
+  mkdir -p /var/db/mysql
+elif [ "${DATABASE}" = "pgsql" ]; then
+  mkdir -p /var/db/postgres
+fi
+mkdir -p /mnt/files
+mkdir -p /usr/local/www/nextcloud/config
+mkdir -p /usr/local/www/nextcloud/themes
+chown -R www:www /mnt/files
+chmod -R 770 /mnt/files
+
+# Configure database
+if [ "${DATABASE}" = "mariadb" ]; then
+  pkg install -y mariadb106-server php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-mysqli
+elif [ "${DATABASE}" = "pgsql" ]; then
+  pkg install -y postgresql13-server php${PHP_VERSION}-pgsql php${PHP_VERSION}-pdo_pgsql
+fi
+
+# Build xcaddy, use it to build Caddy
+if ! go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+then
+  echo "Failed to get xcaddy, terminating."
+  exit 1
+fi
+if ! cp /root/go/bin/xcaddy /usr/local/bin/xcaddy
+then
+  echo "Failed to move xcaddy to path, terminating."
+  exit 1
+fi
+if [ ${DNS_CERT} -eq 1 ]; then
+  if ! xcaddy build --output /usr/local/bin/caddy --with github.com/caddy-dns/"${DNS_PLUGIN}"
+  then
+    echo "Failed to build Caddy with ${DNS_PLUGIN} plugin, terminating."
+    exit 1
+  fi  
+else
+  if ! xcaddy build --output /usr/local/bin/caddy
+  then
+    echo "Failed to build Caddy without plugin, terminating."
+    exit 1
+  fi  
+fi
+
+#####
+#
+# Webserver Setup and Nextcloud Download  
+#
+#####
+
+FILE="latest-${NEXTCLOUD_VERSION}.tar.bz2"
+if ! fetch -o /tmp https://download.nextcloud.com/server/releases/"${FILE}" https://download.nextcloud.com/server/releases/"${FILE}".asc 
+then
+	echo "Failed to download Nextcloud"
+	exit 1
+fi
+fetch -o /tmp https://nextcloud.com/nextcloud.asc
+gpg --import /tmp/nextcloud.asc
+
+if ! gpg --verify /tmp/"${FILE}".asc
+then
+	echo "GPG Signature Verification Failed!"
+	echo "The Nextcloud download is corrupt."
+	exit 1
+fi
+tar xjf /tmp/"${FILE}" -C /usr/local/www/
+chown -R www:www /usr/local/www/nextcloud/
+if [ "${DATABASE}" = "mariadb" ]; then
+  sysrc mysql_enable="YES"
+elif [ "${DATABASE}" = "pgsql" ]; then
+  sysrc postgresql_enable="YES"
+fi
+sysrc redis_enable="YES"
+sysrc php_fpm_enable="YES"
+
+# Generate and install self-signed cert, if necessary
+if [ $SELFSIGNED_CERT -eq 1 ]; then
+  mkdir -p /usr/local/etc/pki/tls/private
+  mkdir -p /usr/local/etc/pki/tls/certs
+  openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=${HOST_NAME}" -keyout "${INCLUDES_PATH}"/privkey.pem -out "${INCLUDES_PATH}"/fullchain.pem
+  cp /mnt/includes/privkey.pem /usr/local/etc/pki/tls/private/privkey.pem
+  cp /mnt/includes/fullchain.pem /usr/local/etc/pki/tls/certs/fullchain.pem
+fi
+
+# Copy and edit pre-written config files
+if ! cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
+then
+	echo "Failed to copy php.ini"
+	exit 1
+fi
+chown -R www:www /usr/local/etc/php.ini
+cp -f /mnt/includes/redis.conf /usr/local/etc/redis.conf
+cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
+if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
+  cp -f /mnt/includes/remove-staging.sh /root/
+fi
+if [ $NO_CERT -eq 1 ]; then
+  echo "Copying Caddyfile for no SSL"
+  cp -f /mnt/includes/Caddyfile-nossl /usr/local/www/Caddyfile
+elif [ $SELFSIGNED_CERT -eq 1 ]; then
+  echo "Copying Caddyfile for self-signed cert"
+  cp -f /mnt/includes/Caddyfile-selfsigned /usr/local/www/Caddyfile
+elif [ $DNS_CERT -eq 1 ]; then
+  echo "Copying Caddyfile for Let's Encrypt DNS cert"
+  cp -f /mnt/includes/Caddyfile-dns /usr/local/www/Caddyfile
+else
+  echo "Copying Caddyfile for Let's Encrypt cert"
+  cp -f /mnt/includes/Caddyfile /usr/local/www/
+fi
+cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
+
+if [ "${DATABASE}" = "mariadb" ]; then
+  cp -f /mnt/includes/my-system.cnf /usr/local/etc/mysql/conf.d/nextcloud.cnf
+fi
+sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/local/www/Caddyfile
+sed -i '' "s/dns_plugin/${DNS_PLUGIN}/" /usr/local/www/Caddyfile
+sed -i '' "s/api_token/${DNS_TOKEN}/" /usr/local/www/Caddyfile
+sed -i '' "s/jail_ip/${IP}/" /usr/local/www/Caddyfile
+sed -i '' "s/youremailhere/${CERT_EMAIL}/" /usr/local/www/Caddyfile
+sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
+sysrc caddy_enable="YES"
+sysrc caddy_config="/usr/local/www/Caddyfile"
+
+# Install Nextcloud
+pw usermod www -G redis
+chmod 777 /var/run/redis/redis.sock
+if [ "${REINSTALL}" == "true" ]; then
+	echo "Reinstall detected, skipping generation of new config and database"
+	if [ "${DATABASE}" = "mariadb" ]; then
+	cp -f /mnt/includes/my.cnf /root/.my.cnf
+	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+	fi
+else
+
+# Secure database, set root password, create Nextcloud DB, user, and password
+if [ "${DATABASE}" = "mariadb" ]; then
+  if ! mysql -u root -e "CREATE DATABASE nextcloud;"
+  then
+    echo "Failed to create MariaDB database, aborting"
+    exit 1
+  fi
+  mysql -u root -e "GRANT ALL ON nextcloud.* TO nextcloud@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+  mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
+  mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+  mysql -u root -e "DROP DATABASE IF EXISTS test;"
+  mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+  mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
+  cp -f /mnt/includes/my.cnf /root/.my.cnf
+  sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+elif [ "${DATABASE}" = "pgsql" ]; then
+  cp -f /mnt/includes/pgpass /root/.pgpass
+  chmod 600 /root/.pgpass
+  chown postgres /var/db/postgres/
+  /usr/local/etc/rc.d/postgresql initdb
+  su -m postgres -c '/usr/local/bin/pg_ctl -D /var/db/postgres/data13 start'
+  sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
+  if ! psql -U postgres -c "CREATE DATABASE nextcloud;"
+  then
+    echo "Failed to create PostgreSQL database, aborting"
+    exit 1
+  fi
+  psql -U postgres -c "CREATE USER nextcloud WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';"
+  psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE nextcloud TO nextcloud;"
+  psql -U postgres -c "SELECT pg_reload_conf();"
+fi
+
+# Save passwords for later reference
+echo "${DB_NAME} root password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}_db_password.txt
+echo "Nextcloud database password is ${DB_PASSWORD}" >> /root/${APP_NAME}_db_password.txt
+echo "Nextcloud Administrator password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}_db_password.txt
+
+# Create Nextcloud log directory
+mkdir -p /var/log/nextcloud/
+chown www:www /var/log/nextcloud
+
+# CLI installation and configuration of Nextcloud
+if [ "${DATABASE}" = "mariadb" ]; then
+  if ! su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"mysql\" --database-name=\"nextcloud\" --database-user=\"nextcloud\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/var/run/mysql/mysql.sock\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
+  then
+    echo "Failed to install Nextcloud, aborting"
+    exit 1
+  fi
+  su -m www -c "php /usr/local/www/nextcloud/occ config:system:set mysql.utf8mb4 --type boolean --value=\"true\""
+elif [ "${DATABASE}" = "pgsql" ]; then
+  if ! su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"pgsql\" --database-name=\"nextcloud\" --database-user=\"nextcloud\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/tmp/.s.PGSQL.5432\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
+  then
+    echo "Failed to install Nextcloud, aborting"
+    exit 1
+  fi
+fi
+su -m www -c "php /usr/local/www/nextcloud/occ db:add-missing-indices"
+su -m www -c "php /usr/local/www/nextcloud/occ db:convert-filecache-bigint --no-interaction"
+su -m www -c "php /usr/local/www/nextcloud/occ config:system:set logtimezone --value=\"${TIME_ZONE}\""
+su -m www -c "php /usr/local/www/nextcloud/occ config:system:set default_phone_region --value=\"${COUNTRY_CODE}\""
+su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set log_type --value="file"'
+su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set logfile --value="/var/log/nextcloud/nextcloud.log"'
+su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set loglevel --value="2"'
+su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set logrotate_size --value="104847600"'
+su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set memcache.local --value="\OC\Memcache\APCu"'
+su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set redis host --value="/var/run/redis/redis.sock"'
+su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set redis port --value=0 --type=integer'
+su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set memcache.distributed --value="\OC\Memcache\Redis"'
+su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set memcache.locking --value="\OC\Memcache\Redis"'
+su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwritehost --value=\"${HOST_NAME}\""
+if [ $NO_CERT -eq 1 ]; then
+  su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwrite.cli.url --value=\"http://${HOST_NAME}/\""
+  su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwriteprotocol --value=\"http\""
+else
+  su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwrite.cli.url --value=\"https://${HOST_NAME}/\""
+  su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwriteprotocol --value=\"https\""
+fi
+su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set htaccess.RewriteBase --value="/"'
+su -m www -c 'php /usr/local/www/nextcloud/occ maintenance:update:htaccess'
+su -m www -c "php /usr/local/www/nextcloud/occ config:system:set trusted_domains 1 --value=\"${HOST_NAME}\""
+su -m www -c "php /usr/local/www/nextcloud/occ config:system:set trusted_domains 2 --value=\"${IP}\""
+su -m www -c "php /usr/local/www/nextcloud/occ config:system:set trusted_proxies 1 --value=\"127.0.0.1\""
+su -m www -c 'php /usr/local/www/nextcloud/occ background:cron'
+fi
+su -m www -c 'php -f /usr/local/www/nextcloud/cron.php'
+crontab -u www /mnt/includes/www-crontab
+su -m www -c "php /usr/local/www/nextcloud/occ config:system:set maintenance_window_start --type=integer --value=${MX_WINDOW}"
+
+
+echo "Installation complete!"
+if [ $NO_CERT -eq 1 ]; then
+  echo "Using your web browser, go to http://${HOST_NAME} to log in"
+else
+  echo "Using your web browser, go to https://${HOST_NAME} to log in"
+fi
+
+if [ "${REINSTALL}" == "true" ]; then
+	echo "You did a reinstall, please use your old database and account credentials"
+else
+
+	echo "Default user is admin, password is ${ADMIN_PASSWORD}"
+	echo ""
+	echo "Database Information"
+	echo "--------------------"
+	echo "Database user = nextcloud"
+	echo "Database password = ${DB_PASSWORD}"
+	echo "The ${DB_NAME} root password is ${DB_ROOT_PASSWORD}"
+	echo ""
+	echo "All passwords are saved in /root/${APP_NAME}_db_password.txt"
+fi
+
+echo ""
+if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
+  echo "You have obtained your Let's Encrypt certificate using the staging server."
+  echo "This certificate will not be trusted by your browser and will cause SSL errors"
+  echo "when you connect.  Once you've verified that everything else is working"
+  echo "correctly, you should issue a trusted certificate.  To do this, run:"
+  echo "  iocage exec ${JAIL_NAME} /root/remove-staging.sh"
+  echo ""
+elif [ $SELFSIGNED_CERT -eq 1 ]; then
+  echo "You have chosen to create a self-signed TLS certificate for your Nextcloud"
+  echo "installation.  This certificate will not be trusted by your browser and"
+  echo "will cause SSL errors when you connect.  If you wish to replace this certificate"
+  echo "with one obtained elsewhere, the private key is located at:"
+  echo "/usr/local/etc/pki/tls/private/privkey.pem"
+  echo "The full chain (server + intermediate certificates together) is at:"
+  echo "/usr/local/etc/pki/tls/certs/fullchain.pem"
+  echo ""
+fi
