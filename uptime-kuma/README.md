@@ -13,11 +13,11 @@ chmod +x uptime-kuma-install.sh
 
 # Variables
 
-NODE_VERSION="18"
-  - node version to use
+NODE_VERSION
+  - node version to use (currently defaults to 18)
 
 DATA_PATH="/mnt/data"
-  - data directory will be stored here (defaults to /mnt/data)
+  - data directory will be stored here (currently defaults to `/mnt/data`)
 
 ## Mount points (should be mounted outside the jail)
   - `/mnt/data` - data directory
