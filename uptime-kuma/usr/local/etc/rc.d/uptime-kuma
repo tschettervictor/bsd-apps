@@ -5,59 +5,31 @@
 # BEFORE: LOGIN
 # KEYWORD: shutdown
 
-# Uptime Kuma
-# A fancy self-hosted monitoring tool
-#
-# https://github.com/louislam/uptime-kuma
-# https://uptime.kuma.pet/
-#
-# Creating a service for uptime-kuma. It is installed by cloning the git repo.
-# See below on how to update the git repo.
-#
-# The usual command to start uptime kuma:
-# node server/server.js --host=0.0.0.0
-
-# Create a system user:
-# pw adduser uptime_kuma -d /nonexistent -s /usr/sbin/nologin -c "System user for Uptime Kuma self-hosted monitoring tool"
-
-# Updating Uptime Kuma ---------------------------------------------------------
-# https://github.com/louislam/uptime-kuma/wiki/%F0%9F%86%99-How-to-Update
-# cd /usr/local/uptime-kuma
-
-# Update from git
-# git fetch --all
-# git checkout 1.21.2 --force
-
-# Install dependencies and prebuilt
-# npm i --omit=dev
-# npm run download-dist
-# ------------------------------------------------------------------------------
-
 . /etc/rc.subr
 
-name="uptime_kuma"
-rcvar=uptime_kuma_enable
+name="uptimekuma"
+rcvar=uptimekuma_enable
 
-: ${uptime_kuma_enable:="NO"}
-: ${uptime_kuma_user:="uptime-kuma"}
-: ${uptime_kuma_group:="uptime-kuma"}
-: ${uptime_kuma_datadir:="/mnt/data"}
+: ${uptimekuma_enable:="NO"}
+: ${uptimekuma_user:="uptimekuma"}
+: ${uptimekuma_group:="uptimekuma"}
+: ${uptimekuma_datadir:="/mnt/data"}
 
 
 # 12.4.2023 After updating to latest got error on FreeBSD bc it uses playwright
 # but setting this environment variable allows it to work again:
 # https://github.com/louislam/uptime-kuma/issues/3642#issuecomment-1839704192
-uptime_kuma_env="PLAYWRIGHT_BROWSERS_PATH=/nonexistent"
+uptimekuma_env="PLAYWRIGHT_BROWSERS_PATH=/nonexistent"
 
 # daemon(8) - wrapper class to run commands detached from the controlling terminal
 pidfile="/var/run/${name}/${name}.pid"
 node="/usr/local/bin/node"
 repo_path="/usr/local/uptime-kuma" # Where cloned the uptimekuma git repo to.
-script="${node} ${repo_path}/server/server.js --host=0.0.0.0 --datadir=${uptime_kuma_datadir}"
+script="${node} ${repo_path}/server/server.js --host=0.0.0.0 --datadir=${uptimekuma_datadir}"
 
 # NOTE To get uptime kuma to load correctly it needs to be started inside the
 # repo's directory:
-uptime_kuma_chdir="${repo_path}"
+uptimekuma_chdir="${repo_path}"
 
 command=/usr/sbin/daemon
 procname="daemon"
@@ -65,13 +37,13 @@ command_args="-f -P ${pidfile} ${script}"
 
 start_precmd="${name}_precmd"
 
-uptime_kuma_precmd()
+uptimekuma_precmd()
 {
     if [ ! -d /var/run/${name} ]; then
         mkdir -p /var/run/${name}
-        chown ${uptime_kuma_user}:${uptimekuma_user} /var/run/${name}
+        chown ${uptimekuma_user}:${uptimekuma_group} /var/run/${name}
     fi
-    install -o ${uptime_kuma_user} /dev/null ${pidfile}
+    install -o ${uptimekuma_user} /dev/null ${pidfile}
 }
 
 load_rc_config $name
