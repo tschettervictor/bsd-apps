@@ -1,12 +1,23 @@
-### Self Hosted Rustdesk Server
+# Self Hosted Rustdesk Server
 https://rustdesk.com/
 
-# Variables
+### Command to fetch script
+```
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/rustdesk-server/rustdesk-server-install.sh
+```
 
-SERVER 
-  - should be set to your jail IP or hostname
+Don't forget to
+```
+chmod +x rustdesk-server-install.sh
+```
 
-# Mount points
-  - should be mounted outside the jail
+## Variables
 
-`/var/db/rustdesk-server` - key file directory
+SERVER
+  - set to IP or hostname of jail
+
+## Mount points (should be mounted outside the jail)
+  - `var/db/rustdesk-server` - key file directory
+
+## Jail Properties
+  - none
