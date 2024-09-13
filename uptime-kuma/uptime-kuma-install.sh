@@ -39,4 +39,5 @@ service uptimekuma start
 
 echo "---------------"
 echo "Installation Complete!"
+echo "Uptime-Kuma is running on port 3001"
 echo "---------------"
