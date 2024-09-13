@@ -11,7 +11,7 @@ Don't forget to
 chmod +x uptime-kuma-install.sh
 ```
 
-# Variables
+## Variables
 
 NODE_VERSION
   - node version to use (currently defaults to 18)
