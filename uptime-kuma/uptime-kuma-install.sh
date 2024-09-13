@@ -23,7 +23,7 @@ npm install npm -g
 cd /usr/local/ && git clone https://github.com/louislam/uptime-kuma.git
 cd /usr/local/uptimekuma && npm run setup
 sed -i '' "s|console.log(\"Welcome to Uptime Kuma\");|process.chdir('/usr/local/uptime-kuma');\n&|" /usr/local/uptime-kuma/server/server.js
-fetch -1 https://github.com/tschettervictor/bsd-apps/blob/main/uptime-kuma/usr/local/etc/rc.d/uptimekuma /usr/local/etc/rc.d/
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/usr/local/etc/rc.d/uptimekuma /usr/local/etc/rc.d/
 chown -R uptimekuma:uptimekuma /usr/local/uptime-kuma
 chown -R uptimekuma:uptimekuma /var/run/uptime-kuma
 
