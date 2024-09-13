@@ -25,7 +25,7 @@ uptimekuma_env="PLAYWRIGHT_BROWSERS_PATH=/nonexistent"
 pidfile="/var/run/${name}/${name}.pid"
 node="/usr/local/bin/node"
 repo_path="/usr/local/uptime-kuma" # Where cloned the uptimekuma git repo to.
-script="${node} ${repo_path}/server/server.js --host=0.0.0.0 --datadir=${uptimekuma_datadir}"
+script="${node} ${repo_path}/server/server.js --host=0.0.0.0 --data-dir=${uptimekuma_datadir}"
 
 # NOTE To get uptime kuma to load correctly it needs to be started inside the
 # repo's directory:
