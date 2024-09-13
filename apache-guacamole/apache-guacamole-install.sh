@@ -7,6 +7,7 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+APP_NAME="guacamole"
 MARIADB_VERSION="106"
 DB_PATH="/var/db/mysql"
 DATABASE="mariadb"
@@ -18,7 +19,7 @@ DB_PASSWORD=$(openssl rand -base64 15)
 # Check for reinstall
 if [ "$(ls -A "${DB_PATH}")" ]; then
 	echo "Existing Guacamole database detected. Checking compatability for reinstall."
-	if [ "$(ls -A "${DB_PATH}/${DATABASE}")" ]; then
+	if [ "$(ls -A "${DB_PATH}/${DB_NAME}")" ]; then
 		echo "Database is compatible, continuing..."
 		REINSTALL="true"
 	else
@@ -57,9 +58,9 @@ sed -i -e 's/'localhost'/'0.0.0.0'/g' /usr/local/etc/guacamole-server/guacd.conf
 # Add database connection
 echo "mysql-hostname: localhost" >> /usr/local/etc/guacamole-client/guacamole.properties
 echo "mysql-port:     3306" >> /usr/local/etc/guacamole-client/guacamole.properties
-echo "mysql-database: '${DB_NAME}'" >> /usr/local/etc/guacamole-client/guacamole.properties
-echo "mysql-username: '${DB_USER}'" >> /usr/local/etc/guacamole-client/guacamole.properties
-echo "mysql-password: '${DB_PASSWORD}'" >> /usr/local/etc/guacamole-client/guacamole.properties
+echo "mysql-database: ${DB_NAME}" >> /usr/local/etc/guacamole-client/guacamole.properties
+echo "mysql-username: ${DB_USER}" >> /usr/local/etc/guacamole-client/guacamole.properties
+echo "mysql-password: ${DB_PASSWORD}" >> /usr/local/etc/guacamole-client/guacamole.properties
 service mysql-server start
 
 if [ "${REINSTALL}" == "true" ]; then
