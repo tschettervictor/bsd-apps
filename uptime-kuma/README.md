@@ -5,6 +5,7 @@ https://github.com/louislam/uptime-kuma
 
 NODE_VERSION
   - node version to use
+
 DATA_PATH
   - data directory will be stored here (defaults to /mnt/data)
 
