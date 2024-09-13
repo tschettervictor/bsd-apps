@@ -12,7 +12,9 @@ chmod +x meshcentral-install.sh
 ```
 
 ## Variables
-  - none
+
+NODE_VERSION
+  - node version to use (currently defaluts to 20)
 
 ## Mount points (should be mounted outside the jail)
   - `/usr/local/meshcentral/meshcentral-data` - data
