@@ -48,7 +48,6 @@ rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) add_user ${RA
 rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) set_user_tags ${RABBITMQ_USER} administrator
 rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) set_permissions -p / ${RABBITMQ_USER} ".*" ".*" ".*"
 sed -i '' -e "s|guest:guest@localhost|${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@localhost|g" /usr/local/etc/onlyoffice/documentserver/local.json
-service rabbitmq restart
 
 # Configure Nginx
 sysrc nginx_enable="YES"
@@ -56,7 +55,6 @@ mkdir -p /usr/local/etc/nginx/conf.d
 cp /usr/local/etc/onlyoffice/documentserver/nginx/ds.conf /usr/local/etc/nginx/conf.d/.
 sed -i '' -e '40s/^/    include \/usr\/local\/etc\/nginx\/conf.d\/*.conf;\n/g' /usr/local/etc/nginx/nginx.conf
 sed -i '' '4d' /usr/local/etc/nginx/conf.d/ds.conf
-service nginx restart
 
 # Configure Supervisord
 sysrc supervisord_enable="YES"
@@ -64,6 +62,14 @@ echo '[include]' >> /usr/local/etc/supervisord.conf
 echo 'files = /usr/local/etc/onlyoffice/documentserver/supervisor/*.conf' >> /usr/local/etc/supervisord.conf
 sed -i "" -e 's|/tmp/supervisor.sock|/var/run/supervisor/supervisor.sock|g' /usr/local/etc/supervisord.conf
 /usr/local/bin/documentserver-pluginsmanager.sh --update=/usr/local/www/onlyoffice/documentserver/sdkjs-plugins/plugin-list-default.json
+service supervisorctl start
+supervisorctl start all
+
+# Restart services
+service nginx restart
+service rabbitmq restart
+service supervisorctl restart
+supervisorctl start all
 
 # Save Passwords/Finalize Installation
 echo "${DATABASE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}_db_password.txt
