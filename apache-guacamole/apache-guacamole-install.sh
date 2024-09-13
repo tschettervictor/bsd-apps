@@ -52,7 +52,7 @@ cp -f /usr/local/etc/guacamole-client/logback.xml.sample /usr/local/etc/guacamol
 cp -f /usr/local/etc/guacamole-client/guacamole.properties.sample /usr/local/etc/guacamole-client/guacamole.properties
 
 # Change default bind host ip
-iocage exec "${JAIL_NAME}" sed -i -e 's/'localhost'/'0.0.0.0'/g' /usr/local/etc/guacamole-server/guacd.conf
+sed -i -e 's/'localhost'/'0.0.0.0'/g' /usr/local/etc/guacamole-server/guacd.conf
 
 # Add database connection
 echo "mysql-hostname: localhost" >> /usr/local/etc/guacamole-client/guacamole.properties
@@ -84,10 +84,6 @@ else
 		sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 		cat /tmp/guacamole-auth-jdbc-*/mysql/schema/*.sql | mysql -u root -p"${DB_ROOT_PASSWORD}" ${DB_NAME}
 fi
-
-# Copy server.xml file for tomcat9 (adds internalProxies valve)
-cp /usr/local/apache-tomcat-9.0/conf/server.xml /usr/local/apache-tomcat-9.0/conf/server.xml.bak
-cp -f /mnt/includes/server.xml /usr/local/apache-tomcat-9.0/conf/server.xml
 
 # Restart services
 service mysql-server restart
