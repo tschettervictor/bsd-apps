@@ -27,6 +27,7 @@ sed -i '' "s|console.log(\"Welcome to Uptime Kuma\");|process.chdir('/usr/local/
 fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptimekuma/usr/local/etc/rc.d/uptimekuma
 chown -R uptimekuma:uptimekuma /usr/local/uptime-kuma
 chown -R uptimekuma:uptimekuma /var/run/uptimekuma
+chown -R uptimekuma:uptimekuma /mnt/data
 
 # Enable and start services
 sysrc uptimekuma_enable="YES"
