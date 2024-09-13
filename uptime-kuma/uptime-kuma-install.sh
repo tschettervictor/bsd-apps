@@ -21,7 +21,7 @@ mkdir -p /var/run/uptimekuma/
 pw user add uptimekuma -c uptimekuma -u 3001 -d /nonexistent -s /usr/bin/nologin
 npm install npm -g
 cd /usr/local/ && git clone https://github.com/louislam/uptime-kuma.git
-cd /usr/local/uptime-kuma && npm run setup --datadir=/mnt/data
+cd /usr/local/uptime-kuma && npm run setup --data-dir=/mnt/data
 sed -i '' "s|console.log(\"Welcome to Uptime Kuma\");|process.chdir('/usr/local/uptime-kuma');\n&|" /usr/local/uptime-kuma/server/server.js
 fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptimekuma/usr/local/etc/rc.d/uptimekuma
 chown -R uptimekuma:uptimekuma /usr/local/uptime-kuma
