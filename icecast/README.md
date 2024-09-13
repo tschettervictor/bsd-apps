@@ -1,12 +1,23 @@
-### Icecast Server
+# Icecast Server
 https://icecast.org
 
-# Variables
+### Command to fetch script
+```
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/icecast/icecast-install.sh
+```
 
-NONE
+Don't forget to
+```
+chmod +x icecast-install.sh
+```
 
-# Mount points
-  - should be mounted outside the jail
+## Variables
+  - none
 
-`/usr/local/www/icecast` - config file directory
+## Mount points (should be mounted outside the jail)
+  - `/usr/local/www/icecast` - config/data file directory
+
+## Jail Properties
+  - none
+
 
