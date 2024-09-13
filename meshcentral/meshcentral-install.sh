@@ -1,11 +1,16 @@
 #!/bin/sh
 # Install MeshCentral
 
+NODE_VERSION="20"
+
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
+
+# Install packages
+pkg install -y npm-node"${NODE_VERSION}" node"${NODE_VERSION}"
 
 # Create directories
 mkdir -p /usr/local/meshcentral/meshcentral-data
