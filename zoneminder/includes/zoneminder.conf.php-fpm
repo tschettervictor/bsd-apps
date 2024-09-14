@@ -1,0 +1,12 @@
+[zoneminder]
+user = www
+group = www
+listen = /var/run/php-fpm.sock
+listen.owner = www
+listen.group = www
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+php_admin_value[session.save_path] = "/tmp" 
