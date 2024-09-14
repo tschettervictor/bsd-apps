@@ -1,7 +1,7 @@
 #!/bin/sh
 # Install Nextcloud
 
-# Check for root privileges
+# Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
@@ -29,7 +29,7 @@ DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_NAME="nextcloud"
 DB_PASSWORD=$(openssl rand -base64 16)
 
-# Sanity checks
+# Sanity Checks
 if [ -z "${TIME_ZONE}" ]; then
   echo 'Configuration error: TIME_ZONE must be set'
   exit 1
@@ -67,7 +67,7 @@ if [ $STANDALONE_CERT -eq 1 ] && [ "${CERT_EMAIL}" = "" ] ; then
   exit 1
 fi
 
-# Check for reinstall
+# Check for Reinstall
 if [ "$(ls -A "${CONFIG_PATH}")" ]; then
 	echo "Existing Nextcloud config detected... Checking Database compatibility for reinstall"
 	if [ "$(ls -A "${DB_PATH}/${DB_NAME}")" ]; then
@@ -80,10 +80,10 @@ if [ "$(ls -A "${CONFIG_PATH}")" ]; then
 	fi
 fi
 
-# Package installation
+# Package Installation
 pkg install -y nano sudo vim redis gnupg bash go git ffmpeg perl5 p5-Locale-gettext help2man texinfo m4 autoconf openssl php${PHP_VERSION} php${PHP_VERSION}-ctype php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-filter php${PHP_VERSION}-gd php${PHP_VERSION}-xml php${PHP_VERSION}-mbstring php${PHP_VERSION}-posix php${PHP_VERSION}-session php${PHP_VERSION}-simplexml php${PHP_VERSION}-xmlreader php${PHP_VERSION}-xmlwriter php${PHP_VERSION}-zip php${PHP_VERSION}-zlib php${PHP_VERSION}-fileinfo php${PHP_VERSION}-bz2 php${PHP_VERSION}-intl php${PHP_VERSION}-ldap php${PHP_VERSION}-pecl-smbclient php${PHP_VERSION}-ftp php${PHP_VERSION}-imap php${PHP_VERSION}-bcmath php${PHP_VERSION}-gmp php${PHP_VERSION}-exif php${PHP_VERSION}-pecl-APCu php${PHP_VERSION}-pecl-memcache php${PHP_VERSION}-pecl-redis php${PHP_VERSION}-pecl-imagick php${PHP_VERSION}-pcntl php${PHP_VERSION}-phar php${PHP_VERSION}-iconv php${PHP_VERSION}-sodium php${PHP_VERSION}-sysvsem php${PHP_VERSION}-xsl php${PHP_VERSION}-opcache
 
-# Create directories
+# Create Directories
 if [ "${DATABASE}" = "mariadb" ]; then
   mkdir -p /var/db/mysql
 elif [ "${DATABASE}" = "pgsql" ]; then
@@ -95,19 +95,14 @@ mkdir -p /usr/local/www/nextcloud/themes
 chown -R www:www /mnt/files
 chmod -R 770 /mnt/files
 
-# Install additional database packages
+# Install Additional Database Packages
 if [ "${DATABASE}" = "mariadb" ]; then
   pkg install -y mariadb106-server php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-mysqli
 elif [ "${DATABASE}" = "pgsql" ]; then
   pkg install -y postgresql13-server php${PHP_VERSION}-pgsql php${PHP_VERSION}-pdo_pgsql
 fi
 
-#####
-#
-# Webserver Setup
-#
-#####
-
+# Caddy Installation
 # Build xcaddy, use it to build Caddy
 if ! go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 then
@@ -167,12 +162,7 @@ sysrc caddy_enable="YES"
 sysrc caddy_config="/usr/local/www/Caddyfile"
 service caddy start
 
-#####
-#
 # Nextcloud Download and Verify
-#
-#####
-
 FILE="latest-${NEXTCLOUD_VERSION}.tar.bz2"
 if ! fetch -o /tmp https://download.nextcloud.com/server/releases/"${FILE}" https://download.nextcloud.com/server/releases/"${FILE}".asc 
 then
@@ -189,31 +179,28 @@ then
 fi
 tar xjf /tmp/"${FILE}" -C /usr/local/www/
 chown -R www:www /usr/local/www/nextcloud/
-if [ "${DATABASE}" = "mariadb" ]; then
-  sysrc mysql_enable="YES"
-elif [ "${DATABASE}" = "pgsql" ]; then
-  sysrc postgresql_enable="YES"
-fi
-sysrc redis_enable="YES"
-sysrc php_fpm_enable="YES"
-service redis start
-service php-fpm start
-service mysql-server start
 
-# Copy and edit pre-written config files
+# PHP Setup and Start
 if ! fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/php.ini
 then
 	echo "Failed to fetch php.ini"
 	exit 1
 fi
-sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
-chown -R www:www /usr/local/etc/php.ini
-fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/redis.conf
 fetch -o /usr/local/etc/php-fpm.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/www.conf
-
 if [ "${DATABASE}" = "mariadb" ]; then
   fetch -o /usr/local/etc/mysql/conf.d/nextcloud.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/my-system.cnf
 fi
+sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
+chown -R www:www /usr/local/etc/php.ini
+sysrc php_fpm_enable="YES"
+service php-fpm start
+
+# Redis Setup and Start
+fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/redis.conf
+pw usermod www -G redis
+sysrc redis_enable="YES"
+service redis start
+chmod 777 /var/run/redis/redis.sock
 
 #####
 #
@@ -221,8 +208,13 @@ fi
 #
 ####
 
-pw usermod www -G redis
-chmod 777 /var/run/redis/redis.sock
+# Enable and start services
+if [ "${DATABASE}" = "mariadb" ]; then
+  sysrc mysql_enable="YES"
+  service mysql-server start
+elif [ "${DATABASE}" = "pgsql" ]; then
+  sysrc postgresql_enable="YES"
+fi
 if [ "${REINSTALL}" == "true" ]; then
 	echo "Reinstall detected, skipping generation of new config and database"
 	if [ "${DATABASE}" = "mariadb" ]; then
@@ -264,9 +256,12 @@ elif [ "${DATABASE}" = "pgsql" ]; then
   psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE nextcloud TO nextcloud;"
   psql -U postgres -c "SELECT pg_reload_conf();"
 fi
-# Create Nextcloud log directory
+
+# Create Nextcloud Log Directory
 mkdir -p /var/log/nextcloud/
 chown www:www /var/log/nextcloud
+
+# Nextcloud CLI Configuration
 if [ "${DATABASE}" = "mariadb" ]; then
   if ! su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"mysql\" --database-name=\"nextcloud\" --database-user=\"nextcloud\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/var/run/mysql/mysql.sock\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
   then
@@ -313,6 +308,12 @@ su -m www -c 'php -f /usr/local/www/nextcloud/cron.php'
 fetch -o /tmp/www-crontab https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/www-crontab
 crontab -u www /tmp/www-crontab
 su -m www -c "php /usr/local/www/nextcloud/occ config:system:set maintenance_window_start --type=integer --value=${MX_WINDOW}"
+
+# Restart Services
+service mysql-server restart
+service redis restart
+service php-fpm restart
+service caddy restart
 
 # Save passwords for later reference
 echo "${DB_NAME} root password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}_db_password.txt
