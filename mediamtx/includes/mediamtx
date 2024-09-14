@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Mediamtx FreeBSD Service Script
+
+# PROVIDE: mediamtx
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name=mediamtx
+user=www
+rcvar=mediamtx_enable
+
+: ${mediamtx_enable:="NO"}
+: ${mediamtx_config:="/usr/local/www/mediamtx/mediamtx.yml"}
+
+pidfile=/var/run/${name}.pid
+command=/usr/sbin/daemon
+command_args="-f -u ${user} -P ${pidfile} /usr/local/bin/${name} ${mediamtx_config}"
+
+load_rc_config $name
+run_rc_command "$1"
