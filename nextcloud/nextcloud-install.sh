@@ -81,58 +81,7 @@ if [ "$(ls -A "${CONFIG_PATH}")" ]; then
 fi
 
 # Package installation
-pkg install -y \
-    sudo \
-    vim \
-    redis \
-    gnupg \
-    bash \
-    go \
-    git \
-    ffmpeg \
-    perl5 \
-    p5-Locale-gettext \
-    help2man \
-    texinfo \ 
-    m4 \
-    autoconf \
-    openssh \
-    php${PHP_VERSION} \
-    php${PHP_VERSION}-ctype \
-    php${PHP_VERSION}-curl \
-    php${PHP_VERSION}-dom \
-    php${PHP_VERSION}-filter \
-    php${PHP_VERSION}-gd \
-    php${PHP_VERSION}-xml \
-    php${PHP_VERSION}-mbstring \
-    php${PHP_VERSION}-posix \
-    php${PHP_VERSION}-session \
-    php${PHP_VERSION}-simplexml \
-    php${PHP_VERSION}-xmlreader \
-    php${PHP_VERSION}-xmlwriter \
-    php${PHP_VERSION}-zip \
-    php${PHP_VERSION}-zlib \
-    php${PHP_VERSION}-fileinfo \
-    php${PHP_VERSION}-bz2 \
-    php${PHP_VERSION}-intl \
-    php${PHP_VERSION}-ldap \
-    php${PHP_VERSION}-pecl-smbclient \
-    php${PHP_VERSION}-ftp \
-    php${PHP_VERSION}-imap \
-    php${PHP_VERSION}-bcmath \
-    php${PHP_VERSION}-gmp \
-    php${PHP_VERSION}-exif \
-    php${PHP_VERSION}-pecl-APCu \
-    php${PHP_VERSION}-pecl-memcache \
-    php${PHP_VERSION}-pecl-redis \
-    php${PHP_VERSION}-pecl-imagick \
-    php${PHP_VERSION}-pcntl \
-    php${PHP_VERSION}-phar \
-    php${PHP_VERSION}-iconv \
-    php${PHP_VERSION}-sodium \
-    php${PHP_VERSION}-sysvsem \
-    php${PHP_VERSION}-xsl \
-    php${PHP_VERSION}-opcache
+pkg install -y nano sudo vim redis gnupg bash go git ffmpeg perl5 p5-Locale-gettext help2man texinfo m4 autoconf openssl php${PHP_VERSION} php${PHP_VERSION}-ctype php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-filter php${PHP_VERSION}-gd php${PHP_VERSION}-xml php${PHP_VERSION}-mbstring php${PHP_VERSION}-posix php${PHP_VERSION}-session php${PHP_VERSION}-simplexml php${PHP_VERSION}-xmlreader php${PHP_VERSION}-xmlwriter php${PHP_VERSION}-zip php${PHP_VERSION}-zlib php${PHP_VERSION}-fileinfo php${PHP_VERSION}-bz2 php${PHP_VERSION}-intl php${PHP_VERSION}-ldap php${PHP_VERSION}-pecl-smbclient php${PHP_VERSION}-ftp php${PHP_VERSION}-imap php${PHP_VERSION}-bcmath php${PHP_VERSION}-gmp php${PHP_VERSION}-exif php${PHP_VERSION}-pecl-APCu php${PHP_VERSION}-pecl-memcache php${PHP_VERSION}-pecl-redis php${PHP_VERSION}-pecl-imagick php${PHP_VERSION}-pcntl php${PHP_VERSION}-phar php${PHP_VERSION}-iconv php${PHP_VERSION}-sodium php${PHP_VERSION}-sysvsem php${PHP_VERSION}-xsl php${PHP_VERSION}-opcache
 
 # Create directories
 if [ "${DATABASE}" = "mariadb" ]; then
@@ -146,12 +95,18 @@ mkdir -p /usr/local/www/nextcloud/themes
 chown -R www:www /mnt/files
 chmod -R 770 /mnt/files
 
-# Configure database
+# Install additional database packages
 if [ "${DATABASE}" = "mariadb" ]; then
   pkg install -y mariadb106-server php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-mysqli
 elif [ "${DATABASE}" = "pgsql" ]; then
   pkg install -y postgresql13-server php${PHP_VERSION}-pgsql php${PHP_VERSION}-pdo_pgsql
 fi
+
+#####
+#
+# Webserver Setup
+#
+#####
 
 # Build xcaddy, use it to build Caddy
 if ! go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
@@ -177,38 +132,6 @@ else
     exit 1
   fi  
 fi
-
-#####
-#
-# Webserver Setup and Nextcloud Download  
-#
-#####
-
-FILE="latest-${NEXTCLOUD_VERSION}.tar.bz2"
-if ! fetch -o /tmp https://download.nextcloud.com/server/releases/"${FILE}" https://download.nextcloud.com/server/releases/"${FILE}".asc 
-then
-	echo "Failed to download Nextcloud"
-	exit 1
-fi
-fetch -o /tmp https://nextcloud.com/nextcloud.asc
-gpg --import /tmp/nextcloud.asc
-
-if ! gpg --verify /tmp/"${FILE}".asc
-then
-	echo "GPG Signature Verification Failed!"
-	echo "The Nextcloud download is corrupt."
-	exit 1
-fi
-tar xjf /tmp/"${FILE}" -C /usr/local/www/
-chown -R www:www /usr/local/www/nextcloud/
-if [ "${DATABASE}" = "mariadb" ]; then
-  sysrc mysql_enable="YES"
-elif [ "${DATABASE}" = "pgsql" ]; then
-  sysrc postgresql_enable="YES"
-fi
-sysrc redis_enable="YES"
-sysrc php_fpm_enable="YES"
-
 # Generate and install self-signed cert, if necessary
 if [ $SELFSIGNED_CERT -eq 1 ]; then
   mkdir -p /usr/local/etc/pki/tls/private
@@ -217,16 +140,6 @@ if [ $SELFSIGNED_CERT -eq 1 ]; then
   cp /tmp/privkey.pem /usr/local/etc/pki/tls/private/privkey.pem
   cp /tmp/fullchain.pem /usr/local/etc/pki/tls/certs/fullchain.pem
 fi
-
-# Copy and edit pre-written config files
-if ! fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/php.ini
-then
-	echo "Failed to fetch php.ini"
-	exit 1
-fi
-chown -R www:www /usr/local/etc/php.ini
-fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/redis.conf
-fetch -o /usr/local/etc/php-fpm.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/www.conf
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
   fetch -o /root/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/remove-staging.sh
 fi
@@ -245,10 +158,6 @@ else
 fi
 fetch -o /usr/local/etc/rc.d/caddy https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/caddy
 chmod +x /usr/local/etc/rc.d/caddy
-
-if [ "${DATABASE}" = "mariadb" ]; then
-  fetch -o /usr/local/etc/mysql/conf.d/nextcloud.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/my-system.cnf
-fi
 sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/local/www/Caddyfile
 sed -i '' "s/dns_plugin/${DNS_PLUGIN}/" /usr/local/www/Caddyfile
 sed -i '' "s/api_token/${DNS_TOKEN}/" /usr/local/www/Caddyfile
@@ -257,8 +166,61 @@ sed -i '' "s/youremailhere/${CERT_EMAIL}/" /usr/local/www/Caddyfile
 sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 sysrc caddy_enable="YES"
 sysrc caddy_config="/usr/local/www/Caddyfile"
+service caddy start
 
-# Install Nextcloud
+#####
+#
+# Nextcloud Download and Verify
+#
+#####
+
+FILE="latest-${NEXTCLOUD_VERSION}.tar.bz2"
+if ! fetch -o /tmp https://download.nextcloud.com/server/releases/"${FILE}" https://download.nextcloud.com/server/releases/"${FILE}".asc 
+then
+	echo "Failed to download Nextcloud"
+	exit 1
+fi
+fetch -o /tmp https://nextcloud.com/nextcloud.asc
+gpg --import /tmp/nextcloud.asc
+if ! gpg --verify /tmp/"${FILE}".asc
+then
+	echo "GPG Signature Verification Failed!"
+	echo "The Nextcloud download is corrupt."
+	exit 1
+fi
+tar xjf /tmp/"${FILE}" -C /usr/local/www/
+chown -R www:www /usr/local/www/nextcloud/
+if [ "${DATABASE}" = "mariadb" ]; then
+  sysrc mysql_enable="YES"
+elif [ "${DATABASE}" = "pgsql" ]; then
+  sysrc postgresql_enable="YES"
+fi
+sysrc redis_enable="YES"
+sysrc php_fpm_enable="YES"
+service redis start
+service php-fpm start
+service mysql-server start
+
+# Copy and edit pre-written config files
+if ! fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/php.ini
+then
+	echo "Failed to fetch php.ini"
+	exit 1
+fi
+chown -R www:www /usr/local/etc/php.ini
+fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/redis.conf
+fetch -o /usr/local/etc/php-fpm.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/www.conf
+
+if [ "${DATABASE}" = "mariadb" ]; then
+  fetch -o /usr/local/etc/mysql/conf.d/nextcloud.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/my-system.cnf
+fi
+
+#####
+#
+# Configure Database and Install Nextcloud
+#
+####
+
 pw usermod www -G redis
 chmod 777 /var/run/redis/redis.sock
 if [ "${REINSTALL}" == "true" ]; then
@@ -266,10 +228,12 @@ if [ "${REINSTALL}" == "true" ]; then
 	if [ "${DATABASE}" = "mariadb" ]; then
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
-	fi
+	elif [ "${DATABASE}" = "pgsql" ]; then
+ 	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/pgpass
+  	chmod 600 /root/.pgpass
+   	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
+    	fi
 else
-
-# Secure database, set root password, create Nextcloud DB, user, and password
 if [ "${DATABASE}" = "mariadb" ]; then
   if ! mysql -u root -e "CREATE DATABASE nextcloud;"
   then
@@ -300,17 +264,9 @@ elif [ "${DATABASE}" = "pgsql" ]; then
   psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE nextcloud TO nextcloud;"
   psql -U postgres -c "SELECT pg_reload_conf();"
 fi
-
-# Save passwords for later reference
-echo "${DB_NAME} root password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}_db_password.txt
-echo "Nextcloud database password is ${DB_PASSWORD}" >> /root/${APP_NAME}_db_password.txt
-echo "Nextcloud Administrator password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}_db_password.txt
-
 # Create Nextcloud log directory
 mkdir -p /var/log/nextcloud/
 chown www:www /var/log/nextcloud
-
-# CLI installation and configuration of Nextcloud
 if [ "${DATABASE}" = "mariadb" ]; then
   if ! su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"mysql\" --database-name=\"nextcloud\" --database-user=\"nextcloud\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/var/run/mysql/mysql.sock\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
   then
@@ -358,6 +314,10 @@ fetch -o /tmp/www-crontab https://raw.githubusercontent.com/tschettervictor/bsd-
 crontab -u www /tmp/www-crontab
 su -m www -c "php /usr/local/www/nextcloud/occ config:system:set maintenance_window_start --type=integer --value=${MX_WINDOW}"
 
+# Save passwords for later reference
+echo "${DB_NAME} root password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}_db_password.txt
+echo "Nextcloud database password is ${DB_PASSWORD}" >> /root/${APP_NAME}_db_password.txt
+echo "Nextcloud Administrator password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}_db_password.txt
 
 echo "Installation complete!"
 if [ $NO_CERT -eq 1 ]; then
