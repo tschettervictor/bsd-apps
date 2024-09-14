@@ -1,5 +1,5 @@
-# MeshCentral Management Server
-https://meshcentral.com/
+# MediaMTX Streaming Service
+https://github.com/bluenviron/mediamtx
 
 ### Command to fetch script
 ```
