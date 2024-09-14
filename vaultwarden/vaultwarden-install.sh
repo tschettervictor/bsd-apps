@@ -51,7 +51,6 @@ if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall, your admin token has not changed."
  	echo "If you need to generate a new one, please see the vaultwarden github."
 else
-	echo "---------------"
  	echo "Admin Portal Information"
  	echo "Your admin token to access the admin portal is ${ADMIN_TOKEN}"
   	echo "---------------"
