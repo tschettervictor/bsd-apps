@@ -18,10 +18,9 @@ if [ "$(ls -A "/usr/local/www/vaultwarden/data" 2>/dev/null)" ]; then
 fi
 
 # Install Packages
-pkg install -y vaultwarden go git-lite py${PYTHON_VERSION}-argon2-cffi bash
+pkg install -y vaultwarden git-lite py${PYTHON_VERSION}-argon2-cffi bash
 
 # Create Directories
-mkdir -p /usr/local/www/vaultwarden/data
 mkdir -p /usr/local/etc/rc.conf.d
 
 # Fetch Vaultwarden File
