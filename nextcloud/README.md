@@ -20,7 +20,7 @@ TIME_ZONE="" (sets the timezone, see http://php.net/manual/en/timezones.php) - m
 
 ### Cerificate Configuration
 
-Caddy is a webserver that can do automatic TLS and HTTPS for you. You should enable one of the following 4 CERT confiurations to tell the script how you want Caddy to work.
+Caddy is a webserver that can do automatic TLS and HTTPS for you. You should enable one AND ONLY ONE of the following 4 CERT confiurations to tell the script how you want Caddy to work.
 
   - NO_CERT (default, no certificate will be created, http access)
   - STANDALONE_CERT (fully working cert, must own a domain, and have ports 80 and 443 forwarded to your jail)
