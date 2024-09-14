@@ -13,7 +13,7 @@ chmod +x nextcloud-install.sh
 
 ## Variables
 
-These are the variable that are available to change along with their defaults and a desctiption of what it does.
+These are the variable that are available to change along with their defaults and a description of what it does.
 
 HOST_NAME="" (sets the hostname to use for the webserver) - must be set
 TIME_ZONE="" (sets the timezone, see http://php.net/manual/en/timezones.php) - must be set
