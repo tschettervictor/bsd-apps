@@ -18,8 +18,10 @@ These are the variable that are available to change along with their defaults an
 HOST_NAME="" (sets the hostname to use for the webserver) - must be set
 TIME_ZONE="" (sets the timezone, see http://php.net/manual/en/timezones.php) - must be set
 
-Cerificate Configuration
+### Cerificate Configuration
+
 Caddy is a webserver that can do automatic TLS and HTTPS for you. You should enable one of the following 4 CERT confiurations to tell the script how you want Caddy to work.
+
   - NO_CERT (default, no certificate will be created, http access)
   - STANDALONE_CERT (fully working cert, must own a domain, and have ports 80 and 443 forwarded to your jail)
   - SELFSIGNED_CERT (generates a self-signed cert for use with https)
@@ -30,6 +32,7 @@ Caddy is a webserver that can do automatic TLS and HTTPS for you. You should ena
   - DNS_PLUGIN (set this to a supported DNS plugin, see caddy docs for details) -only used with DNS_CERT
   - DNS_TOKEN (must have "Zone / Zone / Read" and "Zone / DNS / Edit" permissions on the domain you are using with Caddy) - only used with DNS_CERT  
   - CERT_EMAIL (your email to receive cert expiry) - used with DNS_CERT and STANDALONE_CERT
+
 DATABASE (set your preffered database, currently defaults to mariadb)
 NEXTCLOUD_VERSION (currently defaults to 29)
 PHP_VERSION (currently defaults to 83)
