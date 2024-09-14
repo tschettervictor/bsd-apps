@@ -50,10 +50,10 @@ service fcgiwrap start
 
 # Create and Configure Database
 mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';CREATE DATABASE ${DB_NAME};CREATE USER '${ZM_USER}'@'localhost' IDENTIFIED BY '${ZM_PASS}';GRANT SELECT,INSERT,UPDATE,DELETE ON ${DB_NAME}.* TO '${ZM_USER}'@'localhost';FLUSH PRIVILEGES;";
-mysql -u root --password='${DB_ROOT_PASSWORD}' '${DB_NAME}' < /usr/local/share/zoneminder/db/zm_create.sql
-echo "ZM_DB_NAME='${DB_NAME}'" > /usr/local/etc/zoneminder/zm-truenas.conf
-echo "ZM_DB_USER='${ZM_USER}'" >> /usr/local/etc/zoneminder/zm-truenas.conf
-echo "ZM_DB_PASS='${ZM_PASS}'" >> /usr/local/etc/zoneminder/zm-truenas.conf
+mysql -u root --password=${DB_ROOT_PASSWORD} ${DB_NAME} < /usr/local/share/zoneminder/db/zm_create.sql
+echo "ZM_DB_NAME=${DB_NAME}" > /usr/local/etc/zoneminder/zm-truenas.conf
+echo "ZM_DB_USER=${ZM_USER}" >> /usr/local/etc/zoneminder/zm-truenas.conf
+echo "ZM_DB_PASS=${ZM_PASS}" >> /usr/local/etc/zoneminder/zm-truenas.conf
 
 # Fetch Config Files
 fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/php.ini
