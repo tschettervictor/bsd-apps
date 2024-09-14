@@ -22,6 +22,10 @@ pkg install -y vaultwarden go git-lite py${PYTHON_VERSION}-argon2-cffi bash
 
 # Create Directories
 mkdir -p /usr/local/www/vaultwarden/data
+mkdir -p /usr/local/etc/rc.conf.d
+
+# Fetch Vaultwarden File
+fetch -o /usr/local/etc/rc.conf.d/vaultwarden https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/vaultwarden/includes/vaultwarden
 
 # Generate Secure Token/Hash Using argon2
 if [ "${REINSTALL}" == "true" ]; then
