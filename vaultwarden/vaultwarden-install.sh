@@ -2,6 +2,7 @@
 # Install Vaultwarden
 
 APP_NAME="vaultwarden"
+PYTHON_VERSION="311"
 ADMIN_TOKEN=$(openssl rand -base64 16)
 
 # Check for root privileges
@@ -17,7 +18,7 @@ if [ "$(ls -A "/usr/local/www/vaultwarden/data")" ]; then
 fi
 
 # Install Packages
-pkg install -y vaultwarden go git-lite py39-argon2-cffi bash
+pkg install -y vaultwarden go git-lite py${PYTHON_VERSION}-argon2-cffi bash
 
 # Create Directories
 mkdir -p /usr/local/www/vaultwarden/data
