@@ -1,0 +1,48 @@
+server {
+    listen 80;
+    listen 443 ssl;
+    ssl_certificate /usr/local/etc/ssl/cert.pem;
+    ssl_certificate_key /usr/local/etc/ssl/key.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers TLSv1.2:!aNULL:!eNULL;
+    ssl_prefer_server_ciphers on;
+    server_name _;
+    root /usr/local/www/zoneminder;
+    index index.php;
+
+    location = / {
+        return 302 /zm/;
+    }
+
+    location /cgi-bin/nph-zms {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $request_filename;
+        fastcgi_pass  unix:/var/run/fcgiwrap/fcgiwrap.sock;
+    }
+
+    location /zm/cache {
+        alias /var/cache/zoneminder;
+    }
+
+    location /zm {
+        alias   /usr/local/www/zoneminder;
+
+        location ~ \.php$ {
+            if (!-f $request_filename) { return 404; }
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $request_filename;
+            fastcgi_index index.php;
+            fastcgi_pass unix:/var/run/php-fpm.sock;
+        }
+
+        location ~ \.(jpg|jpeg|gif|png|ico)$ {
+            access_log      off;
+            expires 33d;
+        }
+
+        location /zm/api/ {
+            alias   /usr/local/www/zoneminder;
+            rewrite ^/zm/api(.+)$ /zm/api/app/webroot/index.php?p=$1 last;
+        }
+    }
+}
