@@ -12,7 +12,7 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Check for Reinstall
-if [ "$(ls -A "/usr/local/www/vaultwarden/data")" ]; then
+if [ "$(ls -A "/usr/local/www/vaultwarden/data" 2>/dev/null)" ]; then
 	echo "Existing Vaultwarden data detected..."
 	REINSTALL="true"
 fi
