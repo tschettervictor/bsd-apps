@@ -60,8 +60,8 @@ fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervicto
 fetch -o /usr/local/etc/php-fpm.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/php-fpm.conf
 fetch -o /usr/local/etc/php-fpm.d/zoneminder.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/zoneminder.conf.php-fpm
 fetch -o /usr/local/etc/nginx/nginx.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/nginx.conf
-fetch -o /usr/local/etc/nginx/conf.d/zoneminder.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/zoneminder.conf.nginx
-fetch -o /usr/local/etc/mysql/conf.d/zoneminder.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/zoneminder.cnf
+fetch -o /usr/local/etc/nginx/conf.d/zoneminder.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/zoneminder.conf.nginx.ssl
+fetch -o /usr/local/etc/mysql/conf.d/zoneminder.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/my.cnf
 
 # Restart Services and start Zoneminder
 service mysql-server restart
