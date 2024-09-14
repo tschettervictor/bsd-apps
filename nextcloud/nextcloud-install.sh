@@ -163,7 +163,6 @@ sed -i '' "s/dns_plugin/${DNS_PLUGIN}/" /usr/local/www/Caddyfile
 sed -i '' "s/api_token/${DNS_TOKEN}/" /usr/local/www/Caddyfile
 sed -i '' "s/jail_ip/${IP}/" /usr/local/www/Caddyfile
 sed -i '' "s/youremailhere/${CERT_EMAIL}/" /usr/local/www/Caddyfile
-sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 sysrc caddy_enable="YES"
 sysrc caddy_config="/usr/local/www/Caddyfile"
 service caddy start
@@ -207,6 +206,7 @@ then
 	echo "Failed to fetch php.ini"
 	exit 1
 fi
+sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 chown -R www:www /usr/local/etc/php.ini
 fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/redis.conf
 fetch -o /usr/local/etc/php-fpm.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/www.conf
