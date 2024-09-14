@@ -15,19 +15,22 @@ DNS_CERT=0
 NO_CERT=1
 DNS_PLUGIN=""
 CERT_EMAIL=""
-
-APP_NAME="nextcloud"
 DATABASE="mariadb"
-DB_PATH="/var/db/mysql"
-FILES_PATH="/mnt/files"
 NEXTCLOUD_VERSION="29"
 PHP_VERSION="83"
 COUNTRY_CODE="CA"
+
+APP_NAME="nextcloud"
 MX_WINDOW="5"
 ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_NAME="nextcloud"
 DB_PASSWORD=$(openssl rand -base64 16)
+if [ ${DATABASE} = "mariadb" ]; then
+	DB_PATH="/var/db/mysql"
+elif [ ${DATABASE} = "pgsql" ]; then
+	DB_PATH="/var/db/postgres"
+fi
 
 # Sanity Checks
 if [ -z "${TIME_ZONE}" ]; then
@@ -68,7 +71,7 @@ if [ $STANDALONE_CERT -eq 1 ] && [ "${CERT_EMAIL}" = "" ] ; then
 fi
 
 # Check for Reinstall
-if [ "$(ls -A "${CONFIG_PATH}")" ]; then
+if [ "$(ls -A "/usr/local/www/nextcloud/config")" ]; then
 	echo "Existing Nextcloud config detected... Checking Database compatibility for reinstall"
 	if [ "$(ls -A "${DB_PATH}/${DB_NAME}")" ]; then
 		echo "Database is compatible, continuing..."
