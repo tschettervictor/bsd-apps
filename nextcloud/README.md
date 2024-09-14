@@ -16,8 +16,11 @@ chmod +x nextcloud-install.sh
 These are the variable that are available to change along with their defaults and a description of what it does.
 
 HOST_NAME (sets the hostname to use for the webserver) - must be set to your FQDN ie: my.domain.com
-
 TIME_ZONE (sets the timezone, see http://php.net/manual/en/timezones.php) - must be set
+DATABASE (set your preffered database, currently defaults to mariadb)
+NEXTCLOUD_VERSION (currently defaults to 29)
+PHP_VERSION (currently defaults to 83)
+COUNTRY_CODE (2 letter ISO code for your country, currently defaults to CA)
 
 ### Cerificate Configuration
 
@@ -33,11 +36,6 @@ Caddy is a webserver that can do automatic TLS and HTTPS for you. You should ena
   - DNS_PLUGIN (set this to a supported DNS plugin, see caddy docs for details) -only used with DNS_CERT
   - DNS_TOKEN (must have "Zone / Zone / Read" and "Zone / DNS / Edit" permissions on the domain you are using with Caddy) - only used with DNS_CERT  
   - CERT_EMAIL (your email to receive cert expiry) - used with DNS_CERT and STANDALONE_CERT
-
-DATABASE (set your preffered database, currently defaults to mariadb)
-NEXTCLOUD_VERSION (currently defaults to 29)
-PHP_VERSION (currently defaults to 83)
-COUNTRY_CODE (2 letter ISO code for your country, currently defaults to CA)
 
 All of the above variable should be changed to fit your environment. For more detailed documentation, see https://github.com/danb35/freenas-iocage-nextcloud
 
