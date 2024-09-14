@@ -41,6 +41,7 @@ Caddy is a webserver that can do automatic TLS and HTTPS for you. You should ena
   - DNS_PLUGIN (set this to a supported DNS plugin, see caddy docs for details) -only used with DNS_CERT
   - DNS_TOKEN (must have "Zone / Zone / Read" and "Zone / DNS / Edit" permissions on the domain you are using with Caddy) - only used with DNS_CERT  
   - CERT_EMAIL (your email to receive cert expiry) - used with DNS_CERT and STANDALONE_CERT
+  - If you do use any type of certificate with a domain, Caddy will obtain a stagin certificate to no excede rate limits. Once you have confirmed things are working, remove the "#" from the "#acme_ca" line at the top of the Caddyfile, located at `/usr/local/www/Caddyfile`
 
 All of the above variable should be changed to fit your environment. For more detailed documentation, see https://github.com/danb35/freenas-iocage-nextcloud
 
