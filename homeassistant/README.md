@@ -1,4 +1,4 @@
-# homeassistant
+# Homeassistant
 https://home-assistant.io
 
 ### Command to fetch script
