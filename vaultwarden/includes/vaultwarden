@@ -4,8 +4,7 @@
 IP_HEADER=X-Forwarded-For
 export IP_HEADER
 
-#ROCKET_ADDRESS=127.0.0.1
-ROCKET_ADDRESS=0.0.0.0
+ROCKET_ADDRESS=127.0.0.1
 export ROCKET_ADDRESS
 
 ROCKET_PORT=4567 # your port here
@@ -17,8 +16,8 @@ export ROCKET_PORT
 SIGNUPS_ALLOWED='false'
 export SIGNUPS_ALLOWED
 
-# DOMAIN='https://localhost.localdomain'
-# export DOMAIN
+DOMAIN=yourhostnamehere
+export DOMAIN
 
 ADMIN_TOKEN=youradmintokenhere # generate one with ~$ openssl rand -base64 48
 export ADMIN_TOKEN
