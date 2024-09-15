@@ -14,6 +14,9 @@ fi
 # Install Packages
 pkg install -y caddy php${PHP_VERSION} php${PHP_VERSION}-mbstring php${PHP_VERSION}-zip php${PHP_VERSION}-tokenizer php${PHP_VERSION}-pdo php${PHP_VERSION}-pdo_sqlite php${PHP_VERSION}-filter php${PHP_VERSION}-xml php${PHP_VERSION}-ctype php${PHP_VERSION}-dom php${PHP_VERSION}-fileinfo sqlite3 php${PHP_VERSION}-session go git
 
+# Create Directories
+mkdir -p /usr/local/www
+
 # Fetch Caddyfile
 fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/heimdall/includes/Caddyfile-nossl
 
