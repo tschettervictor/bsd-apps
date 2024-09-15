@@ -1,0 +1,63 @@
+## This configuration.yaml file is customized to avoid issues with bluetooth and stream not enabling.
+# Learn more at https://www.home-assistant.io/docs/configuration
+
+homeassistant:
+  # https://www.home-assistant.io/docs/configuration/customizing-devices/
+  customize: !include customize.yaml
+  # https://www.home-assistant.io/docs/configuration/packages/#create-a-packages-folder
+  #packages: !include_dir_named packages
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies: 127.0.0.1
+  
+## Configure a default setup of Home Assistant Core
+## Disabled after the addition of Bluetooth in HA 2022.8.0
+#default_config:
+
+## Integrations normally enabled by 'default_config' as of 05/30/2023
+## https://github.com/home-assistant/core/blob/dev/homeassistant/components/default_config/manifest.json
+application_credentials:
+assist_pipeline:
+cloud:
+conversation:
+counter:
+dhcp:
+energy:
+frontend:
+hardware:
+history:
+homeassistant_alerts:
+input_boolean:
+input_button:
+input_datetime:
+input_number:
+input_select:
+input_text:
+logbook:
+logger:
+map:
+media_source:
+mobile_app:
+my:
+network:
+person:
+schedule:
+ssdp:
+sun:
+system_health:
+tag:
+timer:
+usb:
+webhook:
+zeroconf:
+zone:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml  
