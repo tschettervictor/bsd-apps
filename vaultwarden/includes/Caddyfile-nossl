@@ -1,0 +1,9 @@
+yourhostnamehere:80 {
+
+	reverse_proxy * localhost:4567
+  
+	log {
+		output file /var/log/yourhostnamehere.log
+	}
+	
+}
