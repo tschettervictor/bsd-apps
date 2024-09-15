@@ -15,6 +15,7 @@ chmod +x heimdall-install.sh
 
 PHP_VERSION
   - php version to use (currently defaults to 83)
+
 APP_VERSION
   - Heimdall version to use (currently defaults to 2.6.1)
 
