@@ -1,0 +1,22 @@
+:80 {
+
+	root * /usr/local/www/zenphoto
+	file_server
+
+	php_fastcgi 127.0.0.1:9000   
+  
+	log {
+		output file /var/log/zenphoto.log
+	}
+
+	@forbidden {
+		path /.htaccess
+		path *.cfg
+		path *.log
+		path *.zdb
+		path *.xxx
+	}
+
+	respond @forbidden 404
+
+}
