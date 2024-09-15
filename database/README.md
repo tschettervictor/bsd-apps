@@ -15,13 +15,13 @@ chmod +x database-install.sh
 
 ## Variables
 
-MARIADB=0
+MARIADB
   - set to 1 to install MariaDB database
 
-MYSQL=0
+MYSQL
   - set to 1 to install MySQL database
 
-POSTGRESQL=0
+POSTGRESQL
   - set to 1 to install PGSQL database
 
 MARIADB_VERSION
@@ -30,13 +30,13 @@ MARIADB_VERSION
 MYSQL_VERSION
   - mysql version to use (currently defaults to 81)
 
-PGSQL_VERSION="15"
+PGSQL_VERSION
   - postgres version to use (currently defaults to 15)
 
-DB_NAME=""
+DB_NAME
   - set your desired database name
 
-DB_USER=""
+DB_USER
   - set your desired database user
 
 ## Mount points (should be mounted outside the jail)
