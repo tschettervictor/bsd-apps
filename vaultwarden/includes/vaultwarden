@@ -16,7 +16,7 @@ export ROCKET_PORT
 SIGNUPS_ALLOWED='false'
 export SIGNUPS_ALLOWED
 
-DOMAIN=yourhostnamehere
+DOMAIN='yourhostnamehere'
 export DOMAIN
 
 ADMIN_TOKEN=youradmintokenhere # generate one with ~$ openssl rand -base64 48
