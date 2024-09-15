@@ -21,4 +21,4 @@ chmod +x jellyfin-server-install.sh
   - not tested with or without mount points
 
 ## Jail Properties
-  - none
+  - allow_mlock=1
