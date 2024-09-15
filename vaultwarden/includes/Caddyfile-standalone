@@ -1,0 +1,14 @@
+{
+	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+	email youremailhere
+}
+
+yourhostnamehere {
+
+	reverse_proxy * localhost:4567
+  
+	log {
+		output file /var/log/yourhostnamehere.log
+	}
+
+}
