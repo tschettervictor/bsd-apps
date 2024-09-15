@@ -1,0 +1,14 @@
+{
+	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+	email youremailhere
+}
+
+yourhostnamehere {
+
+	respond "Hello, world!"
+  
+	log {
+		output file /var/log/yourhostnamehere.log
+	}
+
+}
