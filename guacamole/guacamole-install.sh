@@ -66,7 +66,7 @@ if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall, but database passwords will still be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-  fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/apache-guacamole/includes/my.cnf
+  fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/guacamole/includes/my.cnf
   sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
@@ -80,7 +80,7 @@ else
 		mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 		mysql -u root -e "FLUSH PRIVILEGES;"
 		mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-		fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/apache-guacamole/includes/my.cnf
+		fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/guacamole/includes/my.cnf
 		sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 		cat /tmp/guacamole-auth-jdbc-*/mysql/schema/*.sql | mysql -u root -p"${DB_ROOT_PASSWORD}" ${DB_NAME}
 fi
