@@ -23,7 +23,7 @@ MARIADB_VERSION
   - mariadb version to use (currently defaults to 106)
 
 ZP_VERSION
-  - Zenphoto version to use (currently defaults to 1.6.1)
+  - Zenphoto version to use (currently defaults to 1.6.4)
 
 ## Mount points (should be mounted outside the jail)
   - `/usr/local/www/zenphoto` - data directory
