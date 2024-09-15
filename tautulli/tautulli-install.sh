@@ -1,6 +1,8 @@
 #!/bin/sh
 # Install Tautulli
 
+PYTHON_VERSION="39"
+
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges"
