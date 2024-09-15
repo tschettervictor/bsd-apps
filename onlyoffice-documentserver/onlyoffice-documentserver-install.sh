@@ -22,7 +22,7 @@ pkg install -y onlyoffice-documentserver postgresql"${PG_VERSION}"-server postgr
 
 # Create and configure database
 sysrc postgresql_enable="YES"
-fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/onlyoffice-documentserver/pgpass
+fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/onlyoffice-documentserver/includes/pgpass
 chmod 600 /root/.pgpass
 mkdir -p /var/db/postgres
 chown postgres /var/db/postgres/
