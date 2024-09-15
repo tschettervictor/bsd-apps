@@ -68,9 +68,9 @@ mkdir -p /usr/local/etc/rc.conf.d
 # Fetch and Edit Vaultwarden File
 fetch -o /usr/local/etc/rc.conf.d/vaultwarden https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/vaultwarden/includes/vaultwarden
 if [ $NO_CERT -eq 1 ]; then
-	sed -i '' "s/yourhostnamehere/http://${HOST_NAME}/" /usr/local/etc/rc.conf.d/vaultwarden
+	sed -i '' "s|yourhostnamehere|http://${HOST_NAME}|" /usr/local/etc/rc.conf.d/vaultwarden
 else
-	sed -i '' "s/yourhostnamehere/https://${HOST_NAME}/" /usr/local/etc/rc.conf.d/vaultwarden
+	sed -i '' "s|yourhostnamehere|https://${HOST_NAME}|" /usr/local/etc/rc.conf.d/vaultwarden
 fi
 
 # Generate Secure Token/Hash Using argon2
