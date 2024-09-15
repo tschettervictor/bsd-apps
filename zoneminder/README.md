@@ -11,15 +11,16 @@ Don't forget to
 chmod +x zoneminder-install.sh
 ```
 
+## Install Notes
+  - Zoneminder has not been tested to see which mount points need to persist if a jail needs to be rebuilt
+
 ## Variables
 
 MYSQL_VERSION
   - MYSQL database version to use (currently defaults to 80)
 
 ## Mount points (should be mounted outside the jail)
-  - zoneminder has not been configured for mount points
-  - only jailed install is supported at this time
-  - please back up needed data befor destroying your zoneminder jail
+  - none
 
 ## Jail Properties
   - none
