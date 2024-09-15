@@ -24,11 +24,7 @@ chmod +x /usr/local/games/minecraft/*.sh
 chmod +x /usr/local/games/minecraft/*.js
 /usr/local/games/minecraft/generate-sslcert.sh
 cp /usr/local/games/minecraft/mineos.conf /etc/mineos.conf
-if ! "cd /usr/local/games/minecraft && yarn add jsegaert/node-userid && npm install"
-	then
-	echo "Failed to install MineOS."
- 	exit 1
-fi
+cd /usr/local/games/minecraft && yarn add jsegaert/node-userid && npm install
 sed -i '' "s/^use_https.*/use_https = false/" /etc/mineos.conf
 pw useradd -n mineos -u 8443 -G games -d /nonexistent -s /usr/local/bin/bash -h 0 <<EOF
 mineos
