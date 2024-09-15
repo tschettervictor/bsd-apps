@@ -34,8 +34,8 @@ mkdir -p /usr/local/www/zenphoto
 sysrc mysql_enable="YES"
 service mysql-server start
 if [ "${REINSTALL}" == "true" ]; then
-	echo "You did a reinstall, please use your old database credentials."
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zenphoto/includes/my.cnf
+  echo "You did a reinstall, please use your old database credentials."
+  fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zenphoto/includes/my.cnf
   sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
