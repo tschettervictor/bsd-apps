@@ -60,7 +60,7 @@ tar xjf /tmp/"${FILE}" -C /tmp/
 if [ "${REINSTALL}" == "true" ]; then
   rm -R /usr/local/www/zenphoto/zp-core
   cp -R -f /tmp/zenphoto-"${ZP_VERSION}"/zp-core /usr/local/www/zenphoto/
-  mv -R /usr/local/www/zenphoto/themes /usr/local/www/zenphoto/themes.bak
+  cp -R /usr/local/www/zenphoto/themes /usr/local/www/zenphoto/themes.bak
   rm -R /usr/local/www/zenphoto/themes
   cp -R -f /tmp/zenphoto-"${ZP_VERSION}"/themes /usr/local/www/zenphoto/themes
   cp -f /tmp/zenphoto-"${ZP_VERSION}"/index.php /usr/local/www/zenphoto/index.php
