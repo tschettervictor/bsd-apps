@@ -13,7 +13,7 @@ chmod +x nextcloud-install.sh
 
 ## Variables
 
-These are the variable that are available to change along with their defaults and a description of what it does.
+These are the variables that are available to change along with their defaults and a description of what they do.
 
 HOST_NAME (sets the hostname to use for the webserver) - must be set to your FQDN ie: my.domain.com
 
@@ -31,7 +31,7 @@ COUNTRY_CODE (2 letter ISO code for your country, currently defaults to CA)
 
 Caddy is a webserver that can do automatic TLS and HTTPS for you. You should enable one AND ONLY ONE of the following 4 CERT confiurations to tell the script how you want Caddy to work.
 
-  - NO_CERT (default, no certificate will be created, http access)
+  - NO_CERT (no certificate will be created, http access)
   - STANDALONE_CERT (fully working cert, must own a domain, and have ports 80 and 443 forwarded to your jail)
   - SELFSIGNED_CERT (generates a self-signed cert for use with https)
   - DNS_CERT
@@ -41,7 +41,7 @@ Caddy is a webserver that can do automatic TLS and HTTPS for you. You should ena
   - DNS_PLUGIN (set this to a supported DNS plugin, see caddy docs for details) -only used with DNS_CERT
   - DNS_TOKEN (must have "Zone / Zone / Read" and "Zone / DNS / Edit" permissions on the domain you are using with Caddy) - only used with DNS_CERT  
   - CERT_EMAIL (your email to receive cert expiry) - used with DNS_CERT and STANDALONE_CERT
-  - If you do use any type of certificate with a domain, Caddy will obtain a stagin certificate to no excede rate limits. Once you have confirmed things are working, remove the "#" from the "#acme_ca" line at the top of the Caddyfile, located at `/usr/local/www/Caddyfile` and reload caddy by `service caddy reload` This will then obtain a trusdted certificate for you.
+  - If you do use any type of certificate with a domain, Caddy will obtain a staging certificate to not excede rate limits. Once you have confirmed things are working, run the script at `/root/remove-staging.sh` to aquire a valid certificate.
 
 All of the above variable should be changed to fit your environment. For more detailed documentation, see https://github.com/danb35/freenas-iocage-nextcloud
 
