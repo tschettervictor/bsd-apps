@@ -7,20 +7,19 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+APP_NAME="nextcloud"
 HOST_NAME=""
 TIME_ZONE=""
 STANDALONE_CERT=0
 SELFSIGNED_CERT=0
 DNS_CERT=0
-NO_CERT=1
+NO_CERT=0
 DNS_PLUGIN=""
 CERT_EMAIL=""
 DATABASE="mariadb"
 NEXTCLOUD_VERSION="29"
 PHP_VERSION="83"
 COUNTRY_CODE="CA"
-
-APP_NAME="nextcloud"
 MX_WINDOW="5"
 ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
@@ -32,7 +31,7 @@ elif [ ${DATABASE} = "pgsql" ]; then
 	DB_PATH="/var/db/postgres"
 fi
 
-# Sanity Checks
+# Variable Checks
 if [ -z "${TIME_ZONE}" ]; then
   echo 'Configuration error: TIME_ZONE must be set'
   exit 1
@@ -51,7 +50,6 @@ if [ $STANDALONE_CERT -eq 1 ] && [ $DNS_CERT -eq 1 ] ; then
   echo 'may be set to 1.'
   exit 1
 fi
-
 if [ $DNS_CERT -eq 1 ] && [ -z "${DNS_PLUGIN}" ] ; then
   echo "DNS_PLUGIN must be set to a supported DNS provider."
   echo "See https://caddyserver.com/download for available plugins."
@@ -59,12 +57,10 @@ if [ $DNS_CERT -eq 1 ] && [ -z "${DNS_PLUGIN}" ] ; then
   echo "\"github.com/caddy-dns/cloudflare\", enter \"coudflare\"."
   exit 1
 fi
-
 if [ $DNS_CERT -eq 1 ] && [ "${CERT_EMAIL}" = "" ] ; then
   echo "CERT_EMAIL must be set when using Let's Encrypt certs."
   exit 1
 fi
-
 if [ $STANDALONE_CERT -eq 1 ] && [ "${CERT_EMAIL}" = "" ] ; then
   echo "CERT_EMAIL must be set when using Let's Encrypt certs."
   exit 1
@@ -143,16 +139,16 @@ if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
   chmod +x /root/remove-staging.sh
 fi
 if [ $NO_CERT -eq 1 ]; then
-  echo "Copying Caddyfile for no SSL"
+  echo "Fetching Caddyfile for no SSL"
   fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/Caddyfile-nossl
 elif [ $SELFSIGNED_CERT -eq 1 ]; then
-  echo "Copying Caddyfile for self-signed cert"
+  echo "Fetching Caddyfile for self-signed cert"
   fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/Caddyfile-selfsigned
 elif [ $DNS_CERT -eq 1 ]; then
-  echo "Copying Caddyfile for Let's Encrypt DNS cert"
+  echo "Fetching Caddyfile for Let's Encrypt DNS cert"
   fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/Caddyfile-dns
 else
-  echo "Copying Caddyfile for Let's Encrypt cert"
+  echo "Fetching Caddyfile for Let's Encrypt cert"
   fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/Caddyfile
 fi
 fetch -o /usr/local/etc/rc.d/caddy https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/caddy
@@ -206,12 +202,7 @@ sysrc redis_enable="YES"
 service redis start
 chmod 777 /var/run/redis/redis.sock
 
-#####
-#
 # Configure Database and Install Nextcloud
-#
-####
-
 # Enable and start services
 if [ "${DATABASE}" = "mariadb" ]; then
   sysrc mysql_enable="YES"
@@ -324,17 +315,17 @@ echo "${DB_NAME} root password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}_db_pa
 echo "Nextcloud database password is ${DB_PASSWORD}" >> /root/${APP_NAME}_db_password.txt
 echo "Nextcloud Administrator password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}_db_password.txt
 
+echo "---------------"
 echo "Installation complete!"
+echo "---------------"
 if [ $NO_CERT -eq 1 ]; then
   echo "Using your web browser, go to http://${HOST_NAME} to log in"
 else
   echo "Using your web browser, go to https://${HOST_NAME} to log in"
 fi
-
 if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall, please use your old database and account credentials"
 else
-
 	echo "Default user is admin, password is ${ADMIN_PASSWORD}"
 	echo ""
 	echo "Database Information"
@@ -345,8 +336,7 @@ else
 	echo ""
 	echo "All passwords are saved in /root/${APP_NAME}_db_password.txt"
 fi
-
-echo ""
+echo "---------------"
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
   echo "You have obtained your Let's Encrypt certificate using the staging server."
   echo "This certificate will not be trusted by your browser and will cause SSL errors"
