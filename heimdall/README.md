@@ -17,7 +17,7 @@ PHP_VERSION
   - php version to use (currently defaults to 83)
 APP_VERSION
   - Heimdall version to use (currently defaults to 2.6.1)
-  - 
+
 ## Mount points (should be mounted outside the jail)
   - `/usr/local/www` - html directory
 
