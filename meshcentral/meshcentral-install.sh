@@ -24,7 +24,7 @@ pw user add meshcentral -c meshcentral -u 6374 -s /usr/sbin/nologin -d /home/mes
 cd /usr/local/meshcentral && npm install meshcentral
 chown -R meshcentral:meshcentral /usr/local/meshcentral
 chown -R meshcentral:meshcentral /var/run/meshcentral
-fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/meshcentral/usr/local/etc/rc.d/meshcentral
+fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/meshcentral/includes/meshcentral
 chmod +x /usr/local/etc/rc.d/meshcentral
 
 # Enable and start services
