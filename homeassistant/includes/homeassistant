@@ -1,0 +1,318 @@
+#!/bin/sh
+#
+# PROVIDE: homeassistant
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+#
+# VERSION: 20220713
+#
+# homeassistant_enable: Enable the Home Assistant Core service.
+#       Default: "NO"
+#       Enable:  sysrc homeassistant_enable="YES"
+#       Reset:   sysrc -x homeassistant_enable
+#
+# homeassistant_user: The user account used to run the homeassistant daemon.
+#       Default:  "homeassistant"
+#
+# homeassistant_group: The group account used to run the homeassistant daemon.
+#       Default:  The primary group of the ${homeassistant_user}
+#
+# homeassistant_user_dir: Path to directory, where ".cache/pip" will be located. This may also be the
+#       location for the user's files and ${homeassistant_config_dir}.
+#       Default:  The HOME directory for the ${homeassistant_user}
+#       Alternate:  If HOME is not set or does not exist -- ${homeassistant_venv}
+#
+# homeassistant_config_dir: Path to directory, where the Home Assistant "configuration.yaml" is located.
+#       Default:  ${homeassistant_user_dir}/.homeassistant"
+#       Alternate: If HOME is not set or does not exist -- "/usr/local/etc/homeassistant"
+#
+# homeassistant_venv: Path to directory, where the Home Assistant Core virtualenv is located or will be created.
+#       https://github.com/home-assistant/architecture/blob/master/adr/0016-home-assistant-core.md
+#       Default:  "/usr/local/share/homeassistant"
+#
+# homeassistant_python: Set a supported version of Python to be used when creating the virtualenv for Home Assistant Core.
+#       https://github.com/home-assistant/architecture/blob/master/adr/0016-home-assistant-core.md#supported-python-versions
+#       After changing the Python version, you must recreate the virtualenv for the updated version to take effect.
+#       Default:  "NOT_SET"
+#
+
+name=homeassistant
+rcvar=${name}_enable
+
+. /etc/rc.subr && load_rc_config ${name}
+
+: "${homeassistant_enable:="NO"}"
+: "${homeassistant_rc_debug:="NO"}"
+: "${homeassistant_user:="homeassistant"}"
+: "${homeassistant_python:="NOT_SET"}"
+: "${homeassistant_venv:="/usr/local/share/homeassistant"}"
+: "${homeassistant_safe_mode:="NO"}"
+: "${homeassistant_debug:="NO"}"
+: "${homeassistant_skip_pip:="NO"}"
+: "${homeassistant_verbose:="NO"}"
+: "${homeassistant_color_log:="YES"}"
+: "${homeassistant_restart_delay:=1}"
+
+if [ ! "$(id ${homeassistant_user} 2>/dev/null)" ]; then
+  err 1 "user not found: ${homeassistant_user}"
+else
+  : "${homeassistant_group:="$(id -gn ${homeassistant_user})"}"
+  HOME="$(getent passwd "${homeassistant_user}" | cut -d: -f6)"
+fi
+
+if [ -z "${HOME}" ] || [ ! -d "${HOME}" ] || [ "${HOME}" == "/nonexistent" ] || [ "${HOME}" == "/var/empty" ]; then
+  : "${homeassistant_config_dir:="/usr/local/etc/${name}"}"
+  : "${homeassistant_user_dir:="${homeassistant_venv}"}"
+  export HOME="${homeassistant_user_dir}"
+else
+  : "${homeassistant_user_dir:="${HOME}"}"
+  : "${homeassistant_config_dir:="${homeassistant_user_dir}/.${name}"}"
+fi
+
+[ -n "${homeassistant_cpath:-}" ] && export CPATH="${homeassistant_cpath}"
+[ -n "${homeassistant_library_path:-}" ] && export LIBRARY_PATH="${homeassistant_library_path}"
+[ -n "${homeassistant_path:-}" ] && export PATH="${homeassistant_path}"
+
+umask "${homeassistant_umask:-022}"
+
+logfile="/var/log/${name}_daemon.log"
+pidfile="/var/run/${name}_daemon.pid"
+pidfile_child="/var/run/${name}.pid"
+
+command="/usr/sbin/daemon"
+extra_commands="check_config ensure_config upgrade install reinstall logs script test"
+
+homeassistant_precmd() {
+  local _srv_ _own_ _msg_
+  local _venv_="${homeassistant_venv}"
+  local _user_="${homeassistant_user}"
+  if [ ! -d "${_venv_}" ]; then
+    _msg_="${_venv_} not found"
+  elif [ ! -f "${_venv_}/bin/activate" ]; then
+    _msg_="${_venv_}/bin/activate is not found"
+  elif [ ! -x "${_srv_:="${_venv_}/bin/hass"}" ]; then
+    _msg_="${_srv_} is not found or is not executable"
+  elif [ "${_own_:="$(stat -f '%Su' ${_srv_})"}" != ${_user_} ]; then
+    warn "${_srv_} is not owned by ${_user_}"
+    _msg_="${_srv_} is currently owned by ${_own_}"
+  else
+    HA_CMD="${_srv_}"
+    cd "${_venv_}" || err 1 "cd ${_venv_}"
+    return 0
+  fi
+  err 1 "${_msg_}"
+}
+
+
+start_precmd=${name}_prestart
+homeassistant_prestart() {
+
+  homeassistant_precmd \
+  && install -g "${homeassistant_group}" -m 664 -o ${homeassistant_user} -- /dev/null "${logfile}" \
+  && install -g "${homeassistant_group}" -m 664 -o ${homeassistant_user} -- /dev/null "${pidfile}" \
+  && install -g "${homeassistant_group}" -m 664 -o ${homeassistant_user} -- /dev/null "${pidfile_child}" \
+  || return 1
+
+  homeassistant_ensure_config "${homeassistant_config_dir}"
+  HA_ARGS="--ignore-os-check --config ${homeassistant_config_dir}"
+
+  if [ -n "${homeassistant_log_file:-}" ]; then
+    install -g "${homeassistant_group}" -m 664 -o ${homeassistant_user} -- /dev/null "${homeassistant_log_file}" \
+    && HA_ARGS="${HA_ARGS} --log-file ${homeassistant_log_file}"
+  fi
+
+  if [ -n "${homeassistant_log_rotate_days:-}" ]; then
+    HA_ARGS="${HA_ARGS} --log-rotate-days ${homeassistant_log_rotate_days}"
+  fi
+
+  checkyesno homeassistant_color_log || HA_ARGS="${HA_ARGS} --log-no-color"
+  checkyesno homeassistant_debug && HA_ARGS="${HA_ARGS} --debug"
+  checkyesno homeassistant_safe_mode && HA_ARGS="${HA_ARGS} --safe_mode"
+  checkyesno homeassistant_skip_pip && HA_ARGS="${HA_ARGS} --skip_pip"
+  checkyesno homeassistant_verbose && HA_ARGS="${HA_ARGS} --verbose"
+
+  rc_flags="-f -o ${logfile} -P ${pidfile} -p ${pidfile_child} -R ${homeassistant_restart_delay} ${HA_CMD} ${HA_ARGS}"
+}
+
+start_postcmd=${name}_poststart
+homeassistant_poststart() {
+  sleep 1 ; run_rc_command status
+}
+
+restart_precmd="${name}_prerestart"
+homeassistant_prerestart() {
+  homeassistant_check_config "${homeassistant_config_dir}"
+}
+
+stop_precmd=${name}_prestop
+homeassistant_prestop() {
+  local _owner_
+  # shellcheck disable=SC2154
+  if [ -n "${rc_pid}" ] && [ "${_owner_:="$(stat -f '%Su' ${pidfile_child})"}" != ${homeassistant_user} ]; then
+    err 1 "${homeassistant_user} can not stop a process owned by ${_owner_}"
+  fi
+}
+
+stop_postcmd=${name}_poststop
+homeassistant_poststop() {
+  rm -f -- "${pidfile_child}"
+  rm -f -- "${pidfile}"
+}
+
+status_cmd=${name}_status
+homeassistant_status() {
+  local _http_ _ip_
+  if [ -n "${rc_pid}" ]; then
+    : "${homeassistant_secure:="NO"}" # This is only a cosmetic variable - used by the status_cmd
+    _ip_="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
+    checkyesno homeassistant_secure && _http_="https" || _http_="http"
+    echo "${name} is running as pid ${rc_pid}."
+    echo "${_http_}://${_ip_}:${homeassistant_port:-"8123"}"  # This is only a cosmetic variable
+  else
+    echo "${name} is not running."
+    return 1
+  fi
+}
+
+check_config_cmd="${name}_check_config ${1} ${2}"
+homeassistant_check_config() {
+  [ "${1}" == "check_config" ] || [ "${1}" == "onecheck_config" ] && shift
+  homeassistant_script check_config --config "${1:-"${homeassistant_config_dir}"}"
+}
+
+ensure_config_cmd="${name}_ensure_config ${1} ${2}"
+homeassistant_ensure_config() {
+  [ "${1}" == "ensure_config" ] || [ "${1}" == "oneensure_config" ] && shift
+  local _config_dir_="${1:-"${homeassistant_config_dir}"}"
+  debug "config_dir: ${_config_dir_}"
+  if [ ! -d "${_config_dir_}" ]; then
+    install -d -g "${homeassistant_group}" -m 775 -o ${homeassistant_user} -- "${_config_dir_}" \
+    || err 1 "unable to create directory: ${_config_dir_}"
+  fi
+  homeassistant_script ensure_config --config "${_config_dir_}"
+}
+
+script_cmd="${name}_script ${*}"
+homeassistant_script() {
+  [ "${1}" == "script" ] || [ "${1}" == "onescript" ] && shift
+  local _action_="${1}" ; shift
+  local _args_="${*}"
+  homeassistant_precmd
+  # shellcheck disable=SC2016
+  su - ${homeassistant_user} -c '
+    source ${1}/bin/activate || exit 1
+    hass --script ${2} ${3}
+    deactivate
+  ' _ ${homeassistant_venv} "${_action_}" "${_args_}"
+}
+
+logs_cmd="${name}_logs ${*}"
+homeassistant_logs() {
+  case "${2}" in
+    -f )
+      tail -F "${logfile}" ;;
+    -h )
+      head -n "${3:-"100"}" "${logfile}" ;;
+    -n | -t )
+      tail -n "${3:-"100"}" "${logfile}" ;;
+    -l )
+      less -R "${logfile}" ;;
+    * )
+      cat "${logfile}" ;;
+  esac
+}
+
+upgrade_cmd="${name}_upgrade"
+homeassistant_upgrade() {
+  homeassistant_precmd
+  run_rc_command stop 2>/dev/null ; local _rcstop_=${?}
+  homeassistant_install --upgrade "${name}"
+  homeassistant_check_config && [ ${_rcstop_} == 0 ] && run_rc_command start
+}
+
+install_cmd="${name}_install ${*}"
+homeassistant_install() {
+  [ "${1}" == "install" ] || [ "${1}" == "oneinstall" ] && shift
+  local _create_ _arg_
+  _arg_="${*:-"${name}"}"
+  debug "install: ${_arg_}"
+  if [ "${1}" == "${name}" ] && { [ ! -d "${homeassistant_venv}" ] || [ ! "$(ls -A ${homeassistant_venv})" ]; }; then
+    debug "creating virtualenv: ${homeassistant_venv}"
+    install -d -g "${homeassistant_group}" -m 775 -o ${homeassistant_user} -- ${homeassistant_venv} \
+    || err 1 "failed to create directory: ${homeassistant_venv}"
+    _create_="YES"
+  elif [ -d "${homeassistant_venv}" ]; then
+    debug "found existing directory: ${homeassistant_venv}"
+    homeassistant_precmd
+  else
+    echo "failed to install: ${_arg_}"
+    err 1 "${name} is not installed: ${homeassistant_venv}"
+  fi
+  # shellcheck disable=SC2016
+  su - ${homeassistant_user} -c '
+    if [ ${1} == "YES" ]; then
+      ${2} -m venv ${3}
+      source ${3}/bin/activate || exit 1
+      shift 3
+      pip3 install --upgrade pip
+      pip3 install --upgrade wheel numpy
+      pip3 install ${@}
+    else
+      source ${3}/bin/activate || exit 1
+      shift 3
+      pip install ${@}
+    fi
+    deactivate
+  ' _ ${_create_:-"NO"} ${homeassistant_python} ${homeassistant_venv} "${_arg_}" || err 1 "install function failed"
+}
+
+reinstall_cmd="${name}_reinstall ${*}"
+homeassistant_reinstall() {
+  [ "${1}" == "reinstall" ] || [ "${1}" == "onereinstall" ] && shift
+  local _ans1_ _ans2_ _rcstop_ _version_ _arg_
+  homeassistant_precmd
+  if [ "${1%==*}" == "${name}" ]; then
+    _arg_="${*}"
+  elif [ -z "${_arg_}" ]; then
+    if [ -n "${_version_:=$(cat ${homeassistant_config_dir}/.HA_VERSION 2>/dev/null)}" ]; then
+      _arg_="${name}==${_version_}"
+    else
+      _arg_="${name}"
+    fi
+  else
+    warn "expecting ${name} to be listed first"
+    err 1 "check args: ${*}"
+  fi
+  echo -e "\n${orn}You are about to recreate the virtualenv:${end}\n  ${homeassistant_venv}\n"
+  echo -e "${orn}The following package(s) will be installed:${end}\n  ${_arg_}\n"
+  read -rp " Type 'YES' to continue: " _ans1_
+  run_rc_command stop 2>/dev/null ; _rcstop_=${?}
+  cd / ; rm -r -- "${homeassistant_venv}" || err 1 "failed to remove ${homeassistant_venv}"
+  { homeassistant_install ${_arg_} ; homeassistant_check_config ; } \
+  && [ ${_rcstop_} == 0 ] && run_rc_command start
+}
+
+test_cmd="${name}_test"
+homeassistant_test() {
+  echo -e "\nTesting virtualenv...\n"
+  homeassistant_precmd
+  ## Switch users / activate virtualenv / run a command
+  # shellcheck disable=SC2016
+  su "${homeassistant_user}" -c '
+    echo -e "  $(pwd)\n"
+    source ${1}/bin/activate
+    echo "  $(python --version)"
+    echo "  Home Assistant $(pip show homeassistant | grep Version | cut -d" " -f2)"
+    deactivate
+  ' _ ${homeassistant_venv}
+  echo
+}
+
+colors () {
+  export red=$'\e[1;31m'
+  export orn=$'\e[38;5;208m'
+  export end=$'\e[0m'
+} ; colors
+
+checkyesno homeassistant_rc_debug && rc_debug="ON"
+run_rc_command "${1}"
