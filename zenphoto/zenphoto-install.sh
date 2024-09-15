@@ -91,10 +91,10 @@ sysrc php_fpm_enable="YES"
 service caddy start
 service php-fpm start
 
-
 echo "---------------"
 echo "Installation complete."
 echo "Zenphoto is running on port 80"
+echo "Vistit /zp-core/setup.php to begin your Zenphoto setup"
 echo "---------------"
 if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall, please user your old credentials to log in."
