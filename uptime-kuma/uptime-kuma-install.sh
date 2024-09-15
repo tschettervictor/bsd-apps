@@ -24,7 +24,7 @@ npm install npm -g
 cd /usr/local/ && git clone https://github.com/louislam/uptime-kuma.git
 cd /usr/local/uptime-kuma && npm run setup
 sed -i '' "s|console.log(\"Welcome to Uptime Kuma\");|process.chdir('/usr/local/uptime-kuma');\n&|" /usr/local/uptime-kuma/server/server.js
-fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/usr/local/etc/rc.d/uptimekuma
+fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/includes/uptimekuma
 chmod +x /usr/local/etc/rc.d/uptimekuma
 
 # Change directory ownership
