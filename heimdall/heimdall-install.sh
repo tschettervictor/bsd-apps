@@ -1,7 +1,6 @@
 #!/bin/sh
 # Install Heimdall Dashboard
 
-APP_NAME="heimdall"
 APP_VERSION="2.6.1"
 PHP_VERSION="83"
 
