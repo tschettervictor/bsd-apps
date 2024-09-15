@@ -10,12 +10,12 @@ These scripts are designed to work inside any jail manager or FreeBSD host syste
   2. Read the insructions in each apps README file to see
      - which jail properties need to be set, if any
      - which directories need to be mounted, if you so choose
-     - which variables nedd to be set, if any
+     - which variables need to be set, if any
   3. Mount your directories and set your properties and variables as needed
      - the variables are set at the top of the app script
   4. Start the jail, fetch the script, and run it
 
-It is not necessary to do any mounting if you choose not to. It just makes it easy to rebuild jails if the needs comes up.
+It is not necessary to do any mounting if you choose not to. It just makes it easy to rebuild jails if the need comes up.
 All jail managers have a way to set jail properties and mount directories. Check documentation.
 
 # Tips
@@ -41,7 +41,7 @@ This enables me to mount the corresponding directories into the jail, and keep t
 
 All of the scripts are designed to work with mount points. Every bit of data that is necessary for a reinstall is included in each apps mount point README file. This means that jails can be destroyed and rebuilt without losing data.
 
-If you do not want to use mount points, the script will install the apps and their data inside the jail and everyting will work normally. But be warned, when you destroy the jail, the data inside it will be lost.
+If you do not want to use mount points, the script will install the apps and their data inside the jail and everything will work normally. But be warned, when you destroy the jail, the data inside it will be lost.
 
 Mount points make it easy to destroy and recreate jails without losing data. Each application has a list of mount points that must be mounted if you choose to store all the data outside the jail. These scripts have all been tested by doing an initial install, then a reinstall. If the data is mounted into the jail on a reinstall, the script will skip certain steps to prevent data from being overwritten.
 
