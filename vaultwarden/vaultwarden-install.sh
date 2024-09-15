@@ -157,7 +157,7 @@ if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
   echo "This certificate will not be trusted by your browser and will cause SSL errors"
   echo "when you connect.  Once you've verified that everything else is working"
   echo "correctly, you should issue a trusted certificate.  To do this, run:"
-  echo "  iocage exec ${JAIL_NAME} /root/remove-staging.sh"
+  echo "/root/remove-staging.sh"
   echo ""
 elif [ $SELFSIGNED_CERT -eq 1 ]; then
   echo "You have chosen to create a self-signed TLS certificate for your installation."
