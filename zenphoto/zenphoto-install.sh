@@ -7,7 +7,7 @@ DB_NAME="zenphoto"
 DB_USER="zenphoto"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
-ZP_VERSION="1.6.1"
+ZP_VERSION="1.6.4"
 MARIADB_VERSION="106"
 PHP_VERSION="83"
 
@@ -58,25 +58,25 @@ FILE="v${ZP_VERSION}.tar.gz"
 fetch -o /tmp https://github.com/zenphoto/zenphoto/archive/"${FILE}"
 tar xjf /tmp/"${FILE}" -C /tmp/
 if [ "${REINSTALL}" == "true" ]; then
-	rm -R /usr/local/www/zenphoto/zp-core
-	cp -R -f /tmp/zenphoto-"${ZP_VERSION}"/zp-core /usr/local/www/zenphoto/
- 	mv -R /usr/local/www/zenphoto/themes /usr/local/www/zenphoto/themes.bak
+  rm -R /usr/local/www/zenphoto/zp-core
+  cp -R -f /tmp/zenphoto-"${ZP_VERSION}"/zp-core /usr/local/www/zenphoto/
+  mv -R /usr/local/www/zenphoto/themes /usr/local/www/zenphoto/themes.bak
   rm -R /usr/local/www/zenphoto/themes
   cp -R -f /tmp/zenphoto-"${ZP_VERSION}"/themes /usr/local/www/zenphoto/themes
- 	cp -f /tmp/zenphoto-"${ZP_VERSION}"/index.php /usr/local/www/zenphoto/index.php
+  cp -f /tmp/zenphoto-"${ZP_VERSION}"/index.php /usr/local/www/zenphoto/index.php
   chown -R www:www /usr/local/www/zenphoto
- 	rm -R /tmp/"${FILE}" /tmp/zenphoto-"${ZP_VERSION}"
+  rm -R /tmp/"${FILE}" /tmp/zenphoto-"${ZP_VERSION}"
 else
-	cp -r -f /tmp/zenphoto-"${ZP_VERSION}"/ /usr/local/www/zenphoto/
-	rm -R /tmp/"${FILE}" /tmp/zenphoto-"${ZP_VERSION}"
+  cp -r -f /tmp/zenphoto-"${ZP_VERSION}"/ /usr/local/www/zenphoto/
+  rm -R /tmp/"${FILE}" /tmp/zenphoto-"${ZP_VERSION}"
   fetch -o /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php.bak https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zenphoto/includes/zenphoto.cfg.php
-	cp -f /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php.bak /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
-	sed -i '' "s/zenphoto_db_user/${DB_USER}/" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
-	sed -i '' "s|zenphoto_db_pass|${DB_PASSWORD}|" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
-	sed -i '' "s|zenphoto_db_socket|/var/run/mysql/mysql.sock|" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
-	sed -i '' "s/zenphoto_db/${DB_NAME}/" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
-	touch /usr/local/www/zenphoto/zp-data/charset_tést
-	chown -R www:www /usr/local/www/zenphoto
+  cp -f /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php.bak /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
+  sed -i '' "s/zenphoto_db_user/${DB_USER}/" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
+  sed -i '' "s|zenphoto_db_pass|${DB_PASSWORD}|" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
+  sed -i '' "s|zenphoto_db_socket|/var/run/mysql/mysql.sock|" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
+  sed -i '' "s/zenphoto_db/${DB_NAME}/" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
+  touch /usr/local/www/zenphoto/zp-data/charset_tést
+  chown -R www:www /usr/local/www/zenphoto
 fi
 fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zenphoto/includes/php.ini
 chown -R www:www /usr/local/etc/php.ini
