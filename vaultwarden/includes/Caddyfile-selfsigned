@@ -1,0 +1,11 @@
+yourhostnamehere {
+
+	reverse_proxy * localhost:4567
+  
+	log {
+		output file /var/log/yourhostnamehere.log
+	}
+
+	tls /usr/local/etc/pki/tls/certs/fullchain.pem /usr/local/etc/pki/tls/private/privkey.pem
+  
+}
