@@ -1,0 +1,9 @@
+yourhostnamehere:80 {
+
+	respond "Hello, world!"
+  
+	log {
+		output file /var/log/yourhostnamehere.log
+	}
+	
+}
