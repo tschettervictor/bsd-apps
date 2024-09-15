@@ -49,6 +49,12 @@ Mount points make it easy to destroy and recreate jails without losing data. Eac
 
 Some of the scripts have variables that should be set before running. These could include passwords, server values, and database names. Most will be set randomly, but some require user intervention. Each applications README file will let you know what to do.
 
+Variable that should be changed are listed on the README file of each app. Any variables that are not listed, should not be changed unless there is a really good reason to do so.
+
 ## Jail Properties
 
 Some applications require certain jail properties to be activated. You will have to do so with whichever jail manager you are using. They should all have a way to set jail properties.
+
+Examples
+  - `iocage fstab -a jailname /path/on/host /path/inside/jail nullfs rw 0 0`
+  - `bastille mount jailname /path/on/host /path/inside/jail nullfs rw 0 0`
