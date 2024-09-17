@@ -56,7 +56,7 @@ Variable that should be changed are listed on the README file of each app. Any v
 Some applications require certain jail properties to be activated. You will have to do so with whichever jail manager you are using. They should all have a way to set jail properties.
 
 ### Set Properties Examples
-  - `iocage set allow_sysvipc=1 jaliname`
+  - `iocage set allow_sysvipc=1 jailname`
   - `bastille config jailname set allow_sysvipc 1`
 
 ### Mount Examples
