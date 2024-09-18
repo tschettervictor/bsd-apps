@@ -262,6 +262,8 @@ homeassistant_install() {
       shift 3
       pip install ${@}
     fi
+    # workaround for numpy
+    pip3 install numpy==1.26.0
     deactivate
   ' _ ${_create_:-"NO"} ${homeassistant_python} ${homeassistant_venv} "${_arg_}" || err 1 "install function failed"
 }
