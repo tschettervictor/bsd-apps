@@ -37,4 +37,3 @@ echo "Installation complete!"
 echo "---------------"
 echo "It will take 5-10 minutes to fully start homeassistant the first time."
 echo "Please also allow some additional time to configure extra packages."
-fi
