@@ -2,6 +2,7 @@
 # Install Homeassistant Core
 
 PYTHON_VERSION="311"
+PYTHON_BINARY="3.11"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
@@ -24,7 +25,7 @@ pw adduser -u 8123 -n homeassistant -d /home/homeassistant -w no -s /usr/local/b
 chown -R homeassistant:homeassistant /home/homeassistant
 fetch -o /usr/local/etc/rc.d/homeassistant https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/homeassistant/includes/homeassistant
 chmod +x /usr/local/etc/rc.d/homeassistant
-sysrc homeassistant_python=/usr/local/bin/python${PYTHON_VERSION}
+sysrc homeassistant_python=/usr/local/bin/python${PYTHON_BINARY}
 sysrc homeassistant_venv=/usr/local/share/homeassistant
 sysrc homeassistant_user=homeassistant
 sysrc homeassistant_config_dir=/home/homeassistant/config
