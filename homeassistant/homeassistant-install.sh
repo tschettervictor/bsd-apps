@@ -11,7 +11,7 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y bash autoconf ca_root_nss curl ffmpeg gcc gmake libjpeg-turbo libxml2 libxslt pkgconf python${PYTHON_VERSION} py${PYTHON_VERSION}-numpy py${PYTHON_VERSION}-sqlite3 py${PYTHON_VERSION}-wheel py${PYTHON_VERSION}-setuptools py${PYTHON_VERSION}-installer rust sudo zlib-ng zip
+pkg install -y cmake git-lite bash autoconf ca_root_nss curl ffmpeg gcc gmake libjpeg-turbo libxml2 libxslt pkgconf python${PYTHON_VERSION} py${PYTHON_VERSION}-numpy py${PYTHON_VERSION}-sqlite3 py${PYTHON_VERSION}-wheel py${PYTHON_VERSION}-setuptools py${PYTHON_VERSION}-installer rust sudo zlib-ng zip
 
 # Create Directories
 mkdir -p /home/homeassistant/config
