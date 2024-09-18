@@ -1,6 +1,9 @@
 # Homeassistant
 https://home-assistant.io
 
+# Status
+  - working as of September 18, 2024
+
 ### Command to fetch script
 ```
 fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/homeassistant/homeassistant-install.sh
