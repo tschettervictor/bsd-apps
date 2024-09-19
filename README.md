@@ -1,4 +1,7 @@
 # bsd-apps
+
+All of my truenas-iocage* repos have been merged into this one, and might be taken down in the future.
+
 Collection of scripts to install popular applications inside FreeBSD jails, or FreeBSD host system.
 
 Each application has a README file which explains some necessary steps before running the script.
