@@ -62,7 +62,7 @@ echo '[include]' >> /usr/local/etc/supervisord.conf
 echo 'files = /usr/local/etc/onlyoffice/documentserver/supervisor/*.conf' >> /usr/local/etc/supervisord.conf
 sed -i "" -e 's|/tmp/supervisor.sock|/var/run/supervisor/supervisor.sock|g' /usr/local/etc/supervisord.conf
 /usr/local/bin/documentserver-pluginsmanager.sh --update=/usr/local/www/onlyoffice/documentserver/sdkjs-plugins/plugin-list-default.json
-service supervisorctl start
+service supervisord start
 supervisorctl start all
 
 # Restart services
