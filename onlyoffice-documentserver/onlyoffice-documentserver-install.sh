@@ -37,11 +37,10 @@ psql -hlocalhost -U${DB_USER} -d ${DB_NAME} -f /usr/local/www/onlyoffice/documen
 psql -U postgres -c "SELECT pg_reload_conf();"
 
 # Configure OnlyOffice Config File
-sed -i '' "/dbPass/s|onlyoffice|${DB_PASSWORD}|" /usr/local/etc/onlyoffice/documentserver/local.json
-sed -i '' "1,/inbox/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
-sed -i '' "1,/outbox/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
-sed -i '' "1,/browser/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
-
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json.bak -I -e 'this.services.CoAuthoring.sql.dbPass= "${DB_PASSWORD}"'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json.bak -I -e 'this.services.CoAuthoring.token.enable.request.inbox= true'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json.bak -I -e 'this.services.CoAuthoring.token.enable.request.outbox= true'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json.bak -I -e 'this.services.CoAuthoring.token.enable.browser= true'
 # Allow Private IP Connections (needed for local nextcloud instances)
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.server={allowPrivateIPAddressForSignedRequests: true }'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.requestDefaults={allowUnauthorized: true }'
