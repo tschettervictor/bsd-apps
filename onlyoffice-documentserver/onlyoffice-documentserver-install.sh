@@ -35,14 +35,17 @@ psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};"
 psql -U postgres -c "ALTER DATABASE ${DB_NAME} OWNER to ${DB_USER};"
 psql -hlocalhost -U${DB_USER} -d ${DB_NAME} -f /usr/local/www/onlyoffice/documentserver/server/schema/postgresql/createdb.sql
 psql -U postgres -c "SELECT pg_reload_conf();"
+
+# Configure OnlyOffice Config File
 sed -i '' "/dbPass/s|onlyoffice|${DB_PASSWORD}|" /usr/local/etc/onlyoffice/documentserver/local.json
 sed -i '' "1,/inbox/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
 sed -i '' "1,/outbox/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
 sed -i '' "1,/browser/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
 sed -i '' "1,/rejectUnauthorized/s|true|false|" /usr/local/etc/onlyoffice/documentserver/default.json
 
-# Allow Private IPs for Nextcloud Integration
+# Allow Private IP Connections (needed for local nextcloud instances)
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.server={allowPrivateIPAddressForSignedRequests: true }'
+chown onlyoffice:onlyoffice /usr/local/etc/onlyoffice/documentserver/local.json
 
 # Configure RabbitMQ
 sysrc rabbitmq_enable="YES"
