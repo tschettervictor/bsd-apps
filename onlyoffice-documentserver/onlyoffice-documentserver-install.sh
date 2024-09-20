@@ -51,6 +51,7 @@ rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) add_user ${RA
 rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) set_user_tags ${RABBITMQ_USER} administrator
 rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) set_permissions -p / ${RABBITMQ_USER} ".*" ".*" ".*"
 sed -i '' -e "s|guest:guest@localhost|${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@localhost|g" /usr/local/etc/onlyoffice/documentserver/local.json
+chown onlyoffice:onlyoffice /usr/local/etc/onlyoffice/documentserver/local.json
 
 # Configure Nginx
 sysrc nginx_enable="YES"
