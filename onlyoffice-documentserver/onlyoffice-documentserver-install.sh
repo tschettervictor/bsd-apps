@@ -41,6 +41,9 @@ sed -i '' "1,/outbox/s|false|true|" /usr/local/etc/onlyoffice/documentserver/loc
 sed -i '' "1,/browser/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
 sed -i '' "1,/rejectUnauthorized/s|true|false|" /usr/local/etc/onlyoffice/documentserver/default.json
 
+# Allow Private IPs for Nextcloud Integration
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.server={allowPrivateIPAddressForSignedRequests: true }'
+
 # Configure RabbitMQ
 sysrc rabbitmq_enable="YES"
 service rabbitmq start
