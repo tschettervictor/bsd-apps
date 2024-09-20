@@ -41,10 +41,10 @@ sed -i '' "/dbPass/s|onlyoffice|${DB_PASSWORD}|" /usr/local/etc/onlyoffice/docum
 sed -i '' "1,/inbox/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
 sed -i '' "1,/outbox/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
 sed -i '' "1,/browser/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
-sed -i '' "1,/rejectUnauthorized/s|true|false|" /usr/local/etc/onlyoffice/documentserver/default.json
 
 # Allow Private IP Connections (needed for local nextcloud instances)
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.server={allowPrivateIPAddressForSignedRequests: true }'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.requestDefaults={allowUnauthorized: true }'
 chown onlyoffice:onlyoffice /usr/local/etc/onlyoffice/documentserver/local.json
 
 # Configure RabbitMQ
