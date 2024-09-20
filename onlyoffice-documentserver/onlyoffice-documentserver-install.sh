@@ -1,7 +1,7 @@
 #!/bin/sh
 # Install OnlyOffice Document Server
 
-# Check for root privileges
+# Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
@@ -17,10 +17,10 @@ DB_PASSWORD=$(openssl rand -base64 15)
 RABBITMQ_USER="onlyoffice"
 RABBITMQ_PASSWORD=$(openssl rand -base64 15)
 
-# Install packages
+# Install Packages
 pkg install -y onlyoffice-documentserver postgresql"${PG_VERSION}"-server postgresql"${PG_VERSION}"-client
 
-# Create and configure database
+# Create and Configure Database
 sysrc postgresql_enable="YES"
 fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/onlyoffice-documentserver/includes/pgpass
 chmod 600 /root/.pgpass
@@ -63,9 +63,8 @@ echo 'files = /usr/local/etc/onlyoffice/documentserver/supervisor/*.conf' >> /us
 sed -i "" -e 's|/tmp/supervisor.sock|/var/run/supervisor/supervisor.sock|g' /usr/local/etc/supervisord.conf
 /usr/local/bin/documentserver-pluginsmanager.sh --update=/usr/local/www/onlyoffice/documentserver/sdkjs-plugins/plugin-list-default.json
 service supervisord start
-supervisorctl start all
 
-# Restart services
+# Restart Services
 service nginx restart
 service rabbitmq restart
 service supervisorctl restart
