@@ -70,7 +70,7 @@ service supervisord start
 # Restart Services
 service nginx restart
 service rabbitmq restart
-service supervisorctl restart
+service supervisord restart
 supervisorctl start all
 
 # Save Passwords/Finalize Installation
