@@ -1,6 +1,8 @@
 #!/bin/sh
-
+#
 # MeshCentral FreeBSD Service Script
+#
+#
 
 # PROVIDE: meshcentral
 # REQUIRE: NETWORKING
