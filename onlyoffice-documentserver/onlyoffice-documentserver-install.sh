@@ -43,7 +43,7 @@ psql -U postgres -c "SELECT pg_reload_conf();"
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.token.enable.request.outbox= true'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.token.enable.browser= true'
 # Add JWT Secret
-/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.inbox.string= "'$JWT_SECRET}'"'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.inbox.string= "'${JWT_SECRET}'"'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.outbox.string= "'${JWT_SECRET}'"'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.session.string= "'${JWT_SECRET}'"'
 # Allow Private IP Connections (needed for local nextcloud instances)
