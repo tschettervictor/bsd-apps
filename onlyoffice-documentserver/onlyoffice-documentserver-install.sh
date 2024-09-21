@@ -38,14 +38,14 @@ psql -hlocalhost -U${DB_USER} -d ${DB_NAME} -f /usr/local/www/onlyoffice/documen
 psql -U postgres -c "SELECT pg_reload_conf();"
 
 # Configure OnlyOffice Config File
-/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.sql.dbPass= "${DB_PASSWORD}"'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.sql.dbPass= "'${DB_PASSWORD}'"'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.token.enable.request.inbox= true'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.token.enable.request.outbox= true'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.token.enable.browser= true'
 # Add JWT Secret
-/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.inbox.string= "${JWT_SECRET}"'
-/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.outbox.string= "${JWT_SECRET}"'
-/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.session.string= "${JWT_SECRET}"'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.inbox.string= "'${JWT_SECRET}'"'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.outbox.string= "'${JWT_SECRET}'"'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.session.string= "'${JWT_SECRET}'"'
 # Allow Private IP Connections (needed for local nextcloud instances)
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.server={allowPrivateIPAddressForSignedRequests: true }'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.requestDefaults={allowUnauthorized: true }'
@@ -95,7 +95,7 @@ echo "MySQL Username: root"
 echo "MySQL Password: $DB_ROOT_PASSWORD"
 echo "RabbitMQ User: $RABBITMQ_USER"
 echo "RabbitMQ Password: "$RABBITMQ_PASSWORD""
-echo "JWT Secret: "${JWT_SECRET}""
+echo "JWT Secret: "$JWT_SECRET""
 echo "---------------"
 echo "All passwords are saved in /root/${APP_NAME}_db_password.txt"
 echo "---------------"
