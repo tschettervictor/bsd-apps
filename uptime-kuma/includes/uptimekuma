@@ -1,50 +1,51 @@
 #!/bin/sh
+#
+# Uptime-Kuma FreeBSD Service Script
+#
+#
 
 # PROVIDE: uptimekuma
 # REQUIRE: DAEMON NETWORKING
-# BEFORE: LOGIN
 # KEYWORD: shutdown
 
 . /etc/rc.subr
 
-name="uptimekuma"
+name=uptimekuma
+desc="Uptime-Kuma Website Monitoring"
 rcvar=uptimekuma_enable
 
+load_rc_config $name
+
 : ${uptimekuma_enable:="NO"}
-: ${uptimekuma_user:="uptimekuma"}
-: ${uptimekuma_group:="uptimekuma"}
-: ${uptimekuma_datadir:="/mnt/data"}
+: ${uptimekuma_datadir:="--data-dir=/mnt/data"}
+: ${uptimekuma_host:="--host=0.0.0.0"}
+: ${uptimekuma_chdir:="/usr/local/uptime-kuma"}
+: ${uptimekuma_rundir:="/var/run/${name}"}
+: ${uptimekuma_logdir:="/var/log/${name}"}
+: ${uptimekuma_pidfile:="${uptimekuma_rundir}/${name}.pid"}
+: ${uptimekuma_logfile:="${uptimekuma_logdir}/${name}.log"}
 
-
-# 12.4.2023 After updating to latest got error on FreeBSD bc it uses playwright
-# but setting this environment variable allows it to work again:
-# https://github.com/louislam/uptime-kuma/issues/3642#issuecomment-1839704192
+user=uptimekuma
+group=uptimekuma
 uptimekuma_env="PLAYWRIGHT_BROWSERS_PATH=/nonexistent"
-
-# daemon(8) - wrapper class to run commands detached from the controlling terminal
-pidfile="/var/run/${name}/${name}.pid"
 node="/usr/local/bin/node"
-repo_path="/usr/local/uptime-kuma" # Where cloned the uptimekuma git repo to.
-script="${node} ${repo_path}/server/server.js --host=0.0.0.0 --data-dir=${uptimekuma_datadir}"
-
-# NOTE To get uptime kuma to load correctly it needs to be started inside the
-# repo's directory:
-uptimekuma_chdir="${repo_path}"
-
 command=/usr/sbin/daemon
-procname="daemon"
-command_args="-f -P ${pidfile} ${script}"
+command_args="-u ${user} -P ${meshcentral_pidfile} -H -o ${uptimekuma_logfile} ${node} server/server.js ${uptimekuma_host} ${uptimekuma_datadir}"
 
-start_precmd="${name}_precmd"
+start_precmd=uptimekuma_startprecmd
 
-uptimekuma_precmd()
+uptimekuma_startprecmd()
 {
-    if [ ! -d /var/run/${name} ]; then
-        mkdir -p /var/run/${name}
-        chown ${uptimekuma_user}:${uptimekuma_group} /var/run/${name}
+    if [ ! -d ${uptimekuma_rundir} ]; then
+        install -d -o ${user} -g ${group} ${uptimekuma_rundir};
+    else
+        chown -R ${user}:${group} ${uptimekuma_rundir};
     fi
-    install -o ${uptimekuma_user} /dev/null ${pidfile}
+    if [ ! -d ${uptimekuma_logdir} ]; then
+        install -d -o ${user} -g ${group} ${uptimekuma_logdir};
+    else
+        chown -R ${user}:${group} ${uptimekuma_logdir};
+    fi
 }
 
-load_rc_config $name
 run_rc_command "$1"
