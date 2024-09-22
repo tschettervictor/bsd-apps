@@ -9,15 +9,35 @@
 . /etc/rc.subr
 
 name=mediamtx
-user=www
+desc="MediaMTX Media Streaming Server"
 rcvar=mediamtx_enable
 
-: ${mediamtx_enable:="NO"}
-: ${mediamtx_config:="/usr/local/www/mediamtx/mediamtx.yml"}
-
-pidfile=/var/run/${name}.pid
-command=/usr/sbin/daemon
-command_args="-f -u ${user} -P ${pidfile} /usr/local/bin/${name} ${mediamtx_config}"
-
 load_rc_config $name
+
+: ${mediamtx_enable:="NO"}
+: ${mediamtx_config:="/usr/local/www/${name}/${name}.yml"}
+: ${mediamtx_user:="mediamtx"}
+: ${mediamtx_group:="mediamtx"}
+
+pidfile="/var/run/${name}/${name}.pid"
+required_files="${mediamtx_config}"
+command=/usr/sbin/daemon
+command_args="-P ${pidfile} -H -o /var/log/${name}/${name}.log /usr/local/bin/${name} ${mediamtx_config}"
+
+start_precmd="mediamtx_startprecmd"
+
+mediamtx_startprecmd()
+{
+    if [ ! -d /var/run/${name} ]; then
+        install -d -o ${mediamtx_user} -g ${mediamtx_group} /var/run/${name};
+    else
+        chown -R ${mediamtx_user}:${mediamtx_group} /var/run/${name};
+    fi
+    if [ ! -d /var/log/${name} ]; then
+        install -d -o ${mediamtx_user} -g ${mediamtx_group} /var/log/${name};
+    else
+        chown -R ${mediamtx_user}:${mediamtx_group} /var/log/${name};
+    fi
+}
+
 run_rc_command "$1"
