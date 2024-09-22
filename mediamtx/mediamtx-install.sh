@@ -35,7 +35,8 @@ if ! [ "$(ls -A "/usr/local/www/mediamtx")" ]; then
 fi
 fetch -o /usr/local/etc/rc.d/mediamtx https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/mediamtx/includes/mediamtx
 chmod +x /usr/local/etc/rc.d/mediamtx
-chown -R www:www /usr/local/www/mediamtx
+pw user add mediamtx -c mediamtx -u 1935 -d /nonexistent -s /usr/bin/nologin
+chown -R mediamtx:mediamtx /usr/local/www/mediamtx
 
 # Enable and Start Services
 sysrc mediamtx_config="/usr/local/www/mediamtx/mediamtx.yml"
