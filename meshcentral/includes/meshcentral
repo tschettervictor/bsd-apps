@@ -1,8 +1,6 @@
 #!/bin/sh
-#
+
 # MeshCentral FreeBSD Service Script
-#
-#
 
 # PROVIDE: meshcentral
 # REQUIRE: NETWORKING
@@ -19,30 +17,27 @@ load_rc_config $name
 : ${meshcentral_enable:="NO"}
 : ${meshcentral_args:=""}
 : ${meshcentral_chdir:="/usr/local/meshcentral"}
-: ${meshcentral_rundir:="/var/run/${name}"}
-: ${meshcentral_logdir:="/var/log/${name}"}
-: ${meshcentral_pidfile:="${meshcentral_rundir}/${name}.pid"}
-: ${meshcentral_logfile:="${meshcentral_logdir}/${name}.log"}
+: ${meshcentral_daemon_user:="meshcentral"}
+: ${meshcentral_daemon_group:="meshcentral"}
 
-user="meshcentral"
-group="meshcentral"
+pidfile="/var/run/${name}/${name}.pid"
 node="/usr/local/bin/node"
 command="/usr/sbin/daemon"
-command_args="-u ${user} -P ${meshcentral_pidfile} -H -o ${meshcentral_logfile} ${node} node_modules/${name} ${meshcentral_args}"
+command_args="-u ${meshcentral_daemon_user} -P ${pidfile} -H -o /var/log/${name}/${name}.log ${node} node_modules/${name} ${meshcentral_args}"
 
 start_precmd="meshcentral_startprecmd"
 
 meshcentral_startprecmd()
 {
-    if [ ! -d ${meshcentral_rundir} ]; then
-        install -d -o ${user} -g ${group} ${meshcentral_rundir};
+    if [ ! -d /var/run/${name} ]; then
+        install -d -o ${meshcentral_daemon_user} -g ${meshcentral_daemon_group} /var/run/${name};
     else
-        chown -R ${user}:${group} ${meshcentral_rundir};
+        chown -R ${meshcentral_daemon_user}:${meshcentral_daemon_group} /var/run/${name};
     fi
-    if [ ! -d ${meshcentral_logdir} ]; then
-        install -d -o ${user} -g ${group} ${meshcentral_logdir};
+    if [ ! -d /var/log/${name} ]; then
+        install -d -o ${meshcentral_daemon_user} -g ${meshcentral_daemon_group} /var/log/${name};
     else
-        chown -R ${user}:${group} ${meshcentral_logdir};
+        chown -R ${meshcentral_daemon_user}:${meshcentral_daemon_group} /var/log/${name};
     fi
 }
 
