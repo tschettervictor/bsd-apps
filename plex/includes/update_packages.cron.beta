@@ -1,0 +1,2 @@
+# Upgrade all installed packages
+18 3 * * 0 pkg upgrade -y && service plexmediaserver-plexpass restart
