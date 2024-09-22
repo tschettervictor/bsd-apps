@@ -1,8 +1,6 @@
 #!/bin/sh
-#
+
 # Uptime-Kuma FreeBSD Service Script
-#
-#
 
 # PROVIDE: uptimekuma
 # REQUIRE: DAEMON NETWORKING
@@ -20,31 +18,28 @@ load_rc_config $name
 : ${uptimekuma_datadir:="--data-dir=/mnt/data"}
 : ${uptimekuma_host:="--host=0.0.0.0"}
 : ${uptimekuma_chdir:="/usr/local/uptime-kuma"}
-: ${uptimekuma_rundir:="/var/run/${name}"}
-: ${uptimekuma_logdir:="/var/log/${name}"}
-: ${uptimekuma_pidfile:="${uptimekuma_rundir}/${name}.pid"}
-: ${uptimekuma_logfile:="${uptimekuma_logdir}/${name}.log"}
+: ${uptimekuma_user:="uptimekuma"}
+: ${uptimekuma_group:="uptimekuma"}
 
-user=uptimekuma
-group=uptimekuma
+pidfile="/var/run/${name}/${name}.pid"
 uptimekuma_env="PLAYWRIGHT_BROWSERS_PATH=/nonexistent"
 node="/usr/local/bin/node"
 command=/usr/sbin/daemon
-command_args="-u ${user} -P ${meshcentral_pidfile} -H -o ${uptimekuma_logfile} ${node} server/server.js ${uptimekuma_host} ${uptimekuma_datadir}"
+command_args="-P ${pidfile} -H -o /var/log/${name}/${name}.log ${node} server/server.js ${uptimekuma_host} ${uptimekuma_datadir}"
 
 start_precmd=uptimekuma_startprecmd
 
 uptimekuma_startprecmd()
 {
-    if [ ! -d ${uptimekuma_rundir} ]; then
-        install -d -o ${user} -g ${group} ${uptimekuma_rundir};
+    if [ ! -d /var/run/${name} ]; then
+        install -d -o ${uptimekuma_user} -g ${uptimekuma_group} /var/run/${name};
     else
-        chown -R ${user}:${group} ${uptimekuma_rundir};
+        chown -R ${uptimekuma_user}:${uptimekuma_group} /var/run/${name};
     fi
-    if [ ! -d ${uptimekuma_logdir} ]; then
-        install -d -o ${user} -g ${group} ${uptimekuma_logdir};
+    if [ ! -d /var/log/${name} ]; then
+        install -d -o ${uptimekuma_user} -g ${uptimekuma_group} /var/log/${name};
     else
-        chown -R ${user}:${group} ${uptimekuma_logdir};
+        chown -R ${uptimekuma_user}:${uptimekuma_group} /var/log/${name};
     fi
 }
 
