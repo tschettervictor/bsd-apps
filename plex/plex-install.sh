@@ -24,7 +24,11 @@ cp /etc/pkg/FreeBSD.conf /usr/local/etc/pkg/repos/
 sed -i '' "s/quarterly/latest/" /usr/local/etc/pkg/repos/FreeBSD.conf
 
 # Enable Daily Package Updates
-fetch -o /tmp/update_packages https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/plex/includes/update_packages.cron
+if [ ${BETA} -eq 1 ]; then
+	fetch -o /tmp/update_packages https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/plex/includes/update_packages.cron.beta
+else
+	fetch -o /tmp/update_packages https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/plex/includes/update_packages.cron
+fi
 crontab /tmp/update_packages
 rm /tmp/update_packages
 
