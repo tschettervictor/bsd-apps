@@ -66,6 +66,7 @@ sh -c 'find /usr/local/www/ -type d -print0 | xargs -0 chmod 2775'
 chown -R www:www /usr/local/www
 
 # Enable and Start Services
+fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/piwigo/includes/Caddyfile-nossl
 sysrc php_fpm_enable=YES
 sysrc caddy_enable=YES
 sysrc caddy_config=/usr/local/www/Caddyfile
