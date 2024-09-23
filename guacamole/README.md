@@ -16,6 +16,7 @@ chmod +x guacamole-install.sh
 
 ## Mount points (should be mounted outside the jail)
   - `/var/db/mysql` - database directory
+  - `/usr/local/etc/guacamole-client` - config/extensions directory
 
 ## Jail Properties
   - none
