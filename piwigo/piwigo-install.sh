@@ -76,11 +76,11 @@ service caddy start
 service mysql-server restart
 
 # Save Passwords
-echo "${DATABASE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}_db_password.txt
+echo "${DATABASE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt
 if [ "${REINSTALL}" == "true" ]; then
 	echo "${DB_NAME} password is not changed when doing a reinstall."
 else
-	echo "${APP_NAME} database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}_db_password.txt
+	echo "${APP_NAME} database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}-Info.txt
 fi
 
 echo "---------------"
@@ -98,5 +98,5 @@ else
 	echo "$APP_NAME DB Password: $DB_PASSWORD"
 fi
 echo "---------------"
-echo "All passwords are saved in /root/${APP_NAME}_db_password.txt"
+echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
 echo "---------------"
