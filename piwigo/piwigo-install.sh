@@ -61,7 +61,7 @@ fi
 # Install Piwigo
 fetch -o /tmp "http://piwigo.org/download/dlcounter.php?code=latest"
 mv "/tmp/dlcounter.php?code=latest" /tmp/piwigo.zip
-unzip -d /usr/local/www/ /tmp/piwigo.zip
+unzip -d /usr/local/www /tmp/piwigo.zip
 sh -c 'find /usr/local/www/ -type d -print0 | xargs -0 chmod 2775'
 chown -R www:www /usr/local/www
 
