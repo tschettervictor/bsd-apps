@@ -10,7 +10,7 @@ fi
 APP_NAME="Piwigo"
 MARIADB_VERSION="106"
 PHP_VERSION="83"
-DATABASE_TYPE="MariaDB"
+DB_TYPE="MariaDB"
 DB_NAME="piwigo"
 DB_USER="piwigo"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
@@ -36,7 +36,7 @@ mkdir -p /usr/local/www/piwigo/local/config
 sysrc mysql_enable=YES
 service mysql-server start
 if [ "${REINSTALL}" == "true" ]; then
-	echo "You did a reinstall, but the ${DATABASE_TYPE} root password AND ${APP_NAME} password will be changed."
+	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} password will be changed."
  	echo "New passwords will be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/piwigo/includes/my.cnf
@@ -75,7 +75,7 @@ service caddy start
 service mysql-server restart
 
 # Save Passwords
-echo "${DATABASE_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt
+echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt
 echo "${APP_NAME} database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}-Info.txt
 
 echo "---------------"
@@ -83,7 +83,7 @@ echo "Installation complete."
 echo "${APP_NAME} is running on port 80."
 echo "---------------"
 echo "Database Information"
-echo "$DB_TYPEL Username: root"
+echo "$DB_TYPE Username: root"
 echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
 echo "$APP_NAME DB User: $DB_USER"
 echo "$APP_NAME DB Password: $DB_PASSWORD"
