@@ -18,7 +18,7 @@ DB_PASSWORD=$(openssl rand -base64 15)
 
 # Check for Reinstall
 if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
-	echo "Existing Piwigo database detected."
+	echo "Existing ${APP_NAME} database detected."
 	echo "Starting reinstall..."
 	REINSTALL="true"
 fi
