@@ -39,6 +39,7 @@ if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} password will be changed."
  	echo "New passwords will be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
+  	sed -i '' -e "s|db_password|\$conf['db_password'] = '${DB_PASSWORD}';|g" /usr/local/www/piwigo/local/config/database.inc.php
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/piwigo/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
