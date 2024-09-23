@@ -79,6 +79,7 @@ service mysql-server restart
 echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt
 echo "${APP_NAME} database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}-Info.txt
 
+# Done
 echo "---------------"
 echo "Installation Complete."
 echo "${APP_NAME} is running on port 80."
