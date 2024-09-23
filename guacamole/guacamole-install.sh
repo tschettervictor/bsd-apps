@@ -1,21 +1,21 @@
 #!/bin/sh
 # Install Apache Guacamole
 
-# Check for root privileges
+# Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
 
-APP_NAME="guacamole"
+APP_NAME="Guacamole"
 MARIADB_VERSION="106"
-DB_PATH="/var/db/mysql"
+DB_TYPE="MariaDB"
 DB_NAME="guacamole"
 DB_USER="guacamole"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
 
-# Check for reinstall
+# Check for Reinstall
 if [ "$(ls -A "${DB_PATH}")" ]; then
 	echo "Existing Guacamole database detected. Checking compatability for reinstall."
 	if [ "$(ls -A "${DB_PATH}/${DB_NAME}")" ]; then
