@@ -11,6 +11,10 @@ Don't forget to
 chmod +x plex-install.sh
 ```
 
+## Notes
+  - the mount point below is only for plex settings and metadata, not media files
+  - media files should be mounted into `/mnt/media` or a similar directory
+
 ## Variables
 
 BETA
