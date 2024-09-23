@@ -80,7 +80,7 @@ echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/
 echo "${APP_NAME} database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}-Info.txt
 
 echo "---------------"
-echo "Installation complete."
+echo "Installation Complete."
 echo "${APP_NAME} is running on port 80."
 echo "---------------"
 echo "Database Information"
@@ -88,10 +88,11 @@ echo "$DB_TYPE Username: root"
 echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
 echo "$APP_NAME DB User: $DB_USER"
 echo "$APP_NAME DB Password: $DB_PASSWORD"
+echo "---------------"
 if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall."
 	echo "Please user your old credentials to log in."
+        echo "---------------"
 fi
-echo "---------------"
 echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
 echo "---------------"
