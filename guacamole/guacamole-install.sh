@@ -27,6 +27,7 @@ pkg install -y guacamole-server guacamole-client mariadb"${MARIADB_VERSION}"-ser
 
 # Create Directories
 mkdir -p /var/db/mysql
+chown -R 88:88 /var/db/mysql
 mkdir -p /usr/local/etc/guacamole-client/lib
 mkdir -p /usr/local/etc/guacamole-client/extensions
 
@@ -35,13 +36,21 @@ sysrc guacd_enable="YES"
 sysrc tomcat9_enable="YES"
 sysrc mysql_enable="YES"
 
+# Configure Guacamole 
+cp -f /usr/local/share/java/classes/mysql-connector-j.jar /usr/local/etc/guacamole-client/lib
+tar xvfz /usr/local/share/guacamole-client/guacamole-auth-jdbc.tar.gz -C /tmp/
+cp -f /tmp/guacamole-auth-jdbc-*/mysql/*.jar /usr/local/etc/guacamole-client/extensions
+cp -f /usr/local/etc/guacamole-server/guacd.conf.sample /usr/local/etc/guacamole-server/guacd.conf
+cp -f /usr/local/etc/guacamole-client/logback.xml.sample /usr/local/etc/guacamole-client/logback.xml
+sed -i -e 's/'localhost'/'0.0.0.0'/g' /usr/local/etc/guacamole-server/guacd.conf
+
 # Create and Configure Database
 service mysql-server start
 if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall, but database passwords will still be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-  	sed -i '' -e "s|.*mysql-password.*|mysql-password: ${DB_PASSWORD};|g" /usr/local/etc/guacamole-client/guacamole.properties
+  	sed -i '' -e "s|.*mysql-password.*|mysql-password: ${DB_PASSWORD}|g" /usr/local/etc/guacamole-client/guacamole.properties
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/guacamole/includes/my.cnf
   	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
@@ -66,14 +75,6 @@ else
 	echo "mysql-username: ${DB_USER}" >> /usr/local/etc/guacamole-client/guacamole.properties
 	echo "mysql-password: ${DB_PASSWORD}" >> /usr/local/etc/guacamole-client/guacamole.properties
 fi
-
-# Configure Guacamole 
-cp -f /usr/local/share/java/classes/mysql-connector-j.jar /usr/local/etc/guacamole-client/lib
-tar xvfz /usr/local/share/guacamole-client/guacamole-auth-jdbc.tar.gz -C /tmp/
-cp -f /tmp/guacamole-auth-jdbc-*/mysql/*.jar /usr/local/etc/guacamole-client/extensions
-cp -f /usr/local/etc/guacamole-server/guacd.conf.sample /usr/local/etc/guacamole-server/guacd.conf
-cp -f /usr/local/etc/guacamole-client/logback.xml.sample /usr/local/etc/guacamole-client/logback.xml
-sed -i -e 's/'localhost'/'0.0.0.0'/g' /usr/local/etc/guacamole-server/guacd.conf
 
 # Restart Services
 service mysql-server restart
