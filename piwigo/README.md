@@ -12,7 +12,7 @@ chmod +x piwigo-install.sh
 ```
 
 ## Install Notes
-  - none
+  - initial setup requires you to change the database address to 127.0.0.1 instead of localhost, or it will fail
 
 ## Variables
 
