@@ -36,10 +36,10 @@ mkdir -p /usr/local/www/piwigo/local/config
 sysrc mysql_enable=YES
 service mysql-server start
 if [ "${REINSTALL}" == "true" ]; then
-	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} password will be changed."
+	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-  	sed -i '' -e "s|db_password|\$conf['db_password'] = '${DB_PASSWORD}';|g" /usr/local/www/piwigo/local/config/database.inc.php
+	sed -i '' -e "s|.*db_password.*|\$conf['db_password'] = '${DB_PASSWORD}';|g" /usr/local/www/piwigo/local/config/database.inc.php	
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/piwigo/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
@@ -61,7 +61,7 @@ fi
 # Install Piwigo
 fetch -o /tmp "http://piwigo.org/download/dlcounter.php?code=latest"
 mv "/tmp/dlcounter.php?code=latest" /tmp/piwigo.zip
-unzip -f -d /usr/local/www/ /tmp/piwigo.zip
+unzip -n -d /usr/local/www /tmp/piwigo.zip
 sh -c 'find /usr/local/www/ -type d -print0 | xargs -0 chmod 775'
 sh -c 'find /usr/local/www/ -type f -print0 | xargs -0 chmod 644'
 chown -R www:www /usr/local/www
