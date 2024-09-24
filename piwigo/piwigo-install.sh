@@ -28,6 +28,7 @@ pkg install -y caddy imagemagick7 wget mediainfo ffmpeg p5-Image-ExifTool bzip2 
 
 # Create Directories
 mkdir -p /var/db/mysql
+chown -R 88:88 /var/db/mysql
 mkdir -p /usr/local/www/piwigo/galleries
 mkdir -p /usr/local/www/piwigo/upload
 mkdir -p /usr/local/www/piwigo/local/config
