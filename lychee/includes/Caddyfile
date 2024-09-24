@@ -2,10 +2,10 @@
 	encode gzip
 
 	log {
-		output file /var/log/lychee_access.log
+		output file /var/log/Lychee_access.log
 	}
 
-	root * /usr/local/www/lychee/public
+	root * /usr/local/www/Lychee/public
 	file_server
 
 	php_fastcgi 127.0.0.1:9000
