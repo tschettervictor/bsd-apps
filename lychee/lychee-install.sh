@@ -15,6 +15,7 @@ DB_NAME="lychee"
 DB_USER="lychee"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
+TIME_ZONE="America/Edmonton"
 
 # Check for Reinstall
 if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
@@ -62,6 +63,7 @@ fi
 
 # PHP Setup
 fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/includes/php.ini
+sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');"
 php -r "if (hash_file('sha384', '/tmp/composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('/tmp/composer-setup.php'); } echo PHP_EOL;"
 php /tmp/composer-setup.php --install-dir /usr/local/bin --filename composer
