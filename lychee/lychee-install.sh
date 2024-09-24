@@ -8,6 +8,7 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 APP_NAME="Lychee"
+LYCHEE_VERSION="5.5.1"
 MARIADB_VERSION="106"
 PHP_VERSION="83"
 DB_TYPE="MariaDB"
@@ -65,20 +66,26 @@ fi
 fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/includes/php.ini
 sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');"
-php -r "if (hash_file('sha384', '/tmp/composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('/tmp/composer-setup.php'); } echo PHP_EOL;"
 php /tmp/composer-setup.php --install-dir /usr/local/bin --filename composer
 
 # Install Lychee
 fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/includes/Caddyfile
-git clone https://github.com/LycheeOrg/Lychee /usr/local/www/lychee
-cp /usr/local/www/lychee/.env.example /usr/local/www/lychee/.env
-sh -c 'cd /usr/local/www/lychee/ && env COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --prefer-dist'
+fetch -o /tmp https://github.com/LycheeOrg/Lychee/releases/download/v${LYCHEE_VERSION}/Lychee.zip
+unzip -u -d /usr/local/www /tmp/Lychee.zip
+rm /tmp/Lychee.zip
+if [ "${REINSTALL}" == "true" ]; then
+	sed -i '' "s|.*DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/Lychee/.env
+else
+	cp /usr/local/www/Lychee/.env.example /usr/local/www/Lychee/.env
+	sed -i '' "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|" /usr/local/www/Lychee/.env
+	sed -i '' "s|.*DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/Lychee/.env
+	sed -i '' "s|.*DB_PORT.*|DB_PORT=3306|" /usr/local/www/Lychee/.env
+	sed -i '' "s|.*DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/Lychee/.env
+	sed -i '' "s|.*DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/Lychee/.env
+	sed -i '' "s|.*DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/Lychee/.env
+fi
+chmod -R 2775 /usr/local/www/Lychee
 chown -R www:www /usr/local/www/Lychee
-sed -i '' "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|" /usr/local/www/lychee/.env
-sed -i '' "s|DB_HOST=|DB_HOST=localhost|" /usr/local/www/lychee/.env
-sed -i '' "s|#DB_DATABASE=|DB_DATABASE=${DB_NAME}|" /usr/local/www/lychee/.env
-sed -i '' "s|DB_USERNAME=|DB_USERNAME=${DB_USER}|" /usr/local/www/lychee/.env
-sed -i '' "s|DB_PASSWORD=|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/lychee/.env
 
 # Restart Services
 service redis start
