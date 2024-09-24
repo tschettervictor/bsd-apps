@@ -3,12 +3,12 @@ https://onlyoffice.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/onlyoffice-documentserver/onlyoffice-documentserver-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/onlyoffice/onlyoffice-install.sh
 ```
 
 Don't forget to
 ```
-chmod +x onlyoffice-documentserver-install.sh
+chmod +x onlyoffice-install.sh
 ```
 
 ## Variables
