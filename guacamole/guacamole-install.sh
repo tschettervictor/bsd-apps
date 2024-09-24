@@ -107,5 +107,5 @@ else
 	echo "Default ${APP_NAME} password is guacadmin"
 	echo "---------------"
 fi
-echo "All passwords are saved in /root/${APP_NAME}_db_password.txt"
+echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
 echo "---------------"
