@@ -7,9 +7,9 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
-APP_NAME="onlyoffice"
+APP_NAME="OnlyOffice"
 PG_VERSION="15"
-DATABASE="postgres"
+DB_TYPE="PostgreSQL"
 DB_NAME="onlyoffice"
 DB_USER="onlyoffice"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
@@ -23,7 +23,7 @@ pkg install -y onlyoffice-documentserver postgresql"${PG_VERSION}"-server postgr
 
 # Create and Configure Database
 sysrc postgresql_enable="YES"
-fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/onlyoffice-documentserver/includes/pgpass
+fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/onlyoffice/includes/pgpass
 chmod 600 /root/.pgpass
 mkdir -p /var/db/postgres
 chown postgres /var/db/postgres/
@@ -42,10 +42,12 @@ psql -U postgres -c "SELECT pg_reload_conf();"
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.token.enable.request.inbox= true'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.token.enable.request.outbox= true'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.token.enable.browser= true'
+
 # Add JWT Secret
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.inbox.string= "'${JWT_SECRET}'"'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.outbox.string= "'${JWT_SECRET}'"'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.session.string= "'${JWT_SECRET}'"'
+
 # Allow Private IP Connections (needed for local nextcloud instances)
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.server={allowPrivateIPAddressForSignedRequests: true }'
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.requestDefaults=rejectUnauthorized: false }'
@@ -63,6 +65,7 @@ chown onlyoffice:onlyoffice /usr/local/etc/onlyoffice/documentserver/local.json
 # Configure Nginx
 sysrc nginx_enable="YES"
 mkdir -p /usr/local/etc/nginx/conf.d
+/usr/local/bin/documentserver-update-securelink.sh
 cp /usr/local/etc/onlyoffice/documentserver/nginx/ds.conf /usr/local/etc/nginx/conf.d/.
 sed -i '' -e '40s/^/    include \/usr\/local\/etc\/nginx\/conf.d\/*.conf;\n/g' /usr/local/etc/nginx/nginx.conf
 sed -i '' '4d' /usr/local/etc/nginx/conf.d/ds.conf
@@ -81,21 +84,24 @@ service rabbitmq restart
 service supervisord restart
 supervisorctl start all
 
-# Save Passwords/Finalize Installation
-echo "${DATABASE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}_db_password.txt
-echo "OnlyOffice database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}_db_password.txt
-echo "RabbitMQ user is ${RABBITMQ_USER} and password is ${RABBITMQ_PASSWORD}." >> /root/${APP_NAME}_db_password.txt
-echo "JWT secret is ${JWT_SECRET}." >> /root/${APP_NAME}_db_password.txt
+# Save Passwords
+echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt
+echo "${APP_NAME} database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}-Info.txt
+echo "RabbitMQ user is ${RABBITMQ_USER} and password is ${RABBITMQ_PASSWORD}." >> /root/${APP_NAME}-Info.txt
+echo "JWT secret is ${JWT_SECRET}." >> /root/${APP_NAME}-Info.txt
 
+# Done
 echo "---------------"
 echo "Installation complete."
 echo "---------------"
 echo "Database Information"
-echo "MySQL Username: root"
-echo "MySQL Password: $DB_ROOT_PASSWORD"
+echo "$DB_TYPE Username: root"
+echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
+echo "$APP_NAME DB User: $DB_USER"
+echo "$APP_NAME DB Password: $DB_PASSWORD"
 echo "RabbitMQ User: $RABBITMQ_USER"
 echo "RabbitMQ Password: "$RABBITMQ_PASSWORD""
 echo "JWT Secret: "$JWT_SECRET""
 echo "---------------"
-echo "All passwords are saved in /root/${APP_NAME}_db_password.txt"
+echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
 echo "---------------"
