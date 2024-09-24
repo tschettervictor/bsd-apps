@@ -11,8 +11,8 @@ APP_NAME="Lychee"
 MARIADB_VERSION="106"
 PHP_VERSION="83"
 DB_TYPE="MariaDB"
-DB_NAME="guacamole"
-DB_USER="guacamole"
+DB_NAME="lychee"
+DB_USER="lychee"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
 
