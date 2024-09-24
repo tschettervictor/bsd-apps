@@ -14,7 +14,7 @@ pkg install -y git-lite go${GO_VERSION}
 
 # Create Directories
 mkdir -p /usr/local/www/mediamtx
-mkdir -p /usr/local/etc/rc.d/
+mkdir -p /usr/local/etc/rc.d
 
 # Install MediaMTX
 git clone https://github.com/bluenviron/mediamtx
