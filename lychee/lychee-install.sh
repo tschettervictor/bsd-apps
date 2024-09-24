@@ -68,15 +68,15 @@ php /tmp/composer-setup.php --install-dir /usr/local/bin --filename composer
 
 # Install Lychee
 fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/includes/Caddyfile
-git clone https://github.com/LycheeOrg/Lychee /usr/local/www/Lychee
-cp /usr/local/www/Lychee/.env.example /usr/local/www/Lychee/.env
-sh -c 'cd /usr/local/www/Lychee/ && env COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --prefer-dist'
+git clone https://github.com/LycheeOrg/Lychee /usr/local/www/lychee
+cp /usr/local/www/lychee/.env.example /usr/local/www/lychee/.env
+sh -c 'cd /usr/local/www/lychee/ && env COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --prefer-dist'
 chown -R www:www /usr/local/www/Lychee
-sed -i '' "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|" /usr/local/www/Lychee/.env
-sed -i '' "s|DB_HOST=|DB_HOST=localhost|" /usr/local/www/Lychee/.env
-sed -i '' "s|#DB_DATABASE=|DB_DATABASE=${DB_NAME}|" /usr/local/www/Lychee/.env
-sed -i '' "s|DB_USERNAME=|DB_USERNAME=${DB_USER}|" /usr/local/www/Lychee/.env
-sed -i '' "s|DB_PASSWORD=|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/Lychee/.env
+sed -i '' "s|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|" /usr/local/www/lychee/.env
+sed -i '' "s|DB_HOST=|DB_HOST=localhost|" /usr/local/www/lychee/.env
+sed -i '' "s|#DB_DATABASE=|DB_DATABASE=${DB_NAME}|" /usr/local/www/lychee/.env
+sed -i '' "s|DB_USERNAME=|DB_USERNAME=${DB_USER}|" /usr/local/www/lychee/.env
+sed -i '' "s|DB_PASSWORD=|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/lychee/.env
 
 # Restart Services
 service redis start
