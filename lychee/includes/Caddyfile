@@ -5,7 +5,7 @@
 		output file /var/log/lychee_access.log
 	}
 
-	root * /usr/local/www/Lychee/public
+	root * /usr/local/www/lychee/public
 	file_server
 
 	php_fastcgi 127.0.0.1:9000
