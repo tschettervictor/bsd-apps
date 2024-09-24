@@ -12,7 +12,7 @@ chmod +x lychee-install.sh
 ```
 
 ## Install Notes
-  - none
+  - APP_URL inside the `.env` file must be set to the IP or hostname you use to access you installation, or you will encounter errors
 
 ## Variables
 
@@ -21,6 +21,14 @@ PHP_VERSION
 
 MARIADB_VERSION
   - mariadb version to use (currently defaults to 106)
+
+LYCHEE_VERSION
+  - lychee version to download (currently defaults to 5.5.1)
+
+TIME_ZONE
+  - (sets the timezone, see http://php.net/manual/en/timezones.php)
+  - must be set or script will exit
+
 
 ## Mount points (should be mounted outside the jail)
   - `/usr/local/www/lychee` - web directory (includes config file)
