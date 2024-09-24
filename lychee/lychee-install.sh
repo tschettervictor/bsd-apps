@@ -16,7 +16,13 @@ DB_NAME="lychee"
 DB_USER="lychee"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
-TIME_ZONE="America/Edmonton"
+TIME_ZONE=""
+
+# Variable Checks
+if [ -z "${TIME_ZONE}" ]; then
+  echo 'Configuration error: TIME_ZONE must be set'
+  exit 1
+fi
 
 # Check for Reinstall
 if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
