@@ -4,6 +4,7 @@
 PYTHON_VERSION="311"
 NODE_VERSION="20"
 JAVA_VERSION="22"
+HTTP="0"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
@@ -15,18 +16,19 @@ fi
 pkg install -y git-lite gmake openjdk${JAVA_VERSION} npm-node${NODE_VERSION} node${NODE_VERSION} yarn-node${NODE_VERSION} python${PYTHON_VERSION} py${PYTHON_VERSION}-rdiff-backup py${PYTHON_VERSION}-supervisor rsync screen
 
 # Create Directories
-mkdir -p /usr/local/games/
+mkdir -p /usr/local/games
 mkdir -p /var/games/minecraft
 
-# Install MineOS
+# MineOS Setup
 git clone https://github.com/hexparrot/mineos-node /usr/local/games/minecraft
 chmod +x /usr/local/games/minecraft/*.sh
 chmod +x /usr/local/games/minecraft/*.js
 /usr/local/games/minecraft/generate-sslcert.sh
 cp /usr/local/games/minecraft/mineos.conf /etc/mineos.conf
 cd /usr/local/games/minecraft && yarn add jsegaert/node-userid && npm install
-# Uncomment next line to only use http
-#sed -i '' "s/^use_https.*/use_https = false/" /etc/mineos.conf
+if [ "${HTTP}" -eq 1 ]; then
+   sed -i '' "s/^use_https.*/use_https = false/" /etc/mineos.conf
+fi
 pw useradd -n mineos -u 8443 -G games -d /nonexistent -s /usr/local/bin/bash -h 0 <<EOF
 mineos
 EOF
@@ -36,6 +38,7 @@ cat /usr/local/games/minecraft/init/supervisor_conf.bsd >> /usr/local/etc/superv
 sysrc supervisord_enable="YES"
 service supervisord start
 
+# Done
 echo "---------------"
 echo "Installation complete."
 echo "MineOS is running on port 8443"
@@ -44,3 +47,4 @@ echo "User Information"
 echo "Default user = mineos"
 echo "Default password = mineos"
 echo "To change the password, use \"passwd mineos\" command."
+echo "---------------"
