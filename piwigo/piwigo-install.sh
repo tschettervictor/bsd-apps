@@ -8,13 +8,13 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 APP_NAME="Piwigo"
-MARIADB_VERSION="106"
-PHP_VERSION="83"
 DB_TYPE="MariaDB"
 DB_NAME="piwigo"
 DB_USER="piwigo"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
+PHP_VERSION="83"
+MARIADB_VERSION="106"
 
 # Check for Reinstall
 if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
@@ -48,15 +48,15 @@ else
 		echo "Failed to create database, aborting..."
 		exit 1
 	fi
-		mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
-		mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
-		mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-		mysql -u root -e "DROP DATABASE IF EXISTS test;"
-		mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
-		mysql -u root -e "FLUSH PRIVILEGES;"
-		mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-		fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/piwigo/includes/my.cnf
-		sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+	mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+	mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
+	mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+	mysql -u root -e "DROP DATABASE IF EXISTS test;"
+	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+	mysql -u root -e "FLUSH PRIVILEGES;"
+	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/piwigo/includes/my.cnf
+	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 fi
 
 # Install Piwigo
