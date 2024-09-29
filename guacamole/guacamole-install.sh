@@ -8,12 +8,12 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 APP_NAME="Guacamole"
-MARIADB_VERSION="106"
 DB_TYPE="MariaDB"
 DB_NAME="guacamole"
 DB_USER="guacamole"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
+MARIADB_VERSION="106"
 
 # Check for Reinstall
 if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
