@@ -12,12 +12,13 @@ chmod +x uptime-kuma-install.sh
 ```
 
 ## Variables
+These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at defalut unless you have a good reason to change them.
 
-DATA_PATH="/mnt/data"
-  - data directory will be stored here (currently defaults to `/mnt/data`)
+DATA_PATH
+- data directory will be stored here (currently defaults to `/mnt/data`)
 
 ## Mount points (should be mounted outside the jail)
-  - `/mnt/data` - data directory
+- `/mnt/data` - data directory
 
 ## Jail Properties
-  - none
+- none
