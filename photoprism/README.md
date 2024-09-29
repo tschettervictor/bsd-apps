@@ -12,7 +12,7 @@ chmod +x photoprism-install.sh
 ```
 
 ## Notes
-  - your CPU must supports AVX2 to run photoprism
+  - your CPU must support AVX2 to run photoprism
 
 ## Variables
 These are the variables that are available to change along with their defaults and a description of what they do.
