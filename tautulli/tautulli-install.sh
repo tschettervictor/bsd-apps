@@ -1,6 +1,7 @@
 #!/bin/sh
 # Install Tautulli
 
+APP_NAME="Tautulli"
 PYTHON_VERSION="39"
 
 # Check for Root Privileges
@@ -15,12 +16,8 @@ pkg install -y bash python py${PYTHON_VERSION}-setuptools py${PYTHON_VERSION}-sq
 # Create Directories
 mkdir -p /data
 
-# Install Tautulli
-if ! git clone https://github.com/Tautulli/Tautulli.git /usr/local/share/Tautulli
-then
-	echo "Failed to clone Tautulli"
-	exit 1
-fi
+# Tautulli Setup
+git clone https://github.com/Tautulli/Tautulli.git /usr/local/share/Tautulli
 pw user add tautulli -c tautulli -u 109 -d /nonexistent -s /usr/bin/nologin
 chown -R tautulli:tautulli /usr/local/share/Tautulli /data
 cp /usr/local/share/Tautulli/init-scripts/init.freebsd /usr/local/etc/rc.d/tautulli
@@ -31,7 +28,8 @@ sysrc tautulli_enable="YES"
 sysrc tautulli_user=tautulli
 sysrc "tautulli_flags=--datadir /data"
 
+# Done
 echo "---------------"
 echo "Installation complete."
-echo "Tautulli is running on port 8181"
+echo "${APP_NAME} is running on port 8181"
 echo "---------------"
