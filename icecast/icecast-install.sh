@@ -1,25 +1,30 @@
 #!/bin/sh
 # Install Icecast
 
-# Check for root privileges
+# Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
 
-# Install packages
+# Install Packages
 pkg install -y icecast
 
-# Create directories and copy config file
+# Create Directories
 mkdir -p /usr/local/www/icecast
 mkdir -p /var/log/icecast
-cp /usr/local/etc/icecast.xml /usr/local/www/icecast/
 
-# Enable and start services
+# Icecast Setup
+if ! [ "$(ls -A "/usr/local/www/icecast")" ]; then
+   cp /usr/local/etc/icecast.xml /usr/local/www/icecast/
+fi
+
+# Enable and Start Services
 sysrc icecast_config="/usr/local/www/icecast/icecast.xml"
 sysrc icecast_enable="YES"
 service icecast start
 
+# Done
 echo "---------------"
 echo "Installation Complete!"
 echo "---------------"
