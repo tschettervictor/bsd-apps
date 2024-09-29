@@ -1,12 +1,6 @@
 #!/bin/sh
 # Install OnlyOffice Document Server
 
-# Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"
-   exit 1
-fi
-
 APP_NAME="OnlyOffice"
 DB_TYPE="PostgreSQL"
 DB_NAME="onlyoffice"
@@ -17,6 +11,12 @@ RABBITMQ_USER="onlyoffice"
 RABBITMQ_PASSWORD=$(openssl rand -base64 15)
 JWT_SECRET=$(openssl rand -base64 20)
 PG_VERSION="15"
+
+# Check for Root Privileges
+if ! [ $(id -u) = 0 ]; then
+   echo "This script must be run with root privileges"
+   exit 1
+fi
 
 # Install Packages
 pkg install -y onlyoffice-documentserver postgresql"${PG_VERSION}"-server postgresql"${PG_VERSION}"-client
@@ -93,6 +93,7 @@ echo "JWT secret is ${JWT_SECRET}." >> /root/${APP_NAME}-Info.txt
 # Done
 echo "---------------"
 echo "Installation complete."
+echo "${APP_NAME} is running on port 80"
 echo "---------------"
 echo "Database Information"
 echo "$DB_TYPE Username: root"
