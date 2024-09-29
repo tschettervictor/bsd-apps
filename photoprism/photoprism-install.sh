@@ -61,33 +61,32 @@ if [ "${REINSTALL}" == "true" ]; then
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;"
 		then
-		echo "Failed to create ${APP_NAME} database, aborting"
+		echo "Failed to create ${APP_NAME} database, aborting..."
     		exit 1
 	fi
-mysql -u root -e "CREATE USER '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* to '${DB_USER}'@'%';"
-mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
-mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-mysql -u root -e "DROP DATABASE IF EXISTS test;"
-mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
-mysql -u root -e "FLUSH PRIVILEGES;"
-mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/photoprism/includes/my.cnf
-sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
-touch /mnt/photos/options.yml
-cat >/mnt/photos/options.yml <<EOL
-# options.yml
-AdminPassword: ${ADMIN_PASSWORD}
-AssetsPath: /var/db/photoprism/assets
-StoragePath: /mnt/photos
-OriginalsPath: /mnt/photos/originals
-ImportPath: /mnt/photos/import
-DatabaseDriver: mysql
-DatabaseName: ${DB_NAME}
-DatabaseServer: "127.0.0.1:3306"
-DatabaseUser: ${DB_USER}
-DatabasePassword: ${DB_PASSWORD}
-EOL
+	mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* to '${DB_USER}'@'%';"
+	mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
+	mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+	mysql -u root -e "DROP DATABASE IF EXISTS test;"
+	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+	mysql -u root -e "FLUSH PRIVILEGES;"
+	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/photoprism/includes/my.cnf
+	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+	touch /mnt/photos/options.yml
+	cat >/mnt/photos/options.yml <<EOL
+	# options.yml
+	AdminPassword: ${ADMIN_PASSWORD}
+	AssetsPath: /var/db/photoprism/assets
+	StoragePath: /mnt/photos
+	OriginalsPath: /mnt/photos/originals
+	ImportPath: /mnt/photos/import
+	DatabaseDriver: mysql
+	DatabaseName: ${DB_NAME}
+	DatabaseServer: "127.0.0.1:3306"
+	DatabaseUser: ${DB_USER}
+	DatabasePassword: ${DB_PASSWORD}
+	EOL
 fi
 
 # Install Photoprism
