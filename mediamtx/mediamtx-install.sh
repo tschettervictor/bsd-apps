@@ -16,7 +16,7 @@ pkg install -y git-lite go${GO_VERSION}
 mkdir -p /usr/local/www/mediamtx
 mkdir -p /usr/local/etc/rc.d
 
-# Install MediaMTX
+# MediaMTX Setup
 git clone https://github.com/bluenviron/mediamtx
 cd /mediamtx && go122 generate ./...
 cd /mediamtx && go122 build .
@@ -38,6 +38,5 @@ service mediamtx start
 # Done
 echo "---------------"
 echo "Installation Complete!"
-echo "---------------"
 echo "MediaMTX is now installed and running. See the config file to configure preferred streaming protocols."
 echo "---------------"
