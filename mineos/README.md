@@ -14,6 +14,9 @@ chmod +x mineos-install.sh
 ## Variables
 These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at defalut unless you have a good reason to change them.
 
+HTTP
+- set to 1 to use http access only (defaults to 0)
+
 PYTHON_VERSION
 - python version to use (currenlty defaults to 311)
 
