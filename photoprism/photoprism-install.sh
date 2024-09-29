@@ -1,12 +1,6 @@
 #!/bin/sh
 # Install Photoprism
 
-# Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"
-   exit 1
-fi
-
 APP_NAME="Photoprism"
 ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_TYPE="MariaDB"
@@ -27,6 +21,12 @@ LIBTENSORFLOW_PKG="https://github.com/lapo-luchini/libtensorflow1-freebsd-port/r
 PHOTOPRISM_PKG="https://github.com/Gaojianli/photoprism-freebsd-port/releases/download/240915-e1280b2fb/photoprism-g20240915-FreeBSD-13.3-RELEASE.pkg"
 # Uncomment for FreeBSD 14
 #PHOTOPRISM_PKG="https://github.com/Gaojianli/photoprism-freebsd-port/releases/download/240915-e1280b2fb/photoprism-g20240915-FreeBSD-14.1-RELEASE.pkg"
+
+# Check for Root Privileges
+if ! [ $(id -u) = 0 ]; then
+   echo "This script must be run with root privileges"
+   exit 1
+fi
 
 # Check for Reinstall
 if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
