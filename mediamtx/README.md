@@ -12,13 +12,13 @@ chmod +x mediamtx-install.sh
 ```
 
 ## Variables
+These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at defalut unless you have a good reason to change them.
 
 GO_VERSION
-  - go version to use (currently defaluts to 122)
+- go version to use (currently defaluts to 122)
 
 ## Mount points (should be mounted outside the jail)
-  - `/usr/local/www/mediamtx` - config file directory
-
+- `/usr/local/www/mediamtx` - config file directory
 
 ## Jail Properties
-  - none
+- none
