@@ -1,6 +1,7 @@
 #!/bin/sh
 # Install Unifi Controller
 
+APP_NAME="Unifi"
 UNIFI_VERSION="8"
 
 # Check for Root Privileges
@@ -18,7 +19,8 @@ sysrc mondod_enable=yes
 service mondod start
 service unifi start
 
+# Done
 echo "---------------"
 echo "Installation Complete."
-echo "Unifi is running on port 8443"
+echo "${APP_NAME} is running on port 8443"
 echo "---------------"
