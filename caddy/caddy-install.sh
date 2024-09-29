@@ -54,31 +54,14 @@ pkg install -y go git-lite openssl
 mkdir -p /usr/local/etc/rc.d
 mkdir -p /usr/local/www
 
-# Build xcaddy, use it to build Caddy
-if ! go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-then
-  echo "Failed to get xcaddy, terminating."
-  exit 1
-fi
-if ! cp /root/go/bin/xcaddy /usr/local/bin/xcaddy
-then
-  echo "Failed to move xcaddy to path, terminating."
-  exit 1
-fi
+# Caddy Setup
+go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+cp /root/go/bin/xcaddy /usr/local/bin/xcaddy
 if [ ${DNS_CERT} -eq 1 ]; then
-  if ! xcaddy build --output /usr/local/bin/caddy --with github.com/caddy-dns/"${DNS_PLUGIN}"
-  then
-    echo "Failed to build Caddy with ${DNS_PLUGIN} plugin, terminating."
-    exit 1
-  fi  
+	xcaddy build --output /usr/local/bin/caddy --with github.com/caddy-dns/"${DNS_PLUGIN}"
 else
-  if ! xcaddy build --output /usr/local/bin/caddy
-  then
-    echo "Failed to build Caddy without plugin, terminating."
-    exit 1
-  fi  
+	xcaddy build --output /usr/local/bin/caddy
 fi
-# Generate and insall self-signed cert, if necessary
 if [ $SELFSIGNED_CERT -eq 1 ]; then
 	mkdir -p /usr/local/etc/pki/tls/private
 	mkdir -p /usr/local/etc/pki/tls/certs
@@ -87,8 +70,8 @@ if [ $SELFSIGNED_CERT -eq 1 ]; then
 	cp /tmp/fullchain.pem /usr/local/etc/pki/tls/certs/fullchain.pem
 fi
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
-  fetch -o /root/remove-staging.sh https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/caddy/includes/remove-staging.sh
-  chmod +x remove-staging.sh
+	fetch -o /root/remove-staging.sh https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/caddy/includes/remove-staging.sh
+	chmod +x remove-staging.sh
 fi
 if [ $NO_CERT -eq 1 ]; then
 	echo "Fetching Caddyfile for no SSL"
@@ -120,25 +103,27 @@ echo "---------------"
 echo "Installation complete."
 echo "---------------"
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
-  echo "You have obtained your Let's Encrypt certificate using the staging server."
-  echo "This certificate will not be trusted by your browser and will cause SSL errors"
-  echo "when you connect.  Once you've verified that everything else is working"
-  echo "correctly, you should issue a trusted certificate.  To do this, run:"
-  echo "/root/remove-staging.sh"
-  echo ""
+  	echo "You have obtained your Let's Encrypt certificate using the staging server."
+  	echo "This certificate will not be trusted by your browser and will cause SSL errors"
+  	echo "when you connect.  Once you've verified that everything else is working"
+  	echo "correctly, you should issue a trusted certificate.  To do this, run:"
+  	echo "/root/remove-staging.sh"
+	echo "---------------"
 elif [ $SELFSIGNED_CERT -eq 1 ]; then
-  echo "You have chosen to create a self-signed TLS certificate for your installation."
-  echo "installation.  This certificate will not be trusted by your browser and"
-  echo "will cause SSL errors when you connect.  If you wish to replace this certificate"
-  echo "with one obtained elsewhere, the private key is located at:"
-  echo "/usr/local/etc/pki/tls/private/privkey.pem"
-  echo "The full chain (server + intermediate certificates together) is at:"
-  echo "/usr/local/etc/pki/tls/certs/fullchain.pem"
-  echo ""
+  	echo "You have chosen to create a self-signed TLS certificate for your installation."
+  	echo "installation.  This certificate will not be trusted by your browser and"
+  	echo "will cause SSL errors when you connect.  If you wish to replace this certificate"
+  	echo "with one obtained elsewhere, the private key is located at:"
+  	echo "/usr/local/etc/pki/tls/private/privkey.pem"
+ 	echo "The full chain (server + intermediate certificates together) is at:"
+  	echo "/usr/local/etc/pki/tls/certs/fullchain.pem"
+	echo "---------------"
 fi
 echo "---------------"
 if [ $NO_CERT -eq 1 ]; then
-  echo "Using your web browser, go to http://${HOST_NAME} to access your installation."
+	echo "Using your web browser, go to http://${HOST_NAME} to access you installation."
+	echo "---------------"
 else
-  echo "Using your web browser, go to https://${HOST_NAME} to access your installation."
+  	echo "Using your web browser, go to https://${HOST_NAME} to access your installation."
+  	echo "---------------"
 fi
