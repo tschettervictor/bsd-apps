@@ -12,11 +12,13 @@ chmod +x guacamole-install.sh
 ```
 
 ## Variables
-  - none
+
+MARIADB_VERSION
+- mariadb version to use (currently defaults to 106)
 
 ## Mount points (should be mounted outside the jail)
-  - `/var/db/mysql` - database directory
-  - `/usr/local/etc/guacamole-client` - config/extensions directory
+- `/var/db/mysql` - database directory
+- `/usr/local/etc/guacamole-client` - config/extensions directory
 
 ## Jail Properties
-  - none
+- none
