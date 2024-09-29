@@ -55,7 +55,7 @@ if [ "${REINSTALL}" == "true" ]; then
   	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
-		echo "Failed to create database, aborting..."
+		echo "Failed to create ${APP_NAME} database, aborting..."
 		exit 1
 	fi
 	mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
