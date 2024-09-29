@@ -1,24 +1,23 @@
 #!/bin/sh
 # Install Vaultwarden
 
-# Available Variables (change as needed)
+# Check for Root Privileges
+if ! [ $(id -u) = 0 ]; then
+   echo "This script must be run with root privileges"
+   exit 1
+fi
+
 APP_NAME="vaultwarden"
-PYTHON_VERSION="311"
 ADMIN_TOKEN=$(openssl rand -base64 16)
 HOST_NAME=""
+NO_CERT=0
 SELFSIGNED_CERT=0
 STANDALONE_CERT=0
 DNS_CERT=0
 DNS_PLUGIN=""
 DNS_TOKEN=""
-NO_CERT=0
 CERT_EMAIL=""
-
-# Check for root privileges
-if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"
-   exit 1
-fi
+PYTHON_VERSION="311"
 
 # Variable Checks
 if [ -z "${HOST_NAME}" ]; then
@@ -53,7 +52,8 @@ fi
 
 # Check for Reinstall
 if [ "$(ls -A "/usr/local/www/vaultwarden/data" 2>/dev/null)" ]; then
-	echo "Existing Vaultwarden data detected..."
+	echo "Existing ${APP_NAME} data detected."
+ 	echo "Starting reinstall..."
 	REINSTALL="true"
 fi
 
@@ -82,32 +82,14 @@ else
 	sed -i '' "s|youradmintokenhere|'${ADMIN_HASH}'|" /usr/local/etc/rc.conf.d/vaultwarden
 fi
 
-# Install Caddy
-# Build xcaddy, use it to build Caddy
-if ! go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-then
-  echo "Failed to get xcaddy, terminating."
-  exit 1
-fi
-if ! cp /root/go/bin/xcaddy /usr/local/bin/xcaddy
-then
-  echo "Failed to move xcaddy to path, terminating."
-  exit 1
-fi
+# Caddy Setup
+go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+cp /root/go/bin/xcaddy /usr/local/bin/xcaddy
 if [ ${DNS_CERT} -eq 1 ]; then
-  if ! xcaddy build --output /usr/local/bin/caddy --with github.com/caddy-dns/"${DNS_PLUGIN}"
-  then
-    echo "Failed to build Caddy with ${DNS_PLUGIN} plugin, terminating."
-    exit 1
-  fi  
+	xcaddy build --output /usr/local/bin/caddy --with github.com/caddy-dns/"${DNS_PLUGIN}" 
 else
-  if ! xcaddy build --output /usr/local/bin/caddy
-  then
-    echo "Failed to build Caddy without plugin, terminating."
-    exit 1
-  fi  
+	xcaddy build --output /usr/local/bin/caddy 
 fi
-# Generate and insall self-signed cert, if necessary
 if [ $SELFSIGNED_CERT -eq 1 ]; then
 	mkdir -p /usr/local/etc/pki/tls/private
 	mkdir -p /usr/local/etc/pki/tls/certs
@@ -116,8 +98,8 @@ if [ $SELFSIGNED_CERT -eq 1 ]; then
 	cp /tmp/fullchain.pem /usr/local/etc/pki/tls/certs/fullchain.pem
 fi
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
-  fetch -o /root/remove-staging.sh https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/vaultwarden/includes/remove-staging.sh
-  chmod +x remove-staging.sh
+	fetch -o /root/remove-staging.sh https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/vaultwarden/includes/remove-staging.sh
+ 	chmod +x remove-staging.sh
 fi
 if [ $NO_CERT -eq 1 ]; then
 	echo "Fetching Caddyfile for no SSL"
@@ -146,43 +128,45 @@ sysrc vaultwarden_enable="YES"
 service vaultwarden start
 service caddy start
 
-# Save Passwords for Later Reference
-echo "Your admin token to access the admin portal is ${ADMIN_TOKEN}" > /root/${APP_NAME}_admin_token.txt
+# Save Passwords
+echo "Your ${APP_NAME} admin token to for the admin portal is ${ADMIN_TOKEN}" > /root/${APP_NAME}-Info.txt
 
+# Done
 echo "---------------"
 echo "Installation complete."
 echo "---------------"
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
-  echo "You have obtained your Let's Encrypt certificate using the staging server."
-  echo "This certificate will not be trusted by your browser and will cause SSL errors"
-  echo "when you connect.  Once you've verified that everything else is working"
-  echo "correctly, you should issue a trusted certificate.  To do this, run:"
-  echo "/root/remove-staging.sh"
-  echo ""
+  	echo "You have obtained your Let's Encrypt certificate using the staging server."
+  	echo "This certificate will not be trusted by your browser and will cause SSL errors"
+  	echo "when you connect.  Once you've verified that everything else is working"
+  	echo "correctly, you should issue a trusted certificate.  To do this, run:"
+  	echo "/root/remove-staging.sh"
+	echo "---------------"
 elif [ $SELFSIGNED_CERT -eq 1 ]; then
-  echo "You have chosen to create a self-signed TLS certificate for your installation."
-  echo "installation.  This certificate will not be trusted by your browser and"
-  echo "will cause SSL errors when you connect.  If you wish to replace this certificate"
-  echo "with one obtained elsewhere, the private key is located at:"
-  echo "/usr/local/etc/pki/tls/private/privkey.pem"
-  echo "The full chain (server + intermediate certificates together) is at:"
-  echo "/usr/local/etc/pki/tls/certs/fullchain.pem"
-  echo ""
+  	echo "You have chosen to create a self-signed TLS certificate for your installation."
+  	echo "installation.  This certificate will not be trusted by your browser and"
+  	echo "will cause SSL errors when you connect.  If you wish to replace this certificate"
+  	echo "with one obtained elsewhere, the private key is located at:"
+  	echo "/usr/local/etc/pki/tls/private/privkey.pem"
+ 	echo "The full chain (server + intermediate certificates together) is at:"
+  	echo "/usr/local/etc/pki/tls/certs/fullchain.pem"
+	echo "---------------"
 fi
-echo "---------------"
 if [ $NO_CERT -eq 1 ]; then
-  echo "Using your web browser, go to http://${HOST_NAME} to log in"
+	echo "Using your web browser, go to http://${HOST_NAME} to log in"
+	echo "---------------"
 else
-  echo "Using your web browser, go to https://${HOST_NAME} to log in"
+  	echo "Using your web browser, go to https://${HOST_NAME} to log in"
+  	echo "---------------"
 fi
-echo "---------------"
 if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall, your admin token has not changed."
  	echo "If you need to generate a new one, please see the vaultwarden github."
-else
 	echo "---------------"
+else
  	echo "Admin Portal Information"
  	echo "Your admin token to access the admin portal is ${ADMIN_TOKEN}"
   	echo "---------------"
 	echo "The admin token is saved in /root/${APP_NAME}_admin_token.txt"
+	echo "---------------"
 fi
