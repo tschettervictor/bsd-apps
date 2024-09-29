@@ -1,15 +1,15 @@
 #!/bin/sh
 # Install Uptime-Kuma
 
+APP_NAME="Uptime-Kuma"
+DATA_PATH="/mnt/data"
+NODE_VERSION="18"
+
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
-
-APP_NAME="Uptime-Kuma"
-DATA_PATH="/mnt/data"
-NODE_VERSION="18"
 
 # Install Packages
 pkg install -y git-lite npm-node"${NODE_VERSION}"
