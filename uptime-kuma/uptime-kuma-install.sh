@@ -7,6 +7,7 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+APP_NAME="Uptime-Kuma"
 DATA_PATH="/mnt/data"
 NODE_VERSION="18"
 
@@ -38,5 +39,5 @@ service uptimekuma start
 # Done
 echo "---------------"
 echo "Installation Complete!"
-echo "Uptime-Kuma is running on port 3001"
+echo "${APP_NAME} is running on port 3001"
 echo "---------------"
