@@ -3,7 +3,7 @@
 
 APP_NAME="zoneminder"
 DB_TYPE="MySQL"
-DB_NAME="zm"
+DB_NAME="zoneminder"
 DB_USER="zoneminder"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASS=$(openssl rand -base64 15)
