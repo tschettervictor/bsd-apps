@@ -14,6 +14,7 @@ pkg install -y jellyfin
 sysrc jellyfin_enable=YES
 service jellyfin start
 
+# Done
 echo "---------------"
 echo "Installation Complete!"
 echo "Jellyfin is running on port 8096"
