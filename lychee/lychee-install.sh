@@ -8,14 +8,14 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 APP_NAME="Lychee"
-LYCHEE_VERSION="5.5.1"
-MARIADB_VERSION="106"
-PHP_VERSION="83"
+APP_VERSION="5.5.1"
 DB_TYPE="MariaDB"
 DB_NAME="lychee"
 DB_USER="lychee"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
+PHP_VERSION="83"
+MARIADB_VERSION="106"
 TIME_ZONE=""
 
 # Variable Checks
@@ -47,11 +47,11 @@ sysrc mysql_enable=YES
 # Create and Configure Database
 service mysql-server start
 if [ "${REINSTALL}" == "true" ]; then
-	echo "You did a reinstall, but database passwords will still be changed."
+	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/includes/my.cnf
-  sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
 		echo "Failed to create database, aborting..."
@@ -76,7 +76,7 @@ php /tmp/composer-setup.php --install-dir /usr/local/bin --filename composer
 
 # Install Lychee
 fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/includes/Caddyfile
-fetch -o /tmp https://github.com/LycheeOrg/Lychee/releases/download/v${LYCHEE_VERSION}/Lychee.zip
+fetch -o /tmp https://github.com/LycheeOrg/Lychee/releases/download/v${APP_VERSION}/Lychee.zip
 unzip -u -d /usr/local/www /tmp/Lychee.zip
 rm /tmp/Lychee.zip
 if [ "${REINSTALL}" == "true" ]; then
