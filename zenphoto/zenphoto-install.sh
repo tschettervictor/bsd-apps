@@ -68,7 +68,7 @@ if [ "${REINSTALL}" == "true" ]; then
 	cp -f /tmp/zenphoto-"${APP_VERSION}"/index.php /usr/local/www/zenphoto/index.php
 	chown -R www:www /usr/local/www/zenphoto
 	rm -R /tmp/"v${APP_VERSION}.tar.gz" /tmp/zenphoto-"${APP_VERSION}"
-	sed -i '' "s|.*zenphoto_db_pass.*|${DB_PASSWORD}|" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
+ 	sed -i '' -e "s|.*mysql_pass.*|\$conf['mysql_pass'] = '${DB_PASSWORD}';|" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
 else
 	cp -r -f /tmp/zenphoto-"${APP_VERSION}"/ /usr/local/www/zenphoto/
 	rm -R /tmp/"v${APP_VERSION}.tar.gz" /tmp/zenphoto-"${APP_VERSION}"
