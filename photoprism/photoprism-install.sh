@@ -45,6 +45,7 @@ pkg install -y vips ffmpeg darktable rawtherapee libheif p5-Image-ExifTool maria
 # Create Directories
 mkdir -p /mnt/photos
 mkdir -p /var/db/mysql
+chown -R 88:88 /var/db/mysql
 
 # Create Database
 sysrc mysql_enable="YES"
