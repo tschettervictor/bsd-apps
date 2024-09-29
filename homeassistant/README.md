@@ -15,17 +15,17 @@ chmod +x homeassistant-install.sh
 ```
 
 ## Install Notes
-
-This is a completely unsupported install of Homeassistant Core. It may work, and it may not work.
+- this is a completely unsupported install of Homeassistant Core. It may work, and it may not work.
 It used to work fine, but as of 2024 it's been tough keeping a jailed version going.
 
 ## Variables
+These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at defalut unless you have a good reason to change them.
 
 PYTHON_VERSION
-  - python version to use (currently defaults to 311)
+- python version to use (currently defaults to 311)
 
 ## Mount points (should be mounted outside the jail)
-  - `/home/homeassistant/config` - config directory
+- `/home/homeassistant/config` - config directory
 
 ## Jail Properties
-  - none
+- none
