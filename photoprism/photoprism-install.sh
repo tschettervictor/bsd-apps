@@ -15,18 +15,14 @@ DB_USER="photoprism"
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
 MARIADB_VERSION="106"
+
 # Libtensorflow Package
 # Uncomment for FreeBSD 13
 LIBTENSORFLOW_PKG="https://github.com/lapo-luchini/libtensorflow1-freebsd-port/releases/download/v1.15.5_2/libtensorflow1-1.15.5_2.pkg-FreeBSD-13.2-amd64-AVX-SSE42.pkg"
 # Uncomment for FreeBSD 14
 #LIBTENSORFLOW_PKG="https://github.com/lapo-luchini/libtensorflow1-freebsd-port/releases/download/v1.15.5_2/libtensorflow1-1.15.5_2.pkg-FreeBSD-14.0-amd64-AVX-SSE42.pkg"
+
 # Photoprism Package
-# github.com/lapo-luchini
-# Uncomment for FreeBSD 13
-#PHOTOPRISM_PKG="https://github.com/lapo-luchini/photoprism-freebsd-port/releases/download/2023-11-28/photoprism-g20231128-FreeBSD-13.2-amd64.pkg"
-# Uncomment for FreeBSD 14
-#PHOTOPRISM_PKG="https://github.com/lapo-luchini/photoprism-freebsd-port/releases/download/2023-11-28/photoprism-g20231128-FreeBSD-14.0-amd64.pkg"
-# github.com/Gaojianli
 # Uncomment for FreeBSD 13
 PHOTOPRISM_PKG="https://github.com/Gaojianli/photoprism-freebsd-port/releases/download/240915-e1280b2fb/photoprism-g20240915-FreeBSD-13.3-RELEASE.pkg"
 # Uncomment for FreeBSD 14
