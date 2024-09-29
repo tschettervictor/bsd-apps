@@ -51,7 +51,6 @@ if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-  	sed -i '' -e "s|.*DatabasePassword:.*|DatabasePassword: ${DB_PASSWORD}|g" /mnt/photos/options.yml
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/photoprism/includes/my.cnf
   	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
@@ -69,6 +68,14 @@ else
 	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/photoprism/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+fi
+
+# Install Photoprism
+pkg add "${LIBTENSORFLOW_PKG}"
+pkg add "${PHOTOPRISM_PKG}"
+if [ "${REINSTALL}" == "true" ]; then
+  	sed -i '' -e "s|.*DatabasePassword:.*|DatabasePassword: ${DB_PASSWORD}|g" /mnt/photos/options.yml
+else
 	touch /mnt/photos/options.yml
 	cat >/mnt/photos/options.yml <<EOL
 	# options.yml
@@ -84,13 +91,9 @@ else
 	DatabasePassword: ${DB_PASSWORD}
 	EOL
 fi
-
-# Install Photoprism
-pkg add "${LIBTENSORFLOW_PKG}"
-pkg add "${PHOTOPRISM_PKG}"
+chown -R photoprism:photoprism /mnt/photos
 
 # Enable and Start Services
-chown -R photoprism:photoprism /mnt/photos
 sysrc photoprism_enable="YES"
 sysrc photoprism_assetspath="/var/db/photoprism/assets"
 sysrc photoprism_storagepath="/mnt/photos/"
