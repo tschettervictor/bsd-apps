@@ -8,7 +8,6 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 APP_NAME="OnlyOffice"
-PG_VERSION="15"
 DB_TYPE="PostgreSQL"
 DB_NAME="onlyoffice"
 DB_USER="onlyoffice"
@@ -17,6 +16,7 @@ DB_PASSWORD=$(openssl rand -base64 15)
 RABBITMQ_USER="onlyoffice"
 RABBITMQ_PASSWORD=$(openssl rand -base64 15)
 JWT_SECRET=$(openssl rand -base64 20)
+PG_VERSION="15"
 
 # Install Packages
 pkg install -y onlyoffice-documentserver postgresql"${PG_VERSION}"-server postgresql"${PG_VERSION}"-client
