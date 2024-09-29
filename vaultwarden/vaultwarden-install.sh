@@ -1,12 +1,6 @@
 #!/bin/sh
 # Install Vaultwarden
 
-# Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"
-   exit 1
-fi
-
 APP_NAME="Vaultwarden"
 ADMIN_TOKEN=$(openssl rand -base64 16)
 HOST_NAME=""
@@ -18,6 +12,12 @@ DNS_PLUGIN=""
 DNS_TOKEN=""
 CERT_EMAIL=""
 PYTHON_VERSION="311"
+
+# Check for Root Privileges
+if ! [ $(id -u) = 0 ]; then
+   echo "This script must be run with root privileges"
+   exit 1
+fi
 
 # Variable Checks
 if [ -z "${HOST_NAME}" ]; then
