@@ -115,6 +115,7 @@ sysrc caddy_config="/usr/local/www/Caddyfile"
 sysrc caddy_enable="YES"
 service caddy start
 
+# Done
 echo "---------------"
 echo "Installation complete."
 echo "---------------"
