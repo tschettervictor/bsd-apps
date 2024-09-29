@@ -18,16 +18,8 @@ mkdir -p /usr/local/etc/rc.d
 
 # Install MediaMTX
 git clone https://github.com/bluenviron/mediamtx
-if ! cd /mediamtx && go122 generate ./...
-then
-    echo "Failed to generate"
-    exit 1
-fi
-if ! cd /mediamtx && go122 build .
-then
-    echo "Failed to build"
-    exit 1
-fi
+cd /mediamtx && go122 generate ./...
+cd /mediamtx && go122 build .
 cp /mediamtx/mediamtx /usr/local/bin/mediamtx
 chmod +x /usr/local/bin/mediamtx
 if ! [ "$(ls -A "/usr/local/www/mediamtx")" ]; then
@@ -43,6 +35,7 @@ sysrc mediamtx_config="/usr/local/www/mediamtx/mediamtx.yml"
 sysrc mediamtx_enable="YES"
 service mediamtx start
 
+# Done
 echo "---------------"
 echo "Installation Complete!"
 echo "---------------"
