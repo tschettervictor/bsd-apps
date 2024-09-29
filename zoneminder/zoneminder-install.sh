@@ -1,12 +1,6 @@
 #!/bin/sh
 # Install Zoneminder
 
-# Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"
-   exit 1
-fi
-
 APP_NAME="zoneminder"
 DB_TYPE="MySQL"
 DB_NAME="zm"
@@ -14,6 +8,12 @@ DB_USER="zoneminder"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASS=$(openssl rand -base64 15)
 MYSQL_VERSION="80"
+
+# Check for Root Privileges
+if ! [ $(id -u) = 0 ]; then
+   echo "This script must be run with root privileges"
+   exit 1
+fi
 
 # Install Packages
 pkg install -y zoneminder fcgiwrap mysql${MYSQL_VERSION}-server openssl nginx
