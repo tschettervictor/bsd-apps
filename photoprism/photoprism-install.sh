@@ -63,7 +63,7 @@ else
 		echo "Failed to create MariaDB database, aborting"
     		exit 1
 	fi
-mysql -u root -e "CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';"
+mysql -u root -e "CREATE USER '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* to '${DB_USER}'@'%';"
 mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
 mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
