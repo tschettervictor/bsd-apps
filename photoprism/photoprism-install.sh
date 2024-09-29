@@ -43,12 +43,12 @@ mkdir -p /mnt/photos
 mkdir -p /var/db/mysql
 chown -R 88:88 /var/db/mysql
 
-# Create Database
+# Create and Configure Database
 sysrc mysql_enable="YES"
 sysrc mysql_args="--bind-address=127.0.0.1"
 service mysql-server start
 if [ "${REINSTALL}" == "true" ]; then
-	echo "You did a reinstall, but database passwords will still be changed."
+	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
   	sed -i '' -e "s|.*DatabasePassword:.*|DatabasePassword: ${DB_PASSWORD}|g" /mnt/photos/options.yml
@@ -114,7 +114,7 @@ echo "$APP_NAME DB User: $DB_USER"
 echo "$APP_NAME DB Password: $DB_PASSWORD"
 echo "---------------"
 if [ "${REINSTALL}" == "true" ]; then
-	echo "You did a reinstall"
+	echo "You did a reinstall."
  	echo "Please use your old credentials to log in."
 else
 	echo "User Information"
