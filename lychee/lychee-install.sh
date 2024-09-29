@@ -1,12 +1,6 @@
 #!/bin/sh
 # Install Lychee
 
-# Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"
-   exit 1
-fi
-
 APP_NAME="Lychee"
 APP_VERSION="5.5.1"
 DB_TYPE="MariaDB"
@@ -17,6 +11,12 @@ DB_PASSWORD=$(openssl rand -base64 15)
 PHP_VERSION="83"
 MARIADB_VERSION="106"
 TIME_ZONE=""
+
+# Check for Root Privileges
+if ! [ $(id -u) = 0 ]; then
+   echo "This script must be run with root privileges"
+   exit 1
+fi
 
 # Variable Checks
 if [ -z "${TIME_ZONE}" ]; then
