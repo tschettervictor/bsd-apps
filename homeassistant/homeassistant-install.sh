@@ -19,7 +19,7 @@ mkdir -p /usr/local/etc/rc.d
 mkdir -p /mnt/includes
 mkdir -p /usr/local/www
 
-# Install Homeassistant
+# Homeassistant Setup
 install -d -g 8123 -o 8123 -m 775 -- /home/homeassistant
 pw adduser -u 8123 -n homeassistant -d /home/homeassistant -w no -s /usr/local/bin/bash -G dialer
 chown -R homeassistant:homeassistant /home/homeassistant
@@ -33,8 +33,11 @@ sysrc homeassistant_enable=yes
 service homeassistant install homeassistant    
 service homeassistant start homeassistant
 
+# Done
 echo "---------------"
 echo "Installation complete!"
+echo "${APP_NAME} is running on port 8123"
 echo "---------------"
 echo "It will take 5-10 minutes to fully start homeassistant the first time."
 echo "Please also allow some additional time to configure extra packages."
+echo "---------------"
