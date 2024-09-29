@@ -23,7 +23,7 @@ PHP_VERSION
 MARIADB_VERSION
 - mariadb version to use (currently defaults to 106)
 
-LYCHEE_VERSION
+APP_VERSION
 - lychee version to download (currently defaults to 5.5.1)
 
 TIME_ZONE
