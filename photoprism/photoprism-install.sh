@@ -119,7 +119,7 @@ if [ "${REINSTALL}" == "true" ]; then
 else
 	echo "User Information"
 	echo "Default user is admin"
-	echo "Devault password is ${ADMIN_PASSWORD}"
+	echo "Default password is ${ADMIN_PASSWORD}"
  	echo "---------------"
 fi
 echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
