@@ -12,6 +12,7 @@ chmod +x guacamole-install.sh
 ```
 
 ## Variables
+These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at defalut unless you have a good reason to change them.
 
 MARIADB_VERSION
 - mariadb version to use (currently defaults to 106)
