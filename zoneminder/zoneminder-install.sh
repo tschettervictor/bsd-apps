@@ -81,6 +81,7 @@ echo "${APP_NAME} database user is ${DB_USER} and password is ${DB_PASS}" >> /ro
 # Done
 echo "---------------"
 echo "Installation complete."
+echo "${APP_NAME} is running on port 443"
 echo "---------------"
 echo "Database Information"
 echo "${DB_TYPE} Username: root"
