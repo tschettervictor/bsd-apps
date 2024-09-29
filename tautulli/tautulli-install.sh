@@ -26,7 +26,7 @@ chmod u+x /usr/local/etc/rc.d/tautulli
 # Enable and Start Services
 sysrc tautulli_enable="YES"
 sysrc tautulli_user=tautulli
-sysrc "tautulli_flags=--datadir /data"
+sysrc "tautulli_flags=--datadir /mnt/data"
 
 # Done
 echo "---------------"
