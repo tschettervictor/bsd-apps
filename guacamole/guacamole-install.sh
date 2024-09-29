@@ -1,12 +1,6 @@
 #!/bin/sh
 # Install Apache Guacamole
 
-# Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"
-   exit 1
-fi
-
 APP_NAME="Guacamole"
 DB_TYPE="MariaDB"
 DB_NAME="guacamole"
@@ -14,6 +8,12 @@ DB_USER="guacamole"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
 MARIADB_VERSION="106"
+
+# Check for Root Privileges
+if ! [ $(id -u) = 0 ]; then
+   echo "This script must be run with root privileges"
+   exit 1
+fi
 
 # Check for Reinstall
 if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
@@ -36,7 +36,7 @@ sysrc guacd_enable="YES"
 sysrc tomcat9_enable="YES"
 sysrc mysql_enable="YES"
 
-# Configure Guacamole 
+# Guacamole Setup
 cp -f /usr/local/share/java/classes/mysql-connector-j.jar /usr/local/etc/guacamole-client/lib
 tar xvfz /usr/local/share/guacamole-client/guacamole-auth-jdbc.tar.gz -C /tmp/
 cp -f /tmp/guacamole-auth-jdbc-*/mysql/*.jar /usr/local/etc/guacamole-client/extensions
