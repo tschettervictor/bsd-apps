@@ -7,6 +7,7 @@ MYSQL=0
 MYSQL_VERSION="81"
 POSTGRESQL=0
 PGSQL_VERSION="15"
+DB_TYPE=""
 DB_NAME=""
 DB_USER=""
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
@@ -36,13 +37,13 @@ if [ $POSTGRESQL -eq 1 ] && [ $MYSQL -eq 1 ]; then
   exit 1
 fi
 if [ $MARIADB -eq 1 ]; then
-	DATABASE_TYPE="MariaDB"
+	DB_TYPE="MariaDB"
 elif [ $MYSQL -eq 1 ]; then
-	DATABASE_TYPE="MySQL"
+	DB_TYPE="MySQL"
 elif [ $POSTGRESQL -eq 1 ]; then
-	DATABASE_TYPE="PostgreSQL"
+	DB_TYPE="PostgreSQL"
 fi
-if [ -z "${DATABASE_TYPE}" ]; then
+if [ -z "${DB_TYPE}" ]; then
   echo 'Configuration error: DATABASE must be set'
   exit 1
 fi
@@ -55,14 +56,14 @@ if [ -z "${DB_USER}" ]; then
   exit 1
 fi
 
-# Install Database
-echo "You have chosen to install ${DATABASE_TYPE}. Proceeding with setup..."
+# Create and Configure Database
+echo "You have chosen to install ${DB_TYPE}. Proceeding with setup..."
 if [ "${MARIADB}" = 1 ]; then
 	pkg install -y mariadb${MARIADB_VERSION}-server mariadb${MARIADB_VERSION}-client
 	sysrc mysql_enable=yes
 	service mysql-server start
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
-		echo "Failed to create MariaDB database, aborting"
+		echo "Failed to create ${DB_TYPE} database, aborting"
 		exit 1
 	fi
 	mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
@@ -79,7 +80,7 @@ elif [ "${MYSQL}" = 1 ]; then
 	sysrc mysql_enable=yes
 	service mysql-server start
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
-		echo "Failed to create MariaDB database, aborting"
+		echo "Failed to create ${DB_TYPE} database, aborting"
 		exit 1
 	fi
 	mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
@@ -102,7 +103,7 @@ elif [ "${POSTGRESQL}" = 1 ]; then
 	service postgresql start
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
 	if ! psql -U postgres -c "CREATE DATABASE ${DB_NAME};"; then
-		echo "Failed to create PostgreSQL database, aborting"
+		echo "Failed to create ${DB_TYPE} database, aborting"
 		exit 1
 	fi
 	psql -U postgres -c "CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';"
@@ -112,17 +113,17 @@ elif [ "${POSTGRESQL}" = 1 ]; then
 fi
 
 # Save Passwords
-echo "${DATABASE_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${DB_NAME}_db_password.txt
-echo "${DB_NAME} database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${DB_NAME}_db_password.txt
+echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${DB_NAME}-Info.txt
+echo "${DB_NAME} database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${DB_NAME}-Info.txt
 
 echo "---------------"
 echo "Installation Complete."
 echo "---------------"
 echo "Database Information"
-echo "$DATABASE_TYPE Username: root"
-echo "$DATABASE_TYPE Password: $DB_ROOT_PASSWORD"
+echo "$DB_TYPE Username: root"
+echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
 echo "$DB_NAME User: $DB_USER"
 echo "$DB_NAME Password: "$DB_PASSWORD""
 echo "---------------"
-echo "All passwords are saved in /root/${DB_NAME}_db_password.txt"
+echo "All passwords are saved in /root/${DB_NAME}-Info.txt"
 echo "---------------"
