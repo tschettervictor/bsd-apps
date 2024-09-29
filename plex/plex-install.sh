@@ -1,13 +1,13 @@
 #!/bin/sh
 # Install Plex Media Server
 
-# Check for root privileges
+BETA="0"
+
+# Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
-
-BETA="0"
 
 # Install Packages
 if [ ${BETA} -eq 1 ]; then
@@ -16,9 +16,11 @@ else
 	pkg install -y plexmediaserver
 fi
 
-# Create Directories and Switch to Latest Repo
+# Create Directories
 mkdir -p /mnt/plex-data
 chown -R 972:972 /mnt/plex-data
+
+# Switch to Latest Repo
 mkdir -p /usr/local/etc/pkg/repos
 cp /etc/pkg/FreeBSD.conf /usr/local/etc/pkg/repos/
 sed -i '' "s/quarterly/latest/" /usr/local/etc/pkg/repos/FreeBSD.conf
@@ -43,8 +45,9 @@ else
 	service plexmediaserver start
 fi	
 
+# Done
 echo "---------------"
 echo "Installation complete."
-echo "Plex is running on port 32400."
+echo "Plex is running on port 32400"
 echo "Go to your /web to start setup."
 echo "---------------"
