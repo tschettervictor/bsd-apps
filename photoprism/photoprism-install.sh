@@ -77,7 +77,7 @@ if [ "${REINSTALL}" == "true" ]; then
   	sed -i '' -e "s|.*DatabasePassword:.*|DatabasePassword: ${DB_PASSWORD}|g" /mnt/photos/options.yml
 else
 	touch /mnt/photos/options.yml
-	cat >/mnt/photos/options.yml <<EOL
+	cat >/mnt/photos/options.yml "<<EOL
 	# options.yml
 	AdminPassword: ${ADMIN_PASSWORD}
 	AssetsPath: /var/db/photoprism/assets
@@ -89,7 +89,7 @@ else
 	DatabaseServer: "127.0.0.1:3306"
 	DatabaseUser: ${DB_USER}
 	DatabasePassword: ${DB_PASSWORD}
-	EOL
+	EOL"
 fi
 chown -R photoprism:photoprism /mnt/photos
 
