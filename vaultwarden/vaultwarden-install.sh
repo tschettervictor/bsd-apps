@@ -7,7 +7,7 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
-APP_NAME="vaultwarden"
+APP_NAME="Vaultwarden"
 ADMIN_TOKEN=$(openssl rand -base64 16)
 HOST_NAME=""
 NO_CERT=0
