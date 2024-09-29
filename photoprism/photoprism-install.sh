@@ -61,7 +61,7 @@ if [ "${REINSTALL}" == "true" ]; then
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;"
 		then
-		echo "Failed to create MariaDB database, aborting"
+		echo "Failed to create ${APP_NAME} database, aborting"
     		exit 1
 	fi
 mysql -u root -e "CREATE USER '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
@@ -102,7 +102,7 @@ sysrc photoprism_storagepath="/mnt/photos/"
 sysrc photoprism_defaultsyaml="/mnt/photos/options.yml"
 service photoprism start
 
-# Save Passwords for Later Reference
+# Save Passwords
 echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt
 echo "${APP_NAME} database name is ${DB_NAME} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}-Info.txt
 echo "${APP_NAME} user is admin password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}-Info.txt
