@@ -20,7 +20,7 @@ mkdir -p /usr/local/etc/rc.d
 mkdir -p /var/run/meshcentral
 mkdir -p /var/log/meshcentral
 
-# Install MeshCentral
+# MeshCentral Setup
 pw user add meshcentral -c meshcentral -u 6374 -s /usr/sbin/nologin -d /home/meshcentral -m
 cd /usr/local/meshcentral && npm install meshcentral
 chown -R meshcentral:meshcentral /usr/local/meshcentral
