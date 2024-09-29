@@ -14,6 +14,9 @@ chmod +x uptime-kuma-install.sh
 ## Variables
 These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at defalut unless you have a good reason to change them.
 
+NODE_VERSION
+- node version to use (currently defaults to 18)
+
 DATA_PATH
 - data will be stored here (currently defaults to `/mnt/data`)
 
