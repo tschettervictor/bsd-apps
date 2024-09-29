@@ -1,12 +1,12 @@
 #!/bin/sh
 # Install Photoprism
 
-APP_NAME="photoprism"
-DATABASE_TYPE="MariaDB"
-MARIADB_VERSION="106"
-DB_USER="photoprism"
-DB_NAME="photoprism"
+APP_NAME="Photoprism"
 ADMIN_PASSWORD=$(openssl rand -base64 12)
+DB_TYPE="MariaDB"
+DB_NAME="photoprism"
+DB_USER="photoprism"
+MARIADB_VERSION="106"
 DB_PASSWORD=$(openssl rand -base64 16)
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 
@@ -36,9 +36,9 @@ fi
 
 # Check for Reinstall
 if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
-	echo "Existing Photoprism database detected."
+	echo "Existing ${APP_NAME} database detected."
+        echo "Starting reinstall..."
 	REINSTALL="true"
- 	else echo "No existing database detected. Starting full install."
 fi
 
 # Install Packages
@@ -74,10 +74,9 @@ fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-app
 sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 
 # Save Passwords for Later Reference
-echo "${DATABASE_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}_passwords.txt
-echo "Photoprism database name is ${DB_NAME} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}_passwords.txt
-echo "Photoprism user is admin password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}_passwords.txt
-echo "Passwords for Database and admin user have been saved in root directory."
+echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt
+echo "${APP_NAME} database name is ${DB_NAME} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}-Info.txt
+echo "${APP_NAME} user is admin password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}-Info.txt
 fi
 
 # Install Photoprism
@@ -110,6 +109,7 @@ fi
 chown -R photoprism:photoprism /mnt/photos
 service photoprism start
 
+# Done
 echo "---------------"
 echo "Installation complete!"
 echo "Photoprism is runnin on port 2342"
