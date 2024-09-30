@@ -229,13 +229,14 @@ else
 	  	/usr/local/etc/rc.d/postgresql initdb
 	  	su -m postgres -c '/usr/local/bin/pg_ctl -D /var/db/postgres/data'${PG_VERSION}' start'
 	  	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
-	  	if ! psql -U postgres -c "CREATE DATABASE ${DB_NAME};"
+	  	if ! psql -U postgres -c "CREATE DATABASE ${DB_NAME} TEMPLATE template0 ENCODING 'UTF8';"
                         then
 			echo "Failed to create ${APP_NAME} database, aborting"
 			exit 1
 	  	fi
-	  	psql -U postgres -c "CREATE USER '${DB_USER}' WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';"
-	  	psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE '${DB_NAME}' TO '${DB_USER}';"
+	  	psql -U postgres -c "CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';"
+	  	psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};"
+    	  	psql -U postgres -c "GRANT ALL PRIVILEGES ON SCHEMA public TO ${DB_USER};"
 	  	psql -U postgres -c "SELECT pg_reload_conf();"
 	fi
 
