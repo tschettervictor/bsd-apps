@@ -197,14 +197,14 @@ if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will be saved in the root directory."
 	if [ "${DB_TYPE}" = "MariaDB" ]; then
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/my.cnf
-  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+   		mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
+		fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/my.cnf
+		sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 	elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
- 	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/pgpass
-	psql -U postgres -c "ALTER USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';"
-  	chmod 600 /root/.pgpass
-   	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
+ 		psql -U postgres -c "ALTER USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';"
+ 		fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/pgpass
+  		chmod 600 /root/.pgpass
+   		sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
     	fi
      	sed -i '' "s|.*dbpassword.*|  'dbpassword' => '${DB_PASSWORD}',|" /usr/local/www/nextcloud/config/config.php
 else
@@ -225,10 +225,11 @@ else
 	elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
 	  	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/pgpass
 	  	chmod 600 /root/.pgpass
-	  	chown postgres /var/db/postgres/
-	  	/usr/local/etc/rc.d/postgresql initdb
-	  	su -m postgres -c '/usr/local/bin/pg_ctl -D /var/db/postgres/data'${PG_VERSION}' start'
-	  	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
+    	  	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
+    		mkdir /var/db/postgres
+	  	chown postgres /var/db/postgres
+	  	service postgresql initdb
+	  	service postgresql start
 	  	if ! psql -U postgres -c "CREATE DATABASE ${DB_NAME} TEMPLATE template0 ENCODING 'UTF8';"
                         then
 			echo "Failed to create ${APP_NAME} database, aborting"
@@ -237,19 +238,20 @@ else
 	  	psql -U postgres -c "CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';"
 	  	psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};"
     	  	psql -U postgres -c "GRANT ALL PRIVILEGES ON SCHEMA public TO ${DB_USER};"
+		psql -U postgres -c "ALTER DATABASE ${DB_NAME} OWNER TO ${DB_USER};"
 	  	psql -U postgres -c "SELECT pg_reload_conf();"
 	fi
 
 # Nextcloud Setup
 	if [ "${DB_TYPE}" = "MariaDB" ]; then
-		if ! su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"mysql\" --database-name=\"nextcloud\" --database-user=\"nextcloud\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/var/run/mysql/mysql.sock\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
+		if ! su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"mysql\" --database-name=\"${DB_NAME}\" --database-user=\"${DB_USER}\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/var/run/mysql/mysql.sock\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
   			then
     			echo "Failed to install ${APP_NAME}, aborting"
     			exit 1
 		fi
 	su -m www -c "php /usr/local/www/nextcloud/occ config:system:set mysql.utf8mb4 --type boolean --value=\"true\""
 	elif [ "${DATABASE}" = "pgsql" ]; then
-  		if ! su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"pgsql\" --database-name=\"nextcloud\" --database-user=\"nextcloud\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/tmp/.s.PGSQL.5432\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
+  		if ! su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"pgsql\" --database-name=\"${DB_NAME}\" --database-user=\"${DB_USER}\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/tmp/.s.PGSQL.5432\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
   			then
     			echo "Failed to install ${APP_NAME}, aborting"
     			exit 1
