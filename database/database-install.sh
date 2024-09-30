@@ -97,6 +97,7 @@ elif [ "${POSTGRESQL}" = 1 ]; then
 	sysrc postgresql_enable=yes
 	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/database/includes/pgpass
 	chmod 600 /root/.pgpass
+ 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
 	mkdir -p /var/db/postgres
 	chown postgres /var/db/postgres
 	service postgresql initdb
