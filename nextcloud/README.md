@@ -24,8 +24,15 @@ TIME_ZONE
 
 DATABASE
 - set your preffered database (currently defaults to mariadb)
+- can be either "mariadb" or "pgsql"
 
-NEXTCLOUD_VERSION
+MARIADB_VERSION
+- mariadb version to use (currently defaults to 106)
+
+PG_VERSION
+- postgres version to use (currently defaults to 13)
+
+APP_VERSION
 - set nextcloud version (currently defaults to 29)
 
 PHP_VERSION
