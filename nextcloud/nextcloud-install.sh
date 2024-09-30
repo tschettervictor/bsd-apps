@@ -21,6 +21,8 @@ COUNTRY_CODE=""
 HOST_NAME=""
 TIME_ZONE=""
 PHP_VERSION="83"
+MARIADB_VERSION="106"
+PG_VERSION="13"
 
 if [ ${DATABASE} = "mariadb" ]; then
 	DB_PATH="/var/db/mysql"
@@ -101,9 +103,9 @@ chmod -R 770 /mnt/files
 
 # Install Additional Database Packages
 if [ "${DB_TYPE}" = "MariaDB" ]; then
-  pkg install -y mariadb106-server php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-mysqli
+  pkg install -y mariadb${MARIADB_VERSION}-server php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-mysqli
 elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
-  pkg install -y postgresql13-server php${PHP_VERSION}-pgsql php${PHP_VERSION}-pdo_pgsql
+  pkg install -y postgresql${PG_VERSION}-server php${PHP_VERSION}-pgsql php${PHP_VERSION}-pdo_pgsql
 fi
 
 # Caddy Setup
