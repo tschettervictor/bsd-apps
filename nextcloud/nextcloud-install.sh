@@ -194,15 +194,19 @@ elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
   	sysrc postgresql_enable="YES"
 fi
 if [ "${REINSTALL}" == "true" ]; then
-	echo "Reinstall detected, skipping generation of new config and database."
+	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
+ 	echo "New passwords will be saved in the root directory."
 	if [ "${DB_TYPE}" = "MariaDB" ]; then
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/my.cnf
+  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 	elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
  	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/pgpass
+	psql -U postgres -c "ALTER USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';"
   	chmod 600 /root/.pgpass
    	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
     	fi
+     	sed -i '' "s|.*dbpassword.*|  'dbpassword' => '${DB_PASSWORD}',|" /usr/local/www/nextcloud/config/config.php
 else
 	if [ "${DB_TYPE}" = "MariaDB" ]; then
 		if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};" then
@@ -295,6 +299,21 @@ echo "${APP_NAME} admin password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}-Info
 echo "---------------"
 echo "Installation complete!"
 echo "---------------"
+echo "Database Information"
+echo "$DB_TYPE Username: root"
+echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
+echo "$APP_NAME DB User: $DB_USER"
+echo "$APP_NAME DB Password: $DB_PASSWORD"
+echo "--------------------"
+if [ "${REINSTALL}" == "true" ]; then
+	echo "You did a reinstall."
+	echo "Please user your old credentials to log in."
+        echo "---------------"
+else
+	echo "User Information"
+	echo "Default ${APP_NAME} user is admin"
+	echo "Default ${APP_NAME} password is ${ADMIN_PASSWORD}"
+     	echo "--------------------"
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
   	echo "You have obtained your Let's Encrypt certificate using the staging server."
   	echo "This certificate will not be trusted by your browser and will cause SSL errors"
@@ -318,22 +337,4 @@ if [ $NO_CERT -eq 1 ]; then
 else
 	echo "Using your web browser, go to https://${HOST_NAME} to log in"
  	echo "--------------------"
-fi
-if [ "${REINSTALL}" == "true" ]; then
-	echo "You did a reinstall."
- 	echo "Please use your old database and account credentials."
-  	echo "--------------------"
-else
-	echo "Database Information"
-	echo "$DB_TYPE Username: root"
-	echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
-	echo "$APP_NAME DB User: $DB_USER"
-	echo "$APP_NAME DB Password: $DB_PASSWORD"
-  	echo "--------------------"
-	echo "User Information"
-	echo "Default ${APP_NAME} user is admin"
-	echo "Default ${APP_NAME} password is ${ADMIN_PASSWORD}"
-     	echo "--------------------"
-	echo "All passwords are saved in /root/${APP_NAME}_db_password.txt"
-   	echo "--------------------"
 fi
