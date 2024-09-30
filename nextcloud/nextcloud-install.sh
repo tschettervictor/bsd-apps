@@ -5,7 +5,7 @@ APP_NAME="Nextcloud"
 APP_VERSION="29"
 ADMIN_PASSWORD=$(openssl rand -base64 12)
 MX_WINDOW="5"
-DATABASE="mariadb"
+DB_TYPE="MariaDB"
 DB_NAME="nextcloud"
 DB_USER="nextcloud"
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
@@ -23,14 +23,6 @@ TIME_ZONE=""
 PHP_VERSION="83"
 MARIADB_VERSION="106"
 PG_VERSION="13"
-
-if [ ${DATABASE} = "mariadb" ]; then
-	DB_PATH="/var/db/mysql"
- 	DB_TYPE="MariaDB"
-elif [ ${DATABASE} = "pgsql" ]; then
-	DB_PATH="/var/db/postgres"
- 	DB_TYPE="PostgreSQL"
-fi
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
@@ -51,8 +43,8 @@ if [ -z "${HOST_NAME}" ]; then
   echo 'Configuration error: HOST_NAME must be set'
   exit 1
 fi
-if [ "$DATABASE" != "mariadb" ] && [ "$DATABASE" != "pgsql" ]; then
-  echo 'Configuration error: DATABASE must be set to "mariadb" or "pqsql"'
+if [ "${DB_TYPE}" != "MariaDB" ] && [ "${DB_TYPE}" != "PostgreSQL" ]; then
+  echo 'Configuration error: DATABASE must be set to "MariaDB" or "PostgreSQL"'
   exit 1
 fi
 if [ $STANDALONE_CERT -eq 0 ] && [ $DNS_CERT -eq 0 ] && [ $NO_CERT -eq 0 ] && [ $SELFSIGNED_CERT -eq 0 ]; then
@@ -270,7 +262,7 @@ else
     			exit 1
 		fi
 	su -m www -c "php /usr/local/www/nextcloud/occ config:system:set mysql.utf8mb4 --type boolean --value=\"true\""
-	elif [ "${DATABASE}" = "pgsql" ]; then
+	elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
   		if ! su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"pgsql\" --database-name=\"${DB_NAME}\" --database-user=\"${DB_USER}\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/tmp/.s.PGSQL.5432\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
   			then
     			echo "Failed to install ${APP_NAME}, aborting"
