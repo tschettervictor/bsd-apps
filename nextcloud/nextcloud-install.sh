@@ -209,7 +209,8 @@ if [ "${REINSTALL}" == "true" ]; then
      	sed -i '' "s|.*dbpassword.*|  'dbpassword' => '${DB_PASSWORD}',|" /usr/local/www/nextcloud/config/config.php
 else
 	if [ "${DB_TYPE}" = "MariaDB" ]; then
-		if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};" then
+		if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"
+                        then
 			echo "Failed to create ${APP_NAME} database, aborting"
 			exit 1
 		fi
@@ -228,7 +229,8 @@ else
 	  	/usr/local/etc/rc.d/postgresql initdb
 	  	su -m postgres -c '/usr/local/bin/pg_ctl -D /var/db/postgres/data'${PG_VERSION}' start'
 	  	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
-	  	if ! psql -U postgres -c "CREATE DATABASE ${DB_NAME};" then
+	  	if ! psql -U postgres -c "CREATE DATABASE ${DB_NAME};"
+                        then
 			echo "Failed to create ${APP_NAME} database, aborting"
 			exit 1
 	  	fi
