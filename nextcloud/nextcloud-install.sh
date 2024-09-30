@@ -234,8 +234,8 @@ else
 			echo "Failed to create ${APP_NAME} database, aborting"
 			exit 1
 	  	fi
-	  	psql -U postgres -c "CREATE USER nextcloud WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';"
-	  	psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO '${DB_USER}';"
+	  	psql -U postgres -c "CREATE USER '${DB_USER}' WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';"
+	  	psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE '${DB_NAME}' TO '${DB_USER}';"
 	  	psql -U postgres -c "SELECT pg_reload_conf();"
 	fi
 
