@@ -22,9 +22,9 @@ TIME_ZONE
 - sets the timezone, see http://php.net/manual/en/timezones.php)
 - must be set
 
-DATABASE
+DB_TYPE
 - set your preffered database (currently defaults to mariadb)
-- can be either "mariadb" or "pgsql"
+- can be either "MariaDB" or "PostgreSQL"
 
 MARIADB_VERSION
 - mariadb version to use (currently defaults to 106)
