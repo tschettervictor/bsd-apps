@@ -316,6 +316,7 @@ else
 	echo "Default ${APP_NAME} user is admin"
 	echo "Default ${APP_NAME} password is ${ADMIN_PASSWORD}"
      	echo "--------------------"
+fi
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
   	echo "You have obtained your Let's Encrypt certificate using the staging server."
   	echo "This certificate will not be trusted by your browser and will cause SSL errors"
