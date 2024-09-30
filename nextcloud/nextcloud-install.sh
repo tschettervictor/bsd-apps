@@ -51,6 +51,10 @@ if [ -z "${HOST_NAME}" ]; then
   echo 'Configuration error: HOST_NAME must be set'
   exit 1
 fi
+if [ "$DATABASE" != "mariadb" ] && [ "$DATABASE" != "pgsql" ]; then
+  echo 'Configuration error: DATABASE must be set to "mariadb" or "pqsql"'
+  exit 1
+fi
 if [ $STANDALONE_CERT -eq 0 ] && [ $DNS_CERT -eq 0 ] && [ $NO_CERT -eq 0 ] && [ $SELFSIGNED_CERT -eq 0 ]; then
   echo 'Configuration error: Either STANDALONE_CERT, DNS_CERT, NO_CERT,'
   echo 'or SELFSIGNED_CERT must be set to 1.'
@@ -78,10 +82,26 @@ if [ $STANDALONE_CERT -eq 1 ] && [ "${CERT_EMAIL}" = "" ] ; then
 fi
 
 # Check for Reinstall
-if [ "$(ls -A "${DB_PATH}"/nextcloud 2>/dev/null)" ]; then
-	echo "Existing ${APP_NAME} database detected."
-	echo "Starting reinstall..."
-	REINSTALL="true"
+if [ "$(ls -A /usr/local/www/nextcloud/config 2>/dev/null)" ]; then
+	echo "Existing ${APP_NAME} config detected. Checking for compatible database..."
+	if [ "${DB_TYPE}" = "MariaDB" ]; then
+ 		if [ "$(ls -A /var/db/mysql/nextcloud 2>/dev/null)" ]; then
+   			echo "Database looks compatible. Starting reinstall..."
+     			else
+			echo "ERROR: You cannot continue without the previous database."
+   			echo "Please try again after removing your config files or using the same database used previously."
+       			exit 1
+	  	fi
+	elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
+   		if [ "$(ls -A /var/db/postgres/data${PG_VERSION} 2>/dev/null)" ]; then
+    			echo "Database looks compatible. Starting reinstall..."
+     			else
+			echo "ERROR: You cannot continue without the previous database."
+   			echo "Please try again after removing your config files or using the same database used previously."
+       			exit 1
+	  	fi
+	fi
+REINSTALL="true"
 fi
 
 # Package Installation
