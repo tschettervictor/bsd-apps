@@ -49,8 +49,8 @@ psql -U postgres -c "SELECT pg_reload_conf();"
 /usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.secret.session.string= "'${JWT_SECRET}'"'
 
 # Allow Private IP Connections (needed for local nextcloud instances)
-/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.server.allowPrivateIPAddressForSignedRequests= true'
-/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.requestDefaults.rejectUnauthorized= false'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.server={allowPrivateIPAddressForSignedRequests: true }'
+/usr/local/www/onlyoffice/documentserver/npm/json -q -f /usr/local/etc/onlyoffice/documentserver/local.json -I -e 'this.services.CoAuthoring.requestDefaults={rejectUnauthorized: false }'
 chown onlyoffice:onlyoffice /usr/local/etc/onlyoffice/documentserver/local.json
 
 # Configure RabbitMQ
