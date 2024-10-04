@@ -88,5 +88,5 @@ For more detailed documentation, see https://github.com/danb35/freenas-iocage-ne
 - `/usr/local/www/nextcloud/config` - themes directory
 
 ## Jail Properties
-- none
+- `sysvshm=new` - only when using postgres database
 
