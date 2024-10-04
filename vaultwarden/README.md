@@ -25,7 +25,7 @@ PYTHON_VERSION
 
 Vaultwarden requires an https connection for the web vault and clients. This script uses Caddy as the webserver to achieve this.
 
-Caddy is a webserver that can do automatic TLS and HTTPS for you. You should enable one AND ONLY ONE of the following 4 CERT confiurations to tell the script how you want Caddy to work. Unless you are going to put Vaultwarden behind a reverse proxy, you should not ever choose NO_CERT.
+Caddy is a webserver that can do automatic TLS and HTTPS for you. You should enable one AND ONLY ONE of the following 4 CERT configurations to tell the script how you want Caddy to work. Unless you are going to put Vaultwarden behind a reverse proxy, you should not ever choose NO_CERT.
 
 NO_CERT
 - no certificate, http access only
@@ -47,7 +47,7 @@ DNS_PLUGIN
 - only used with DNS_CERT
 
 DNS_TOKEN
-- must have "Zone / Zone / Read" and "Zone / DNS / Edit" permissions on the domain you are using with Caddy)
+- must have "Zone / Zone / Read" and "Zone / DNS / Edit" permissions on the domain you are using with Caddy
 - only used with DNS_CERT 
 
 CERT_EMAIL
