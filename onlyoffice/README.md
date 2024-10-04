@@ -21,4 +21,4 @@ PG_VERSION
 - none
 
 ## Jail Properties
-- none
+- `sysvshm=new` - needed for postgres shared memory
