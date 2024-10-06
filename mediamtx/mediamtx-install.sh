@@ -17,7 +17,7 @@ mkdir -p /usr/local/www/mediamtx
 mkdir -p /usr/local/etc/rc.d
 
 # MediaMTX Setup
-git clone https://github.com/bluenviron/mediamtx
+git clone https://github.com/bluenviron/mediamtx /mediamtx
 cd /mediamtx && go122 generate ./...
 cd /mediamtx && go122 build .
 cp /mediamtx/mediamtx /usr/local/bin/mediamtx
@@ -25,6 +25,7 @@ chmod +x /usr/local/bin/mediamtx
 if ! [ "$(ls -A "/usr/local/www/mediamtx")" ]; then
     cp /mediamtx/mediamtx.yml /usr/local/www/mediamtx/
 fi
+rm -R /mediamtx
 fetch -o /usr/local/etc/rc.d/mediamtx https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/mediamtx/includes/mediamtx
 chmod +x /usr/local/etc/rc.d/mediamtx
 pw user add mediamtx -c mediamtx -u 1935 -d /nonexistent -s /usr/bin/nologin
