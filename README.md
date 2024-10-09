@@ -61,7 +61,9 @@ Some applications require certain jail properties to be activated. You will have
 ### Set Properties Examples
   - `iocage set allow_sysvipc=1 jailname`
   - `bastille config jailname set allow_sysvipc 1`
+  - `pot set-attr -p jailname -A sysvipc -V 1`
 
 ### Mount Examples
   - `iocage fstab -a jailname /path/on/host /path/inside/jail nullfs rw 0 0`
   - `bastille mount jailname /path/on/host /path/inside/jail nullfs rw 0 0`
+  - `pot mount-in -p jailname -m /path/inside/jail -f nullfs -d /path/on/host`
