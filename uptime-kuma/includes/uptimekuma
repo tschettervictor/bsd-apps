@@ -17,6 +17,7 @@ load_rc_config $name
 : ${uptimekuma_enable:="NO"}
 : ${uptimekuma_datadir:="/mnt/data"}
 : ${uptimekuma_host:="0.0.0.0"}
+: ${uptimekuma_port:="3001"}
 : ${uptimekuma_chdir:="/usr/local/uptime-kuma"}
 : ${uptimekuma_user:="uptimekuma"}
 : ${uptimekuma_group:="uptimekuma"}
@@ -25,7 +26,7 @@ pidfile="/var/run/${name}/${name}.pid"
 uptimekuma_env="PLAYWRIGHT_BROWSERS_PATH=/nonexistent"
 node="/usr/local/bin/node"
 command=/usr/sbin/daemon
-command_args="-P ${pidfile} -H -o /var/log/${name}/${name}.log ${node} server/server.js --host=${uptimekuma_host} --data-dir=${uptimekuma_datadir}"
+command_args="-P ${pidfile} -H -o /var/log/${name}/${name}.log ${node} server/server.js --host=${uptimekuma_host} --port=${uptimekuma_port} --data-dir=${uptimekuma_datadir}"
 
 start_precmd=uptimekuma_startprecmd
 
