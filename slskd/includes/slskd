@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# PROVIDE: slskd
+# REQUIRE: DAEMON NETWORKING
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name=slskd
+rcvar=slskd_enable
+
+load_rc_config $name
+
+: ${slskd_enable:="NO"}
+: ${slskd_appdir:="/usr/local/www/slskd"}
+: ${slskd_config:="${slskd_appdir}/${name}.yml"}
+: ${slskd_user:="soulseek"}
+: ${slskd_group:="soulseek"}
+
+slskd_chdir="/root"
+pidfile="/var/run/${name}/${name}.pid"
+command="/usr/sbin/daemon"
+command_args="-P ${pidfile} -H -o /var/log/${name}/${name}.log ${slskd_appdir}/${name} --app-dir=${slskd_appdir} --config=${slskd_config}"
+
+start_precmd=slskd_startprecmd
+
+slskd_startprecmd()
+{
+    if [ ! -d /var/run/${name} ]; then
+        install -d -o ${slskd_user} -g ${slskd_group} /var/run/${name};
+    else
+        chown -R ${slskd_user}:${slskd_group} /var/run/${name};
+    fi
+    if [ ! -d /var/log/${name} ]; then
+        install -d -o ${slskd_user} -g ${slskd_group} /var/log/${name};
+    else
+        chown -R ${slskd_user}:${slskd_group} /var/log/${name};
+    fi
+}
+
+run_rc_command "$1"
