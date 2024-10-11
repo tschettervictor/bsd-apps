@@ -27,6 +27,9 @@ cp -av /slskd/src/web/build /slskd/src/slskd/wwwroot
 cd /slskd/src/slskd && dotnet build --no-incremental --nologo --configuration Release
 cd /slskd/src/slskd && dotnet publish --configuration Release -p:PublishSingleFile=true -p:ReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=true -p:CopyOutputSymbolsToPublishDirectory=false --self-contained --output ../../../usr/local/www/slskd
 cd /usr/local/www/slskd && ln -s /usr/local/lib/libsqlite3.so libe_sqlite3.so
+if ! [ -f "/usr/local/www/slskd/slskd.yml" ]; then
+   cp /usr/local/www/slskd/config/slskd.example.yml /usr/local/www/slskd/slskd.yml
+fi
 chown -R soulseek:soulseek /usr/local/www/slskd
 
 # Enable and Start Services
