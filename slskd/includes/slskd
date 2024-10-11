@@ -1,8 +1,15 @@
 #!/bin/sh
-
+#
 # PROVIDE: slskd
 # REQUIRE: DAEMON NETWORKING
 # KEYWORD: shutdown
+#
+# Optional settings:
+# slskd_enable (YES/NO): Enable or disable the service.
+# slskd_user (system user): User to run the service as.
+# slskd_group (system group): Group to run the service as.
+# slskd_appdir (path): Path to application data.
+# slskd_config (path): Path to config file.
 
 . /etc/rc.subr
 
@@ -26,16 +33,10 @@ start_precmd=slskd_startprecmd
 
 slskd_startprecmd()
 {
-    if [ ! -d /var/run/${name} ]; then
-        install -d -o ${slskd_user} -g ${slskd_group} /var/run/${name};
-    else
-        chown -R ${slskd_user}:${slskd_group} /var/run/${name};
-    fi
-    if [ ! -d /var/log/${name} ]; then
-        install -d -o ${slskd_user} -g ${slskd_group} /var/log/${name};
-    else
-        chown -R ${slskd_user}:${slskd_group} /var/log/${name};
-    fi
+    mkdir -p /var/run/${name}
+    mkdir -p /var/log/${name}
+    chown -R ${slskd_user}:${slskd_group} /var/run/${name}
+    chown -R ${slskd_user}:${slskd_group} /var/log/${name}
 }
 
 run_rc_command "$1"
