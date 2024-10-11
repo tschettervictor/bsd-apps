@@ -1,10 +1,16 @@
 #!/bin/sh
-
+#
 # Mediamtx FreeBSD Service Script
-
+#
 # PROVIDE: mediamtx
 # REQUIRE: LOGIN
 # KEYWORD: shutdown
+#
+# Optional settings:
+# mediamtx_enable (YES/NO): Enable or disable the service.
+# mediamtx_user (system user): User to run the service as.
+# mediamtx_group (system group): Group to run the service as.
+# mediamtx_config (file): Path to application configuration file.
 
 . /etc/rc.subr
 
@@ -28,16 +34,10 @@ start_precmd="mediamtx_startprecmd"
 
 mediamtx_startprecmd()
 {
-    if [ ! -d /var/run/${name} ]; then
-        install -d -o ${mediamtx_user} -g ${mediamtx_group} /var/run/${name};
-    else
-        chown -R ${mediamtx_user}:${mediamtx_group} /var/run/${name};
-    fi
-    if [ ! -d /var/log/${name} ]; then
-        install -d -o ${mediamtx_user} -g ${mediamtx_group} /var/log/${name};
-    else
-        chown -R ${mediamtx_user}:${mediamtx_group} /var/log/${name};
-    fi
+    mkdir -p /var/run/${name}
+    mkdir -p /var/log/${name}
+    chown -R ${mediamtx_user}:${mediamtx_group} /var/run/${name}
+    chown -R ${mediamtx_user}:${mediamtx_group} /var/log/${name}
 }
 
 run_rc_command "$1"
