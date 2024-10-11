@@ -1,10 +1,21 @@
 #!/bin/sh
-
+#
 # MeshCentral FreeBSD Service Script
-
+#
 # PROVIDE: meshcentral
 # REQUIRE: NETWORKING
 # KEYWORD: shutdown
+#
+# Optional settings:
+# meshcentral_enable (YES/NO): Enable or disable the service.
+# meshcentral_daemon_user (system user): User to run the service as.
+# meshcentral_daemon_group (system group): Group to run the service as.
+# meshcentral_args (path): Additional arguements to pass to the application.
+# meshcentral_chdir (path): Path to application data directory.
+#
+# Meshcentral will not work properly when setting "meshcentral_user" and "meshcentral_group" variables
+# therefore it is necessary to substitute "meshcentral_user" with "meshcentral_daemon_user"
+# and have the daemon invoke the command as the user
 
 . /etc/rc.subr
 
@@ -29,16 +40,10 @@ start_precmd="meshcentral_startprecmd"
 
 meshcentral_startprecmd()
 {
-    if [ ! -d /var/run/${name} ]; then
-        install -d -o ${meshcentral_daemon_user} -g ${meshcentral_daemon_group} /var/run/${name};
-    else
-        chown -R ${meshcentral_daemon_user}:${meshcentral_daemon_group} /var/run/${name};
-    fi
-    if [ ! -d /var/log/${name} ]; then
-        install -d -o ${meshcentral_daemon_user} -g ${meshcentral_daemon_group} /var/log/${name};
-    else
-        chown -R ${meshcentral_daemon_user}:${meshcentral_daemon_group} /var/log/${name};
-    fi
+    mkdir -p /var/run/${name}
+    mkdir -p /var/run/${name}
+    chown -R ${meshcentral_daemon_user}:${meshcentral_daemon_group} /var/run/${name}
+    chown -R ${meshcentral_daemon_user}:${meshcentral_daemon_group} /var/log/${name}
 }
 
 run_rc_command "$1"
