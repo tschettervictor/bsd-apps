@@ -9,7 +9,7 @@
 # slskd_user (system user): User to run the service as.
 # slskd_group (system group): Group to run the service as.
 # slskd_appdir (path): Path to application data.
-# slskd_config (path): Path to config file.
+# slskd_config (file): Path to application configuration file.
 
 . /etc/rc.subr
 
