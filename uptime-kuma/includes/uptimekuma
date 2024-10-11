@@ -5,6 +5,15 @@
 # PROVIDE: uptimekuma
 # REQUIRE: DAEMON NETWORKING
 # KEYWORD: shutdown
+#
+# Optional settings:
+# uptimekuma_enable (YES/NO): Enable or disable the service.
+# uptimekuma_user (system user): User to run the service as.
+# uptimekuma_group (system group): Group to run the service as.
+# uptimekuma_datadir (path): Path to application data.
+# uptimekuma_host (IP address): Service host.
+# uptimekuma_port (port): Service port.
+# uptimekuma_chdir (path): Path to cloned github repo.
 
 . /etc/rc.subr
 
@@ -32,16 +41,10 @@ start_precmd=uptimekuma_startprecmd
 
 uptimekuma_startprecmd()
 {
-    if [ ! -d /var/run/${name} ]; then
-        install -d -o ${uptimekuma_user} -g ${uptimekuma_group} /var/run/${name};
-    else
-        chown -R ${uptimekuma_user}:${uptimekuma_group} /var/run/${name};
-    fi
-    if [ ! -d /var/log/${name} ]; then
-        install -d -o ${uptimekuma_user} -g ${uptimekuma_group} /var/log/${name};
-    else
-        chown -R ${uptimekuma_user}:${uptimekuma_group} /var/log/${name};
-    fi
+    mkdir -p /var/run/${name}
+    mkdir -p /var/log/${name}
+    chown -R ${uptimekuma_user}:${uptimekuma_group} /var/run/${name}
+    chown -R ${uptimekuma_user}:${uptimekuma_group} /var/log/${name}
 }
 
 run_rc_command "$1"
