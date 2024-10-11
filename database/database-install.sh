@@ -66,7 +66,7 @@ if [ "${MARIADB}" = 1 ]; then
 		echo "Failed to create ${DB_TYPE} database, aborting"
 		exit 1
 	fi
-	mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+	mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY ${DB_PASSWORD};"
 	mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
 	mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 	mysql -u root -e "DROP DATABASE IF EXISTS test;"
@@ -83,7 +83,7 @@ elif [ "${MYSQL}" = 1 ]; then
 		echo "Failed to create ${DB_TYPE} database, aborting"
 		exit 1
 	fi
-	mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+	mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY ${DB_PASSWORD};"
 	mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
 	mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 	mysql -u root -e "DROP DATABASE IF EXISTS test;"
