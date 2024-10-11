@@ -19,7 +19,7 @@ mkdir -p /usr/local/etc/rc.d
 
 # SLSKD Setup
 pw user add soulseek -c soulseek -u 5030 -d /nonexistent -s /usr/bin/nologin
-git clone https://github.com/slskd/slskd
+git clone https://github.com/slskd/slskd /slskd
 cd /slskd/src/web && npm install
 cd /slskd/src/web && npm run build
 rm -rf /slskd/src/slskd/wwwroot
