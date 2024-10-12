@@ -22,7 +22,7 @@ cd /mediamtx && go122 generate ./...
 cd /mediamtx && go122 build .
 cp /mediamtx/mediamtx /usr/local/bin/mediamtx
 chmod +x /usr/local/bin/mediamtx
-if ! [ "$(ls -A "/usr/local/www/mediamtx")" ]; then
+if ! [ -f "/usr/local/www/mediamtx/mediamtx.yml" ]; then
     cp /mediamtx/mediamtx.yml /usr/local/www/mediamtx/
 fi
 rm -R /mediamtx
