@@ -52,11 +52,11 @@ Mount points make it easy to destroy and recreate jails without losing data. Eac
 
 Some of the scripts have variables that should be set before running. These could include passwords, server values, and database names. Most will be set randomly, but some require user intervention. Each applications README file will let you know what to do.
 
-Variable that should be changed are listed on the README file of each app. Any variables that are not listed, should not be changed unless there is a really good reason to do so.
+Variables that should be changed are listed on the README file of each app. Any variables that are not listed, should not be changed unless there is a really good reason to do so.
 
 ## Jail Properties
 
-Some applications require certain jail properties to be activated. You will have to do so with whichever jail manager you are using. They should all have a way to set jail properties.
+Some applications require certain jail properties to be activated. You will have to do so with whichever jail manager you are using. They all have a way to set jail properties.
 
 ### Set Properties Examples
   - `iocage set allow_sysvipc=1 jailname`
