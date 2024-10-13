@@ -16,7 +16,7 @@ These scripts are designed to work inside any jail manager or FreeBSD host syste
      - which variables need to be set, if any
   3. Mount your directories and set your properties and variables as needed
      - the variables are set at the top of the app script
-  4. Start the jail, fetch the script, and run it
+  4. Start the jail, fetch the script, set variable values inside the script, and run it
 
 It is not necessary to do any mounting if you choose not to. It just makes it easy to rebuild jails if the need comes up.
 All jail managers have a way to set jail properties and mount directories. Check documentation.
