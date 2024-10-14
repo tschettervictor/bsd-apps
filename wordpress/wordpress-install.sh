@@ -26,6 +26,13 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+# Check for Reinstall
+if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
+	echo "Existing ${APP_NAME} database detected."
+	echo "Starting reinstall..."
+	REINSTALL="true"
+fi
+
 # Variable Checks
 if [ -z "${COUNTRY_CODE}" ]; then
   echo 'Configuration error: COUNTRY_CODE must be set'
@@ -75,37 +82,50 @@ mkdir -p /usr/local/etc/rc.d
 # Create and Configure Database
 sysrc mysql_enable=YES
 service mysql-server start
-if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
-  echo "Failed to create database, aborting..."
-	exit 1
-fi
-mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
-mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
-mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-mysql -u root -e "DROP DATABASE IF EXISTS test;"
-mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
-mysql -u root -e "FLUSH PRIVILEGES;"
-mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/my.cnf
-sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+if [ "${REINSTALL}" == "true" ]; then
+	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
+ 	echo "New passwords will still be saved in the root directory."
+ 	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/my.cnf
+	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
+  		echo "Failed to create database, aborting..."
+		exit 1
+	fi
+	mysql -u root -e "GRANT ALL ON ${DB_NAME}.* TO '${DB_USER}'@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+	mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
+	mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+	mysql -u root -e "DROP DATABASE IF EXISTS test;"
+	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+	mysql -u root -e "FLUSH PRIVILEGES;"
+	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/my.cnf
+	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+ fi
 
 # Wordpress Setup
 fetch -o /tmp https://wordpress.org/latest.tar.gz
-tar xjf /tmp/latest.tar.gz -C /usr/local/www/
-cp /usr/local/www/wordpress/wp-config-sample.php /usr/local/www/wordpress/wp-config.php
-sed -i '' "s/database_name_here/wordpress/" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s/username_here/wordpress/" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s/localhost/127.0.0.1/" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s|define( 'AUTH_KEY',.*|define( 'AUTH_KEY',         '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s|define( 'SECURE_AUTH_KEY',.*|define( 'SECURE_AUTH_KEY',  '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s|define( 'LOGGED_IN_KEY',.*|define( 'LOGGED_IN_KEY',    '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s|define( 'NONCE_KEY',.*|define( 'NONCE_KEY',        '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s|define( 'AUTH_SALT',.*|define( 'AUTH_SALT',        '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s|define( 'SECURE_AUTH_SALT',.*|define( 'SECURE_AUTH_SALT', '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s|define( 'LOGGED_IN_SALT',.*|define( 'LOGGED_IN_SALT',   '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
-sed -i '' "s|define( 'NONCE_SALT',.*|define( 'NONCE_SALT',       '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
-chown -R www:www /usr/local/www
+if [ "${REINSTALL}" == "true" ]; then
+	tar --exclude 'wp-content' --exclude 'wp-config.php' -xjf /tmp/latest.tar.gz -C /usr/local/www/
+	sed -i '' "s|define( 'DB_PASSWORD',.*|define( 'DB_PASSWORD', '${DB_PASSWORD}' );|" /usr/local/www/wordpress/wp-config.php
+else
+	tar xjf /tmp/latest.tar.gz -C /usr/local/www/
+	cp /usr/local/www/wordpress/wp-config-sample.php /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s/database_name_here/wordpress/" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s/username_here/wordpress/" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s/localhost/127.0.0.1/" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s|define( 'AUTH_KEY',.*|define( 'AUTH_KEY',         '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s|define( 'SECURE_AUTH_KEY',.*|define( 'SECURE_AUTH_KEY',  '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s|define( 'LOGGED_IN_KEY',.*|define( 'LOGGED_IN_KEY',    '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s|define( 'NONCE_KEY',.*|define( 'NONCE_KEY',        '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s|define( 'AUTH_SALT',.*|define( 'AUTH_SALT',        '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s|define( 'SECURE_AUTH_SALT',.*|define( 'SECURE_AUTH_SALT', '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s|define( 'LOGGED_IN_SALT',.*|define( 'LOGGED_IN_SALT',   '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
+	sed -i '' "s|define( 'NONCE_SALT',.*|define( 'NONCE_SALT',       '$(openssl rand -base64 64 | tr -d '\n' | sed 's/[&/\]/\\&/g')' );|" /usr/local/www/wordpress/wp-config.php
+ fi
+ chown -R www:www /usr/local/www
+
 
 # PHP Setup
 fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/php.ini
