@@ -1,31 +1,30 @@
 {
-  # debug
+        # debug
 }
 
 yourhostnamehere:80, :80 {
-  root * /usr/local/www/wordpress
-  encode gzip
+        root * /usr/local/www/wordpress
+        encode gzip
+        file_server
 
-  php_fastcgi 127.0.0.1:9000 {
-    env front_controller_active true
-  }
+	log {
+		output file /var/log/yourhostnamehere.log
+	}
+  
+        php_fastcgi 127.0.0.1:9000 {
+                env front_controller_active true
+        }
 
-  file_server
-
-  log {
-    output file /var/log/yourhostnamehere.log
-  }
-
-  @forbidden {
-        not path /wp-includes/ms-files.php
-        path /xmlrpc.php
-        path *.sql
-        path /wp-content/uploads/*.php
-        path /wp-content/debug.log
-        path /wp-admin/includes/*.php
-        path /wp-includes/*.php
-        path /wp-config.php
-        path /.user.ini
-    }
-    respond @forbidden 403
+	@forbidden {
+        	not path /wp-includes/ms-files.php
+        	path /xmlrpc.php
+		path *.sql
+		path /wp-content/uploads/*.php
+		path /wp-content/debug.log
+		path /wp-admin/includes/*.php
+		path /wp-includes/*.php
+		path /wp-config.php
+		path /.user.ini
+	}
+	respond @forbidden 403
 }
