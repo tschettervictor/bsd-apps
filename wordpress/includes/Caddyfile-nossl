@@ -1,0 +1,38 @@
+{
+  # debug
+}
+
+yourhostnamehere:80, :80 {
+  root * /usr/local/www/wordpress
+  file_server
+  log {
+    output file /var/log/yourhostnamehere.log
+  }
+
+  php_fastcgi 127.0.0.1:9000 {
+    env front_controller_active true
+  }
+
+    # External access denied to these files.
+    @forbidden {
+        not path /wp-includes/ms-files.php
+        path /wp-admin/includes/*.php
+        path /wp-includes/*.php
+        path /wp-config.php
+
+        path /wp-content/uploads/*.php
+        path /.user.ini
+        path /wp-content/debug.log
+    }
+    respond @forbidden 403
+
+    # Mitigate spam attack logins and comments
+    @protected path_regexp (wp-comments-posts|wp-login)\.php$
+    handle @protected {
+        @no-referer {
+            not header Referer https://{host}*
+            method POST
+        }
+        abort @no-referer
+    }
+}
