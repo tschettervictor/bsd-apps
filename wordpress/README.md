@@ -1,5 +1,5 @@
 # Wordpress
-https://wordpress.com
+https://wordpress.org
 
 ### Command to fetch script
 ```
@@ -12,7 +12,6 @@ chmod +x wordpress-install.sh
 ```
 
 ## Notes
-- when initially setting up wordpress, make sure to access the page using the hostname you plan to use with your site
 - this scirpt generates some cookie tokens, but uses base64 to do it. If you want super secure tokens, see https://api.wordpress.org/secret-key/1.1/salt/ and add them to `/usr/local/www/wordpress/wp-config.sh`
 - I do not use worpress, but this script gets you to where you can visit the site, post, log in etc...
 - I welcome PRs and help with additinal hardening/security
@@ -68,7 +67,6 @@ All of the above variables should be changed to fit your environment.
 ## Mount points (should be mounted outside the jail)
 - `/var/db/mysql` - database directory
 - `/usr/local/www/wordpress` - web directory
-- reinstalls have not been tested yet
   
 ## Jail Properties
 - none
