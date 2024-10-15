@@ -137,7 +137,7 @@ service php_fpm start
 
 # Redis Setup
 sysrc redis_enable="YES"
-fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/redis/includes/redis.conf
+fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/redis.conf
 pw usermod www -G redis
 service redis start
 chmod 777 /var/run/redis/redis.sock
