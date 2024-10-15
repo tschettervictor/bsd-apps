@@ -14,7 +14,6 @@ DNS_CERT=0
 DNS_PLUGIN=""
 DNS_TOKEN=""
 CERT_EMAIL=""
-COUNTRY_CODE=""
 HOST_NAME=""
 TIME_ZONE=""
 PHP_VERSION="83"
@@ -34,10 +33,6 @@ if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
 fi
 
 # Variable Checks
-if [ -z "${COUNTRY_CODE}" ]; then
-  echo 'Configuration error: COUNTRY_CODE must be set'
-  exit 1
-fi
 if [ -z "${TIME_ZONE}" ]; then
   echo 'Configuration error: TIME_ZONE must be set'
   exit 1
