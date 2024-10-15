@@ -88,6 +88,7 @@ if [ "${REINSTALL}" == "true" ]; then
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
+ else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
   		echo "Failed to create database, aborting..."
 		exit 1
