@@ -22,7 +22,7 @@ HOST_NAME=""
 TIME_ZONE=""
 PHP_VERSION="83"
 MARIADB_VERSION="106"
-PG_VERSION="15"
+PG_VERSION="16"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
