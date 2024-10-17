@@ -95,7 +95,7 @@ chown -R www:www /usr/local/www/Lychee
 
 # Restart Services
 service redis start
-service php-fpm start
+service php_fpm start
 service caddy start
 service mysql-server restart
 
