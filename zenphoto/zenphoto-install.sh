@@ -92,7 +92,7 @@ sysrc caddy_enable="YES"
 # Enable and Start Services
 sysrc php_fpm_enable="YES"
 service caddy start
-service php-fpm start
+service php_fpm start
 
 # Save Passwords
 echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt
