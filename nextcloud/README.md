@@ -30,7 +30,7 @@ MARIADB_VERSION
 - mariadb version to use (currently defaults to 106)
 
 PG_VERSION
-- postgres version to use (currently defaults to 13)
+- postgres version to use (currently defaults to 16)
 
 APP_VERSION
 - set nextcloud version (currently defaults to 29)
