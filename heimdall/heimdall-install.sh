@@ -34,7 +34,7 @@ fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervic
 sysrc php_fpm_enable=YES
 sysrc caddy_enable=YES
 sysrc caddy_config=/usr/local/www/Caddyfile
-service php-fpm start
+service php_fpm start
 service caddy start
 
 # Done
