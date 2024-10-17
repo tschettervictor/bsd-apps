@@ -45,7 +45,7 @@ openssl req -new -newkey rsa:2048 -days 366 -nodes -x509 -subj "/O=ZoneMinder Ho
 # Start Services (zoneminder will be started later)
 service mysql-server start
 service nginx start
-service php-fpm start
+service php_fpm start
 service fcgiwrap start 
 
 # Create and Configure Database
@@ -70,7 +70,7 @@ fetch -o /usr/local/etc/mysql/conf.d/zoneminder.cnf https://raw.githubuserconten
 # Restart Services and Start Zoneminder
 service mysql-server restart
 service fcgiwrap restart 
-service php-fpm restart
+service php_fpm restart
 service nginx restart
 service zoneminder start
 
