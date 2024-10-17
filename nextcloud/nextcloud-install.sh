@@ -189,7 +189,7 @@ fi
 sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 chown -R www:www /usr/local/etc/php.ini
 sysrc php_fpm_enable="YES"
-service php-fpm start
+service php_fpm start
 
 # Redis Setup
 fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/redis.conf
@@ -305,7 +305,7 @@ crontab -u www /tmp/www-crontab
 # Restart Services
 service mysql-server restart
 service redis restart
-service php-fpm restart
+service php_fpm restart
 service caddy restart
 
 # Save Passwords
