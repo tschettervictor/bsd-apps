@@ -12,7 +12,23 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y caddy php${PHP_VERSION} php${PHP_VERSION}-mbstring php${PHP_VERSION}-zip php${PHP_VERSION}-tokenizer php${PHP_VERSION}-pdo php${PHP_VERSION}-pdo_sqlite php${PHP_VERSION}-filter php${PHP_VERSION}-xml php${PHP_VERSION}-ctype php${PHP_VERSION}-dom php${PHP_VERSION}-fileinfo sqlite3 php${PHP_VERSION}-session go git
+pkg install -y \
+caddy \
+git-lite \
+go \
+php${PHP_VERSION} \
+php${PHP_VERSION}-ctype \
+php${PHP_VERSION}-dom \
+php${PHP_VERSION}-fileinfo \
+php${PHP_VERSION}-filter \
+php${PHP_VERSION}-mbstring \
+php${PHP_VERSION}-pdo \
+php${PHP_VERSION}-pdo_sqlite \
+php${PHP_VERSION}-session \
+php${PHP_VERSION}-tokenizer \
+php${PHP_VERSION}-xml \
+php${PHP_VERSION}-zip \
+sqlite3
 
 # Create Directories
 mkdir -p /usr/local/www
