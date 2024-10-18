@@ -8,7 +8,8 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y jellyfin
+pkg install -y \
+jellyfin
 
 # Enable and Start Services
 sysrc jellyfin_enable=YES
