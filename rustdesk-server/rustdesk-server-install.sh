@@ -10,7 +10,8 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y rustdesk-server
+pkg install -y \
+rustdesk-server
 
 # Enable and Start Services
 sysrc rustdesk_hbbr_enable=YES
