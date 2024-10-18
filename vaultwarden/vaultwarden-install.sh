@@ -58,7 +58,13 @@ if [ "$(ls -A "/usr/local/www/vaultwarden/data" 2>/dev/null)" ]; then
 fi
 
 # Install Packages
-pkg install -y vaultwarden go git-lite py${PYTHON_VERSION}-argon2-cffi bash openssl
+pkg install -y \
+bash \
+git-lite \
+go \
+openssl \
+py${PYTHON_VERSION}-argon2-cffi
+vaultwarden
 
 # Create Directories
 mkdir -p /usr/local/etc/rc.d
