@@ -48,7 +48,10 @@ if [ $STANDALONE_CERT -eq 1 ] && [ "${CERT_EMAIL}" = "" ] ; then
 fi
 
 # Install Packages
-pkg install -y go git-lite openssl
+pkg install -y \
+git-lite \
+fo \
+openssl
 
 # Create Directories
 mkdir -p /usr/local/etc/rc.d
