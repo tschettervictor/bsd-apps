@@ -12,7 +12,9 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y git-lite npm-node"${NODE_VERSION}"
+pkg install -y \
+git-lite \
+npm-node"${NODE_VERSION}"
 
 # Create Directories
 mkdir -p "${DATA_PATH}"
