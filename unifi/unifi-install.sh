@@ -11,7 +11,8 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y unifi${UNIFI_VERSION}
+pkg install -y \
+unifi${UNIFI_VERSION}
 
 # Enable and Start Services
 sysrc unifi_enable=YES
