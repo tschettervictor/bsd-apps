@@ -25,7 +25,33 @@ if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
 fi
 
 # Install Packages
-pkg install -y caddy mariadb${MARIADB_VERSION}-server mariadb${MARIADB_VERSION}-client mysql-connector-j php${PHP_VERSION} php${PHP_VERSION}-bz2 php${PHP_VERSION}-ctype php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-fileinfo php${PHP_VERSION}-filter php${PHP_VERSION}-gd php${PHP_VERSION}-gettext php${PHP_VERSION}-iconv php${PHP_VERSION}-intl php${PHP_VERSION}-mbstring php${PHP_VERSION}-mysqli php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-session php${PHP_VERSION}-simplexml php${PHP_VERSION}-tidy php${PHP_VERSION}-xml php${PHP_VERSION}-xmlreader php${PHP_VERSION}-xmlwriter php${PHP_VERSION}-zip
+pkg install -y \
+caddy \
+mariadb${MARIADB_VERSION}-client \
+mariadb${MARIADB_VERSION}-server \
+mysql-connector-j \
+php${PHP_VERSION} \
+php${PHP_VERSION}-bz2 \
+php${PHP_VERSION}-ctype \
+php${PHP_VERSION}-curl \
+php${PHP_VERSION}-dom \
+php${PHP_VERSION}-exif \
+php${PHP_VERSION}-fileinfo \
+php${PHP_VERSION}-filter \
+php${PHP_VERSION}-gd \
+php${PHP_VERSION}-gettext \
+php${PHP_VERSION}-iconv \
+php${PHP_VERSION}-intl \
+php${PHP_VERSION}-mbstring \
+php${PHP_VERSION}-mysqli \
+php${PHP_VERSION}-pdo_mysql \
+php${PHP_VERSION}-session \
+php${PHP_VERSION}-simplexml \
+php${PHP_VERSION}-tidy \
+php${PHP_VERSION}-xml \
+php${PHP_VERSION}-xmlreader \
+php${PHP_VERSION}-xmlwriter \
+php${PHP_VERSION}-zip
 
 # Create Directories
 mkdir -p /var/db/mysql
