@@ -32,7 +32,34 @@ if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
 fi
 
 # Package Installation
-pkg install -y caddy redis ffmpeg git-lite go mariadb${MARIADB_VERSION}-server p5-Image-ExifTool php${PHP_VERSION} php${PHP_VERSION}-bcmath php${PHP_VERSION}-ctype php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-extensions php${PHP_VERSION}-fileinfo php${PHP_VERSION}-gd php${PHP_VERSION}-mbstring php${PHP_VERSION}-mysqli php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-pdo php${PHP_VERSION}-pecl-imagick php${PHP_VERSION}-pecl-redis php${PHP_VERSION}-simplexml php${PHP_VERSION}-tokenizer php${PHP_VERSION}-xml php${PHP_VERSION}-zip php${PHP_VERSION}-zlib
+pkg install -y \
+caddy \
+ffmpeg \
+git-lite \
+go \
+mariadb${MARIADB_VERSION}-client \
+mariadb${MARIADB_VERSION}-server \
+p5-Image-ExifTool \
+php${PHP_VERSION} \
+php${PHP_VERSION}-bcmath \
+php${PHP_VERSION}-ctype \
+php${PHP_VERSION}-dom \
+php${PHP_VERSION}-exif \
+php${PHP_VERSION}-extensions \
+php${PHP_VERSION}-fileinfo \
+php${PHP_VERSION}-gd \
+php${PHP_VERSION}-mbstring \
+php${PHP_VERSION}-mysqli \
+php${PHP_VERSION}-pdo \
+php${PHP_VERSION}-pdo_mysql \
+php${PHP_VERSION}-pecl-imagick \
+php${PHP_VERSION}-pecl-redis \
+php${PHP_VERSION}-simplexml \
+php${PHP_VERSION}-tokenizer \
+php${PHP_VERSION}-xml \
+php${PHP_VERSION}-zip \
+php${PHP_VERSION}-zlib
+redis
 
 # Create Directories
 mkdir -p /usr/local/www
