@@ -13,7 +13,18 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y git-lite gmake openjdk${JAVA_VERSION} npm-node${NODE_VERSION} node${NODE_VERSION} yarn-node${NODE_VERSION} python${PYTHON_VERSION} py${PYTHON_VERSION}-rdiff-backup py${PYTHON_VERSION}-supervisor rsync screen
+pkg install -y \
+git-lite \
+gmake \
+node${NODE_VERSION} \
+npm-node${NODE_VERSION} \
+openjdk${JAVA_VERSION} \
+python${PYTHON_VERSION} \
+py${PYTHON_VERSION}-rdiff-backup \
+py${PYTHON_VERSION}-supervisor \
+rsync \
+screen \
+yarn-node${NODE_VERSION}
 
 # Create Directories
 mkdir -p /usr/local/games
