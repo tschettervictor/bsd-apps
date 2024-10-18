@@ -10,7 +10,9 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y git-lite go${GO_VERSION}
+pkg install -y \
+git-lite \
+go${GO_VERSION}
 
 # Create Directories
 mkdir -p /usr/local/www/mediamtx
