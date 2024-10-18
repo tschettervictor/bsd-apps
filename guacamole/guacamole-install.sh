@@ -23,7 +23,12 @@ if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
 fi
 
 # Package Installation
-pkg install -y guacamole-server guacamole-client mariadb"${MARIADB_VERSION}"-server mariadb"${MARIADB_VERSION}"-client mysql-connector-j
+pkg install -y \
+guacamole-client \
+guacamole-server \
+mariadb"${MARIADB_VERSION}"-client \
+mariadb"${MARIADB_VERSION}"-server \
+mysql-connector-j
 
 # Create Directories
 mkdir -p /var/db/mysql
