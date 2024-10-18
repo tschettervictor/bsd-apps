@@ -11,7 +11,14 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y bash python py${PYTHON_VERSION}-setuptools py${PYTHON_VERSION}-sqlite3 py${PYTHON_VERSION}-openssl py${PYTHON_VERSION}pycryptodomex ca_root_nss git-lite
+pkg install -y \
+bash \
+ca_root_nss \
+git-lite \
+py${PYTHON_VERSION}-openssl \
+py${PYTHON_VERSION}-pycryptodomex \
+py${PYTHON_VERSION}-setuptools \
+py${PYTHON_VERSION}-sqlite3
 
 # Create Directories
 mkdir -p /data
