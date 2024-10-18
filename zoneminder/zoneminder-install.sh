@@ -16,7 +16,12 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y zoneminder fcgiwrap mysql${MYSQL_VERSION}-server openssl nginx
+pkg install -y \
+fcgiwrap \
+mysql${MYSQL_VERSION}-server \
+nginx \
+openssl \
+zoneminder
 
 # Create Directories
 mkdir -p /usr/local/etc/mysql/conf.d
