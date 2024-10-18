@@ -97,7 +97,58 @@ REINSTALL="true"
 fi
 
 # Package Installation
-pkg install -y nano sudo vim redis gnupg bash go git ffmpeg perl5 p5-Locale-gettext help2man texinfo m4 autoconf openssl php${PHP_VERSION} php${PHP_VERSION}-ctype php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-filter php${PHP_VERSION}-gd php${PHP_VERSION}-xml php${PHP_VERSION}-mbstring php${PHP_VERSION}-posix php${PHP_VERSION}-session php${PHP_VERSION}-simplexml php${PHP_VERSION}-xmlreader php${PHP_VERSION}-xmlwriter php${PHP_VERSION}-zip php${PHP_VERSION}-zlib php${PHP_VERSION}-fileinfo php${PHP_VERSION}-bz2 php${PHP_VERSION}-intl php${PHP_VERSION}-ldap php${PHP_VERSION}-pecl-smbclient php${PHP_VERSION}-ftp php${PHP_VERSION}-imap php${PHP_VERSION}-bcmath php${PHP_VERSION}-gmp php${PHP_VERSION}-exif php${PHP_VERSION}-pecl-APCu php${PHP_VERSION}-pecl-memcache php${PHP_VERSION}-pecl-redis php${PHP_VERSION}-pecl-imagick php${PHP_VERSION}-pcntl php${PHP_VERSION}-phar php${PHP_VERSION}-iconv php${PHP_VERSION}-sodium php${PHP_VERSION}-sysvsem php${PHP_VERSION}-xsl php${PHP_VERSION}-opcache
+pkg install -y \
+autoconf \
+bash \
+ffmpeg \
+git-lite \
+gnupg \
+go \
+help2man \
+m4 \
+openssl \
+p5-Locale-gettext \
+perl5 \
+php${PHP_VERSION} \
+php${PHP_VERSION}-bcmath \
+php${PHP_VERSION}-bz2 \
+php${PHP_VERSION}-ctype \
+php${PHP_VERSION}-curl \
+php${PHP_VERSION}-dom \
+php${PHP_VERSION}-exif \
+php${PHP_VERSION}-fileinfo \
+php${PHP_VERSION}-filter \
+php${PHP_VERSION}-ftp \
+php${PHP_VERSION}-gd \
+php${PHP_VERSION}-gmp \
+php${PHP_VERSION}-iconv \
+php${PHP_VERSION}-imap \
+php${PHP_VERSION}-intl \
+php${PHP_VERSION}-ldap \
+php${PHP_VERSION}-mbstring \
+php${PHP_VERSION}-opcache \
+php${PHP_VERSION}-pcntl \
+php${PHP_VERSION}-pecl-APCu \
+php${PHP_VERSION}-pecl-imagick \
+php${PHP_VERSION}-pecl-memcache \
+php${PHP_VERSION}-pecl-redis \
+php${PHP_VERSION}-pecl-smbclient \
+php${PHP_VERSION}-phar \
+php${PHP_VERSION}-posix \
+php${PHP_VERSION}-session \
+php${PHP_VERSION}-simplexml \
+php${PHP_VERSION}-sodium \
+php${PHP_VERSION}-sysvsem \
+php${PHP_VERSION}-xml \
+php${PHP_VERSION}-xmlreader \
+php${PHP_VERSION}-xmlwriter \
+php${PHP_VERSION}-xsl \
+php${PHP_VERSION}-zip \
+php${PHP_VERSION}-zlib \
+redis \
+sudo \
+texinfo \
+vim
 
 # Create Directories
 if [ "${DB_TYPE}" = "MariaDB" ]; then
