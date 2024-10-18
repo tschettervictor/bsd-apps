@@ -10,7 +10,7 @@ DB_PASSWORD=$(openssl rand -base64 15)
 RABBITMQ_USER="onlyoffice"
 RABBITMQ_PASSWORD=$(openssl rand -base64 15)
 JWT_SECRET=$(openssl rand -base64 20)
-PG_VERSION="15"
+PG_VERSION="16"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
