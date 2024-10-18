@@ -68,7 +68,38 @@ if [ $STANDALONE_CERT -eq 1 ] && [ "${CERT_EMAIL}" = "" ] ; then
 fi
 
 # Package Installation
-pkg install -y go redis mariadb${MARIADB_VERSION}-server mariadb${MARIADB_VERSION}-client php${PHP_VERSION} php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-fileinfo php${PHP_VERSION}-exif php${PHP_VERSION}-mbstring php${PHP_VERSION}-extensions php${PHP_VERSION}-mysqli php${PHP_VERSION}-pecl-libsodium php${PHP_VERSION}-zip php${PHP_VERSION}-filter php${PHP_VERSION}-gd php${PHP_VERSION}-iconv php${PHP_VERSION}-xml php${PHP_VERSION}-simplexml php${PHP_VERSION}-xmlreader php${PHP_VERSION}-zlib php${PHP_VERSION}-ftp php${PHP_VERSION}-pecl-ssh2 php${PHP_VERSION}-sockets php${PHP_VERSION}-ctype php${PHP_VERSION}-session php${PHP_VERSION}-xmlwriter php${PHP_VERSION}-pecl-redis php${PHP_VERSION}-pecl-imagick php${PHP_VERSION}-pecl-mcrypt php${PHP_VERSION}-bcmath
+pkg install -y \
+go \
+mariadb${MARIADB_VERSION}-client \
+mariadb${MARIADB_VERSION}-server \
+php${PHP_VERSION} \
+php${PHP_VERSION}-bcmath \
+php${PHP_VERSION}-ctype \
+php${PHP_VERSION}-curl \
+php${PHP_VERSION}-dom \
+php${PHP_VERSION}-exif \
+php${PHP_VERSION}-extensions \
+php${PHP_VERSION}-fileinfo \
+php${PHP_VERSION}-filter \
+php${PHP_VERSION}-ftp \
+php${PHP_VERSION}-gd \
+php${PHP_VERSION}-iconv \
+php${PHP_VERSION}-mbstring \
+php${PHP_VERSION}-mysqli \
+php${PHP_VERSION}-pecl-imagick \
+php${PHP_VERSION}-pecl-libsodium \
+php${PHP_VERSION}-pecl-mcrypt \
+php${PHP_VERSION}-pecl-redis \
+php${PHP_VERSION}-pecl-ssh2 \
+php${PHP_VERSION}-session \
+php${PHP_VERSION}-simplexml \
+php${PHP_VERSION}-sockets \
+php${PHP_VERSION}-xml \
+php${PHP_VERSION}-xmlreader \
+php${PHP_VERSION}-xmlwriter \
+php${PHP_VERSION}-zip \
+php${PHP_VERSION}-zlib \
+redis
 
 # Create Directories
 mkdir -p /usr/local/www
