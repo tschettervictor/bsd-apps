@@ -19,7 +19,10 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y onlyoffice-documentserver postgresql"${PG_VERSION}"-server postgresql"${PG_VERSION}"-client
+pkg install -y \
+onlyoffice-documentserver \
+postgresql"${PG_VERSION}"-client \
+postgresql"${PG_VERSION}"-server
 
 # Create and Configure Database
 sysrc postgresql_enable="YES"
