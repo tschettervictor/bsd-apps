@@ -8,7 +8,8 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y icecast
+pkg install -y \
+icecast
 
 # Create Directories
 mkdir -p /usr/local/www/icecast
