@@ -24,7 +24,34 @@ if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
 fi
 
 # Package installation
-pkg install -y caddy imagemagick7 wget mediainfo ffmpeg p5-Image-ExifTool bzip2 mariadb${MARIADB_VERSION}-server mariadb${MARIADB_VERSION}-client php${PHP_VERSION} php${PHP_VERSION}-mbstring php${PHP_VERSION}-zip php${PHP_VERSION}-tokenizer php${PHP_VERSION}-pdo php${PHP_VERSION}-filter php${PHP_VERSION}-xml php${PHP_VERSION}-ctype php${PHP_VERSION}-session php${PHP_VERSION}-dom php${PHP_VERSION}-exif php${PHP_VERSION}-gd php${PHP_VERSION}-iconv php${PHP_VERSION}-simplexml php${PHP_VERSION}-sodium php${PHP_VERSION}-zlib php${PHP_VERSION}-pdo_mysql php${PHP_VERSION}-mysqli
+pkg install -y \
+bzip2 \
+caddy \
+ffmpeg \
+imagemagick7 \
+mariadb${MARIADB_VERSION}-client \
+mariadb${MARIADB_VERSION}-server \
+mediainfo \
+p5-Image-ExifTool \
+php${PHP_VERSION} \
+php${PHP_VERSION}-ctype \
+php${PHP_VERSION}-dom \
+php${PHP_VERSION}-exif \
+php${PHP_VERSION}-filter \
+php${PHP_VERSION}-gd \
+php${PHP_VERSION}-iconv \
+php${PHP_VERSION}-mbstring \
+php${PHP_VERSION}-mysqli \
+php${PHP_VERSION}-pdo \
+php${PHP_VERSION}-pdo_mysql \
+php${PHP_VERSION}-session \
+php${PHP_VERSION}-simplexml \
+php${PHP_VERSION}-sodium \
+php${PHP_VERSION}-tokenizer \
+php${PHP_VERSION}-xml \
+php${PHP_VERSION}-zlib \
+php${PHP_VERSION}-zip \
+wget
 
 # Create Directories
 mkdir -p /var/db/mysql
