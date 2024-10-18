@@ -11,7 +11,11 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Package Installation
-pkg install -y git-lite dotnet sqlite3 npm-node${NODE_VERSION}
+pkg install -y \
+dotnet \
+git-lite \
+npm-node${NODE_VERSION} \
+sqlite3
 
 # Create Directories
 mkdir -p /usr/local/www
