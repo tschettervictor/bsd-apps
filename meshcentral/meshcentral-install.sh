@@ -10,7 +10,9 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 # Install Packages
-pkg install -y npm-node"${NODE_VERSION}" node"${NODE_VERSION}"
+pkg install -y \
+node"${NODE_VERSION}" \
+npm-node"${NODE_VERSION}"
 
 # Create Directories
 mkdir -p /usr/local/meshcentral/meshcentral-data
