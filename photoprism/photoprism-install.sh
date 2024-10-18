@@ -36,7 +36,15 @@ if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
 fi
 
 # Install Packages
-pkg install -y vips ffmpeg darktable rawtherapee libheif p5-Image-ExifTool mariadb${MARIADB_VERSION}-server mariadb${MARIADB_VERSION}-client
+pkg install -y \
+darktable \
+ffmpeg \
+libheif \
+mariadb${MARIADB_VERSION}-client \
+mariadb${MARIADB_VERSION}-server \
+p5-Image-ExifTool \
+rawtherapee \
+vips
 
 # Create Directories
 mkdir -p /mnt/photos
