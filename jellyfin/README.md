@@ -3,12 +3,12 @@ https://jellyfin.org
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/jellyfin-server/jellyfin-server-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/jellyfin/jellyfin-install.sh
 ```
 
 Don't forget to
 ```
-chmod +x jellyfin-server-install.sh
+chmod +x jellyfin-install.sh
 ```
 
 ## Install Notes
