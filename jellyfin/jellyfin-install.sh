@@ -11,6 +11,10 @@ fi
 pkg install -y \
 jellyfin
 
+# Create Directories
+mkdir -p /var/db/jellyfin
+chown -R jellyfin:jellyfin /var/db/jellyfin
+
 # Enable and Start Services
 sysrc jellyfin_enable=YES
 service jellyfin start
