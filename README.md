@@ -42,9 +42,9 @@ This enables me to mount the corresponding directories into the jail, and keep t
 
 ## Mount points
 
-All of the scripts are designed to work with mount points. Every bit of data that is necessary for a reinstall is included in each apps mount point README file. This means that jails can be destroyed and rebuilt without losing data.
+All of the scripts are designed to work with mount points. Every bit of data that is necessary for a reinstall is included in each apps README file. This means that jails can be destroyed and rebuilt without losing data.
 
-If you do not want to use mount points, the script will install the apps and their data inside the jail and everything will work normally. But be warned, when you destroy the jail, the data inside it will be lost.
+If you do not want to use mount points, the script will install the apps and its data inside the jail and everything will work normally. But be warned, when you destroy the jail, the data inside it will be lost.
 
 Mount points make it easy to destroy and recreate jails without losing data. Each application has a list of mount points that must be mounted if you choose to store all the data outside the jail. These scripts have all been tested by doing an initial install, then a reinstall. If the data is mounted into the jail on a reinstall, the script will skip certain steps to prevent data from being overwritten.
 
