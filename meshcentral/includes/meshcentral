@@ -41,7 +41,7 @@ start_precmd="meshcentral_startprecmd"
 meshcentral_startprecmd()
 {
     mkdir -p /var/run/${name}
-    mkdir -p /var/run/${name}
+    mkdir -p /var/log/${name}
     chown -R ${meshcentral_daemon_user}:${meshcentral_daemon_group} /var/run/${name}
     chown -R ${meshcentral_daemon_user}:${meshcentral_daemon_group} /var/log/${name}
 }
