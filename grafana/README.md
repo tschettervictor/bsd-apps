@@ -18,6 +18,7 @@ These are the variables that are available to change along with their defaults a
 ## Mount points (should be mounted outside the jail)
 - `/usr/local/share/grafana` - data directory
 - `/usr/local/etc/grafana` - config directory
+- `/var/db/grafana` - database directory
 
 ## Jail Properties
 - none
