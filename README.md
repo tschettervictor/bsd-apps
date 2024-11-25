@@ -1,7 +1,5 @@
 # bsd-apps
 
-## All previous iocage repos have now been merged into this one.
-
 Collection of scripts to install popular applications inside FreeBSD jails, or FreeBSD host system.
 
 Each application has a README file which explains some necessary steps before running the script.
