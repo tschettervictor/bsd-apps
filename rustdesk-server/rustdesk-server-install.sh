@@ -1,12 +1,15 @@
 #!/bin/sh
 # Install Rustdesk Server
 
-SERVER=""
-
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
+fi
+
+if [ -z "${SERVER}" ]; then
+  echo 'Configuration error: SERVER must be set'
+  exit 1
 fi
 
 # Install Packages

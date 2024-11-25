@@ -1,14 +1,10 @@
 #!/bin/sh
 # Install Caddy
 
-HOST_NAME=""
-NO_CERT=0
-SELFSIGNED_CERT=0
-STANDALONE_CERT=0
-DNS_CERT=0
-DNS_PLUGIN=""
-DNS_TOKEN=""
-CERT_EMAIL=""
+NO_CERT="${NO_CERT:-0}"
+SELFSIGNED_CERT="${SELFSIGNED_CERT:-0}"
+STANDALONE_CERT="${STANDALONE_CERT:-0}"
+DNS_CERT="${DNS_CERT:-0}"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then

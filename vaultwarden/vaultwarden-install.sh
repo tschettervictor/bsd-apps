@@ -2,16 +2,14 @@
 # Install Vaultwarden
 
 APP_NAME="Vaultwarden"
-ADMIN_TOKEN=$(openssl rand -base64 16)
-HOST_NAME=""
-NO_CERT=0
-SELFSIGNED_CERT=0
-STANDALONE_CERT=0
-DNS_CERT=0
-DNS_PLUGIN=""
-DNS_TOKEN=""
-CERT_EMAIL=""
-PYTHON_VERSION="311"
+if [ -z "${ADMIN_TOKEN}" ]; then
+  ADMIN_TOKEN=$(openssl rand -base64 16)
+fi
+NO_CERT="${NO_CERT:-0}"
+SELFSIGNED_CERT="${SELFSIGNED_CERT:-0}"
+STANDALONE_CERT="${STANDALONE_CERT:-0}"
+DNS_CERT="${DNS_CERT:-0}"
+PYTHON_VERSION="${PYTHON_VERSION:-311}"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then

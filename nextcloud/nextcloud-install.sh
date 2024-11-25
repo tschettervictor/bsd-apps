@@ -2,27 +2,27 @@
 # Install Nextcloud
 
 APP_NAME="Nextcloud"
-APP_VERSION="29"
-ADMIN_PASSWORD=$(openssl rand -base64 12)
-MX_WINDOW="5"
-DB_TYPE="MariaDB"
-DB_NAME="nextcloud"
-DB_USER="nextcloud"
-DB_ROOT_PASSWORD=$(openssl rand -base64 16)
-DB_PASSWORD=$(openssl rand -base64 16)
-NO_CERT=0
-SELFSIGNED_CERT=0
-STANDALONE_CERT=0
-DNS_CERT=0
-DNS_PLUGIN=""
-DNS_TOKEN=""
-CERT_EMAIL=""
-COUNTRY_CODE=""
-HOST_NAME=""
-TIME_ZONE=""
-PHP_VERSION="83"
-MARIADB_VERSION="106"
-PG_VERSION="16"
+APP_VERSION="${APP_VERSION:-29}"
+if [ -z "${ADMIN_PASSWORD}" ]; then
+  ADMIN_PASSWORD=$(openssl rand -base64 12)
+fi
+MX_WINDOW="${MX_WINDOW:-5}"
+DB_TYPE="${DB_TYPE:-MariaDB}"
+DB_NAME="${DB_NAME:-nextcloud}"
+DB_USER="${DB_USER:-nextcloud}"
+if [ -z "${DB_ROOT_PASSWORD}" ]; then
+  DB_ROOT_PASSWORD=$(openssl rand -base64 16)
+fi
+if [ -z "${DB_PASSWORD}" ]; then
+  DB_PASSWORD=$(openssl rand -base64 16)
+fi
+NO_CERT="${NO_CERT:-0}"
+SELFSIGNED_CERT="${SELFSIGNED_CERT:-0}"
+STANDALONE_CERT="${STANDALONE_CERT:-0}"
+DNS_CERT="${DNS_CERT:-0}"
+PHP_VERSION="${PHP_VERSION:-83}"
+MARIADB_VERSION="${MARIADB_VERSION:-106}"
+PG_VERSION="${PG_VERSION:-16}"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
