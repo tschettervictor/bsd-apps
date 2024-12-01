@@ -14,6 +14,7 @@ pkg install -y \
 navidrome
 
 # Create Directories
+mkdir -p /usr/local/share/navidrome/music
 mkdir -p /usr/local/etc/navidrome
 mkdir -p /var/db/navidrome
 
