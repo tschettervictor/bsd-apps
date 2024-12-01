@@ -50,7 +50,7 @@ fi
 # Install Packages
 pkg install -y \
 git-lite \
-fo \
+go \
 openssl
 
 # Create Directories
