@@ -58,7 +58,7 @@ CERT_EMAIL
 
 If you do use any type of certificate with a domain, Caddy will obtain a staging certificate to not excede rate limits. Once you have confirmed things are working, run the script at `/root/remove-staging.sh` to acquire a valid certificate.
 
-All of the above variable should be changed to fit your environment.
+All of the above variables should be changed to fit your environment.
 
 ## Mount points (should be mounted outside the jail)
 - none
