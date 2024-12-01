@@ -12,7 +12,7 @@ chmod +x heimdall-install.sh
 ```
 
 ## Variables
-These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at defalut unless you have a good reason to change them.
+These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at default unless you have a good reason to change them.
 
 PHP_VERSION
 - php version to use (currently defaults to 83)
