@@ -19,6 +19,9 @@ mkdir -p /var/db/prometheus
 
 # Enable, Configure and Start Services
 sysrc prometheus_enable=YES
+if [ ! -f /usr/local/etc/prometheus/prometheus.yml ]; then
+   cp /usr/local/etc/prometheus.* /usr/local/etc/prometheus/
+fi
 sysrc prometheus_config="/usr/local/etc/prometheus/prometheus.yml"
 service prometheus start
 
