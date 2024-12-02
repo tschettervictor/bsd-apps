@@ -8,6 +8,4 @@
 	root * /usr/local/www/dasherr/www
 	file_server
 
-	php_fastcgi 127.0.0.1:9000
-
 }
