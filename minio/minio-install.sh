@@ -11,7 +11,7 @@ fi
 
 # Check for Reinstall
 if [ "$(ls -d /var/db/minio/.minio.sys/config 2>/dev/null)" ]; then
-	echo "Existing ${APP_NAME} config detected."
+	echo "Existing ${APP_NAME} data detected."
 	echo "Starting reinstall..."
 	REINSTALL="true"
 fi
