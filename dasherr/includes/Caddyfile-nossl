@@ -1,0 +1,13 @@
+:80 {
+	encode gzip
+
+	log {
+		output file /var/log/dasherr_access.log
+	}
+
+	root * /usr/local/www/dasherr/www
+	file_server
+
+	php_fastcgi 127.0.0.1:9000
+
+}
