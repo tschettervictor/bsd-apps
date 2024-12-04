@@ -12,16 +12,16 @@ pkg install -y \
 icecast
 
 # Create Directories
-mkdir -p /usr/local/www/icecast
+mkdir -p /usr/local/etc/icecast
 mkdir -p /var/log/icecast
 
 # Icecast Setup
-if ! [ "$(ls -A "/usr/local/www/icecast")" ]; then
-   cp /usr/local/etc/icecast.xml /usr/local/www/icecast/
+if [ ! -f /usr/local/etc/icecast/icecast.xml ]; then
+   cp /usr/local/etc/icecast.xml /usr/local/etc/icecast/
 fi
 
 # Enable and Start Services
-sysrc icecast_config="/usr/local/www/icecast/icecast.xml"
+sysrc icecast_config="/usr/local/etc/icecast/icecast.xml"
 sysrc icecast_enable="YES"
 service icecast start
 
