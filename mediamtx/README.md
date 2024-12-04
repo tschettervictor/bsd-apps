@@ -18,7 +18,7 @@ GO_VERSION
 - go version to use (currently defaluts to 122)
 
 ## Mount points (should be mounted outside the jail)
-- `/usr/local/www/mediamtx` - config file directory
+- `/usr/local/etc/mediamtx` - config file directory
 
 ## Jail Properties
 - none
