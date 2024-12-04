@@ -1,17 +1,19 @@
 #!/bin/sh
 # Install and configure your selected database with predefined variables
 
-MARIADB=0
-MARIADB_VERSION="106"
-MYSQL=0
-MYSQL_VERSION="81"
-POSTGRESQL=0
-PGSQL_VERSION="15"
+MARIADB="${MARIADB:-0}"
+MARIADB_VERSION="${MARIADB_VERSION:-106}"
+MYSQL="${MYSQL:-0}"
+MYSQL_VERSION="${MYSQL_VERSION:-81}"
+POSTGRESQL="${POSTGRESQL:-0}"
+PGSQL_VERSION="${PGSQL_VERSION:-15}"
 DB_TYPE=""
-DB_NAME=""
-DB_USER=""
-DB_ROOT_PASSWORD=$(openssl rand -base64 15)
-DB_PASSWORD=$(openssl rand -base64 15)
+if [ -z "${DB_ROOT_PASSWORD}" ]; then
+  DB_ROOT_PASSWORD=$(openssl rand -base64 15)
+fi
+if [ -z "${DB_PASSWORD}" ]; then
+  DB_PASSWORD=$(openssl rand -base64 15)
+fi
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
