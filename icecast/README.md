@@ -20,7 +20,7 @@ These are the variables that are available to change along with their defaults a
 - none
 
 ## Mount points (should be mounted outside the jail)
-- `/usr/local/www/icecast` - data directory
+- `/usr/local/etc/icecast` - config directory
 
 ## Jail Properties
 - none
