@@ -43,7 +43,7 @@ if [ -z "${HOST_NAME}" ]; then
   echo 'Configuration error: HOST_NAME must be set'
   exit 1
 fi
-if [ "${DB_TYPE}" != "MariaDB" ] && [ "${DB_TYPE}" != "PostgreSQL" ]; then
+if [ "${DB_TYPE}" != "MariaDB" ] || [ "${DB_TYPE}" != "PostgreSQL" ]; then
   echo 'Configuration error: DATABASE must be set to "MariaDB" or "PostgreSQL"'
   exit 1
 fi
