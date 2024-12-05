@@ -15,18 +15,19 @@ pkg install -y \
 bash \
 ca_root_nss \
 git-lite \
+python \
 py${PYTHON_VERSION}-openssl \
 py${PYTHON_VERSION}-pycryptodomex \
 py${PYTHON_VERSION}-setuptools \
 py${PYTHON_VERSION}-sqlite3
 
 # Create Directories
-mkdir -p /data
+mkdir -p /mnt/data
 
 # Tautulli Setup
 git clone https://github.com/Tautulli/Tautulli.git /usr/local/share/Tautulli
 pw user add tautulli -c tautulli -u 109 -d /nonexistent -s /usr/bin/nologin
-chown -R tautulli:tautulli /usr/local/share/Tautulli /data
+chown -R tautulli:tautulli /usr/local/share/Tautulli /mnt/data
 cp /usr/local/share/Tautulli/init-scripts/init.freebsd /usr/local/etc/rc.d/tautulli
 chmod u+x /usr/local/etc/rc.d/tautulli
 
