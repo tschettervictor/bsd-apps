@@ -161,7 +161,9 @@ mkdir -p /usr/local/www/nextcloud/config
 mkdir -p /usr/local/www/nextcloud/themes
 mkdir -p /var/log/nextcloud/
 chown -R www:www /var/log/nextcloud
-chown -R www:www /mnt/files
+if [ "${REINSTALL}" != "true" ]; then
+   chown -R www:www /mnt/files
+fi
 chmod -R 770 /mnt/files
 
 # Install Additional Database Packages
