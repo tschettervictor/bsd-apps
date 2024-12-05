@@ -35,6 +35,7 @@ chmod u+x /usr/local/etc/rc.d/tautulli
 sysrc tautulli_enable="YES"
 sysrc tautulli_user=tautulli
 sysrc "tautulli_flags=--datadir /mnt/data"
+service tautulli start
 
 # Done
 echo "---------------"
