@@ -2,7 +2,7 @@
 # Install Tautulli
 
 APP_NAME="Tautulli"
-PYTHON_VERSION="39"
+PYTHON_VERSION="311"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
