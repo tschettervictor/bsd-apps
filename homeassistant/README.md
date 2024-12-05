@@ -19,7 +19,7 @@ chmod +x homeassistant-install.sh
 It used to work fine, but as of 2024 it's been tough keeping a jailed version going.
 
 ## Variables
-These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at defalut unless you have a good reason to change them.
+These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at default unless you have a good reason to change them.
 
 PYTHON_VERSION
 - python version to use (currently defaults to 311)
