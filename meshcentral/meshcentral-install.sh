@@ -1,6 +1,7 @@
 #!/bin/sh
 # Install MeshCentral
 
+APP_NAME="MeshCentral"
 NODE_VERSION="20"
 
 # Check for Root Privileges
@@ -37,5 +38,5 @@ service meshcentral start
 
 echo "---------------"
 echo "Installation complete."
-echo "MeshCentral is running on port 1025"
+echo "${APP_NAME} is running on port 1025"
 echo "---------------"
