@@ -22,7 +22,7 @@ mkdir -p /usr/local/etc/rc.d
 git clone https://github.com/bluenviron/mediamtx /mediamtx
 cd /mediamtx && go122 generate ./...
 cd /mediamtx && go122 build .
-cp /mediamtx/mediamtx /usr/local/bin/mediamtx
+cp -f /mediamtx/mediamtx /usr/local/bin/mediamtx
 chmod +x /usr/local/bin/mediamtx
 if [ ! -f "/usr/local/etc/mediamtx/mediamtx.yml" ]; then
     cp /mediamtx/mediamtx.yml /usr/local/etc/mediamtx/
