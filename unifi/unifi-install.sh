@@ -16,7 +16,7 @@ unifi${UNIFI_VERSION}
 
 # Enable and Start Services
 sysrc unifi_enable=YES
-sysrc mondod_enable=yes
+sysrc mongod_enable=yes
 service mongod start
 service unifi start
 
