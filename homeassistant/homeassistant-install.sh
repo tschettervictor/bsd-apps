@@ -39,7 +39,6 @@ zlib-ng
 # Create Directories
 mkdir -p /home/homeassistant/config
 mkdir -p /usr/local/etc/rc.d
-mkdir -p /mnt/includes
 mkdir -p /usr/local/www
 
 # Homeassistant Setup
