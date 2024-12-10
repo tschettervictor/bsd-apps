@@ -2,22 +2,21 @@
 # Install Wordpress
 
 APP_NAME="Wordpress"
-DB_TYPE="MariaDB"
-DB_NAME="wordpress"
-DB_USER="wordpress"
-DB_ROOT_PASSWORD=$(openssl rand -base64 16)
-DB_PASSWORD=$(openssl rand -base64 16)
-NO_CERT=0
-SELFSIGNED_CERT=0
-STANDALONE_CERT=0
-DNS_CERT=0
-DNS_PLUGIN=""
-DNS_TOKEN=""
-CERT_EMAIL=""
-HOST_NAME=""
-TIME_ZONE=""
-PHP_VERSION="83"
-MARIADB_VERSION="106"
+DB_TYPE="${DB_TYPE:-MariaDB}"
+DB_NAME="${DB_NAME:-wordpress}"
+DB_USER="${DB_USER:-wordpress}"
+if [ -z "${DB_ROOT_PASSWORD}" ]; then
+  DB_ROOT_PASSWORD=$(openssl rand -base64 16)
+fi
+if [ -z "${DB_PASSWORD}" ]; then
+  DB_PASSWORD=$(openssl rand -base64 16)
+fi
+NO_CERT="${NO_CERT:-0}"
+SELFSIGNED_CERT="${SELFSIGNED_CERT:-0}"
+STANDALONE_CERT="${STANDALONE_CERT:-0}"
+DNS_CERT="${DNS_CERT:-0}"
+PHP_VERSION="${PHP_VERSION:-83}"
+MARIADB_VERSION="${MARIADB_VERSION:-106}"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
