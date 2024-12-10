@@ -23,7 +23,7 @@ TIME_ZONE
 - must be set
 
 DB_TYPE
-- set your preffered database (currently defaults to mariadb)
+- set your preferred database (currently defaults to mariadb)
 - can be either "MariaDB" or "PostgreSQL"
 
 MARIADB_VERSION
