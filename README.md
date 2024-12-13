@@ -58,7 +58,7 @@ Some applications require certain jail properties to be activated. You will have
 
 ### Set Properties Examples
   - `iocage set allow_sysvipc=1 jailname`
-  - `bastille config jailname set allow_sysvipc 1`
+  - `bastille config jailname set allow.sysvipc 1`
   - `pot set-attr -p jailname -A allow_sysvipc -V 1`
 
 ### Mount Examples
