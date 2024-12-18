@@ -2,15 +2,18 @@
 # Install Lychee
 
 APP_NAME="Lychee"
-APP_VERSION="5.5.1"
-DB_TYPE="MariaDB"
-DB_NAME="lychee"
-DB_USER="lychee"
-DB_ROOT_PASSWORD=$(openssl rand -base64 15)
-DB_PASSWORD=$(openssl rand -base64 15)
-PHP_VERSION="83"
-MARIADB_VERSION="106"
-TIME_ZONE=""
+APP_VERSION="${APP_VERSION:-5.5.1}"
+DB_TYPE="${DB_TYPE:-MariaDB}"
+DB_NAME="${DB_NAME:-lychee}"
+DB_USER="${DB_USER:-lychee}"
+if [ -z "${DB_ROOT_PASSWORD}" ]; then
+  DB_ROOT_PASSWORD=$(openssl rand -base64 15)
+fi
+if [ -z "${DB_PASSWORD}" ]; then
+  DB_PASSWORD=$(openssl rand -base64 15)
+fi
+PHP_VERSION="${PHP_VERSION:-83}"
+MARIADB_VERSION="${MARIADB_VERSION:-106}"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
