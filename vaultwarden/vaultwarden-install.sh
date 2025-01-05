@@ -63,7 +63,7 @@ bash \
 git-lite \
 go \
 openssl \
-py${PYTHON_VERSION}-argon2-cffi
+py${PYTHON_VERSION}-argon2-cffi \
 vaultwarden
 
 # Create Directories
