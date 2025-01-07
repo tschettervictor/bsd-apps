@@ -57,9 +57,9 @@ Variables that should be changed are listed on the README file of each app. Any 
 Some applications require certain jail properties to be activated. You will have to do so with whichever jail manager you are using. They all have a way to set jail properties.
 
 ### Set Properties Examples
-  - `iocage set allow_sysvipc=1 jailname`
+  - `iocage set allow.sysvipc=1 jailname`
   - `bastille config jailname set allow.sysvipc 1`
-  - `pot set-attr -p jailname -A allow_sysvipc -V 1`
+  - `pot set-attr -p jailname -A allow.sysvipc -V 1`
 
 ### Mount Examples
   - `iocage fstab -a jailname /path/on/host /path/inside/jail nullfs rw 0 0`
