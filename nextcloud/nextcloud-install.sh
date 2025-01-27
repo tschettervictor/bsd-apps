@@ -2,7 +2,7 @@
 # Install Nextcloud
 
 APP_NAME="Nextcloud"
-APP_VERSION="29"
+APP_VERSION="30"
 ADMIN_PASSWORD=$(openssl rand -base64 12)
 MX_WINDOW="5"
 DB_TYPE="MariaDB"
@@ -43,7 +43,7 @@ if [ -z "${HOST_NAME}" ]; then
   echo 'Configuration error: HOST_NAME must be set'
   exit 1
 fi
-if [ "${DB_TYPE}" != "MariaDB" ] || [ "${DB_TYPE}" != "PostgreSQL" ]; then
+if [ "${DB_TYPE}" != "MariaDB" ] && [ "${DB_TYPE}" != "PostgreSQL" ]; then
   echo 'Configuration error: DATABASE must be set to "MariaDB" or "PostgreSQL"'
   exit 1
 fi
