@@ -163,8 +163,8 @@ mkdir -p /var/log/nextcloud/
 chown -R www:www /var/log/nextcloud
 if [ "${REINSTALL}" != "true" ]; then
    chown -R www:www /mnt/files
+   chmod -R 770 /mnt/files
 fi
-chmod -R 770 /mnt/files
 
 # Install Additional Database Packages
 if [ "${DB_TYPE}" = "MariaDB" ]; then
