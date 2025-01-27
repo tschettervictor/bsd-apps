@@ -29,7 +29,7 @@ cd /usr/local/ && git clone https://github.com/louislam/uptime-kuma.git
 if [ "{APP_VERSION}" = "latest" ]; then
     cd /usr/local/uptime-kuma && npm run setup
 else
-    git checkout "${APP_VERSION}" && npm ci --production && npm run download-dist
+    cd /usr/local/uptime-kuma && git checkout "${APP_VERSION}" && npm ci --production && npm run download-dist
 fi
 sed -i '' "s|console.log(\"Welcome to Uptime Kuma\");|process.chdir('/usr/local/uptime-kuma');\n&|" /usr/local/uptime-kuma/server/server.js
 fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/includes/uptimekuma
