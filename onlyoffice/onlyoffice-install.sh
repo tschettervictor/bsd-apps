@@ -18,6 +18,9 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+# Create Directories
+mkdir -p /usr/local/etc/onlyoffice/etc/nginx/includes
+
 # Install Packages
 pkg install -y \
 onlyoffice-documentserver \
