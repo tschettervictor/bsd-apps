@@ -23,4 +23,4 @@ These are the variables that are available to change along with their defaults a
 - `/var/db/jellyfin` - data directory
 
 ## Jail Properties
-- allow_mlock=1
+- allow.mlock=1
