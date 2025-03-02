@@ -30,5 +30,5 @@ JAVA_VERSION
 - `/var/games/minecraft` - data directory
 
 ## Jail Properties
-- mount_procfs=1
-- mount_linprocfs=1
+- mount.procfs=1
+- mount.linprocfs=1
