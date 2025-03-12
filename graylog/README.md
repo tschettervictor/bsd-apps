@@ -1,5 +1,5 @@
 # Graylog
-https://graylog.com
+https://graylog.org
 
 ### Command to fetch script
 ```
