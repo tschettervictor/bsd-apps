@@ -51,7 +51,7 @@ service mongod start
 service graylog start
 
 # Retrieve Initial Configuration Details
-wait 15
+sleep 10
 CONFIG_DETAILS="$(cat /var/log/graylog/server.log | grep -m 1 "Initial configuration")"
 
 # Done
