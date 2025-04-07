@@ -39,7 +39,7 @@ chown -R soulseek:soulseek /usr/local/www/slskd
 # Enable and Start Services
 fetch -o /usr/local/etc/rc.d/slskd https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/slskd/includes/slskd
 chmod +x /usr/local/etc/rc.d/slskd
-sysrc slsdk_enable=YES
+sysrc slskd_enable=YES
 service slskd start
 
 # Done
