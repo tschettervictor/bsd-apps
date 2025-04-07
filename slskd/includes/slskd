@@ -29,9 +29,9 @@ pidfile="/var/run/${name}/${name}.pid"
 command="/usr/sbin/daemon"
 command_args="-P ${pidfile} -H -o /var/log/${name}/${name}.log ${slskd_appdir}/${name} --app-dir=${slskd_appdir} --config=${slskd_config}"
 
-start_precmd=${name}_startprecmd
+start_precmd="slskd_startprecmd"
 
-${name}_startprecmd()
+slskd_startprecmd()
 {
     mkdir -p /var/run/${name}
     mkdir -p /var/log/${name}
