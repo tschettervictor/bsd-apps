@@ -1,7 +1,9 @@
 #!/bin/sh
 # Install SLSKD
+set -eu
 
 APP_NAME="SLSKD"
+FREEBSD_VERSION="13"
 NODE_VERSION="20"
 
 # Check for Root Privileges
@@ -44,7 +46,7 @@ cd /slskd/src/slskd && dotnet build \
     --configuration Release
 cd /slskd/src/slskd && dotnet publish \
     -c Release \
-    --runtime freebsd-x64 \
+    --runtime freebsd."${FREEBSD_VERSION}"-x64 \
     --framework net9.0 \
     -p:ReadyToRun=true \
     -p:PublishSingleFile=true \
