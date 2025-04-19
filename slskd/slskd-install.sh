@@ -12,10 +12,6 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
-# Switch to latest repo
-mkdir -p /usr/local/etc/pkg/repos
-echo 'FreeBSD: { url: "pkg+http://pkg.FreeBSD.org/${ABI}/latest" }' > /usr/local/etc/pkg/repos/FreeBSD.conf
-
 # Package Installation
 pkg install -y \
 dotnet \
