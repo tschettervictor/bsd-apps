@@ -1,4 +1,4 @@
-# Uptime-Kuma Bastillefile for bsd-apps
+# Uptime-Kuma Bastillefile
 
 ARG APP_NAME=uptime-kuma
 ARG DATA_PATH=/apps/uptime-kuma
