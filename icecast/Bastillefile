@@ -1,9 +1,9 @@
 # Icecast Bastillefile
 
 ARG APP_NAME=icecast
-ARG MOUNT_POINT=/apps/icecast
+ARG CONFIG_PATH=/apps/icecast
 
-MOUNT ${MOUNT_POINT} /usr/local/etc/icecast nullfs rw 0 0
+MOUNT ${CONFIG_PATH} /usr/local/etc/icecast nullfs rw 0 0
 
 CMD fetch -o /tmp/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/icecast/${APP_NAME}-install.sh
 CMD chmod +x /tmp/${APP_NAME}-install.sh
