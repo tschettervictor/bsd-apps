@@ -5,6 +5,5 @@ ARG DATA_PATH=/apps/uptime-kuma
 
 MOUNT ${DATA_PATH}/data /mnt/data nullfs rw 0 0
 
-CMD fetch -o /tmp/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/${APP_NAME}/${APP_NAME}-install.sh
-CMD chmod +x /tmp/${APP_NAME}-install.sh
-CMD /tmp/${APP_NAME}-install.sh
+CMD chmod +x /${APP_NAME}-install.sh
+CMD /${APP_NAME}-install.sh
