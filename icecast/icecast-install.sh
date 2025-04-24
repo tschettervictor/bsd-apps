@@ -23,7 +23,6 @@ fi
 # Enable and Start Services
 sysrc icecast_config="/usr/local/etc/icecast/icecast.xml"
 sysrc icecast_enable="YES"
-service icecast start
 
 # Done
 echo "---------------"
@@ -31,4 +30,5 @@ echo "Installation Complete!"
 echo "---------------"
 echo "Icecast will not run as root. Change the user to "www" or some other user at the end of the icecast.xml file."
 echo "Don't forget to uncomment the "changeowner" section, and change the owner of "/var/log/icecast" to the user that icecast will run as."
+echo "Once you have compted the above steps, start icecast with 'service icecast start'."
 echo "---------------"
