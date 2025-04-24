@@ -5,6 +5,6 @@ ARG DATA_PATH=/apps/icecast
 
 MOUNT ${DATA_PATH}/config /usr/local/etc/icecast nullfs rw 0 0
 
-CMD fetch -o /tmp/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/${APP_NAME}/${APP_NAME}-install.sh
+CP ${APP_NAME}-install.sh /tmp
 CMD chmod +x /tmp/${APP_NAME}-install.sh
 CMD /tmp/${APP_NAME}-install.sh
