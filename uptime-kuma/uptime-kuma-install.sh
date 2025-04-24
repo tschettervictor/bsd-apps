@@ -26,7 +26,7 @@ mkdir -p /var/run/uptimekuma
 pw user add uptimekuma -c uptimekuma -u 3001 -d /nonexistent -s /usr/bin/nologin
 npm install npm -g
 cd /usr/local/ && git clone https://github.com/louislam/uptime-kuma.git
-if [ "{APP_VERSION}" = "latest" ]; then
+if [ "${APP_VERSION}" = "latest" ]; then
     cd /usr/local/uptime-kuma && npm run setup
 else
     cd /usr/local/uptime-kuma && git checkout "${APP_VERSION}" && npm ci --production && npm run download-dist
