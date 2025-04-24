@@ -4,7 +4,7 @@ ARG APP_NAME=rustdesk-server
 ARG DATA_PATH=/apps/rustdesk-server
 ARG SERVER
 
-MOUNT ${DATA_PATH}/data /var/db/rustdesk-server nullfs rw 0 0 rw 0 0
+MOUNT ${DATA_PATH}/data /var/db/rustdesk-server nullfs rw 0 0
 
 CP ${APP_NAME}-install.sh /tmp
 
