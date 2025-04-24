@@ -1,0 +1,15 @@
+# Guacamole Bastillefile
+
+ARG APP_NAME=guacamole
+ARG DATA_PATH=/apps/guacamole
+ARG MARIADB_VERSION=106
+
+MOUNT ${DATA_PATH}/config /usr/local/etc/guacamole-client nullfs rw 0 0
+MOUNT ${DATA_PATH}/db /var/db/mysql nullfs rw 0 0
+
+CP ${APP_NAME}-install.sh /tmp
+
+SYSRC -f /tmp/${APP_NAME}-install.sh MARIADB_VERSION=${MARIADB_VERSION}
+
+CMD chmod +x /tmp/${APP_NAME}-install.sh
+CMD /tmp/${APP_NAME}-install.sh
