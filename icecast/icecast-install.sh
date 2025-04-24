@@ -17,7 +17,7 @@ mkdir -p /var/log/icecast
 
 # Icecast Setup
 if [ ! -f /usr/local/etc/icecast/icecast.xml ]; then
-   cp /usr/local/etc/icecast.xml /usr/local/etc/icecast/
+   cp /usr/local/etc/icecast.xml.sample /usr/local/etc/icecast/icecast.xml
 fi
 
 # Enable and Start Services
