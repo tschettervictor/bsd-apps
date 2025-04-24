@@ -1,0 +1,16 @@
+# Meshcentral Bastillefile
+
+ARG APP_NAME=meshcentral
+ARG DATA_PATH=/apps/meshcentral
+ARG NODE_VERSION=20
+
+MOUNT ${DATA_PATH}/data /usr/local/meshcentral/meshcentral-data nullfs rw 0 0
+MOUNT ${DATA_PATH}/files /usr/local/meshcentral/meshcentral-files nullfs rw 0 0
+MOUNT ${DATA_PATH}/backups /usr/local/meshcentral/meshcentral-backups nullfs rw 0 0
+
+CP ${APP_NAME}-install.sh /tmp
+
+SYSRC -f /tmp/${APP_NAME}-install.sh NODE_VERSION=${NODE_VERSION}
+
+CMD chmod +x /tmp/${APP_NAME}-install.sh
+CMD /tmp/${APP_NAME}-install.sh
