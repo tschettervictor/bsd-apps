@@ -1,0 +1,14 @@
+# bsd-apps/rustdesk-server
+
+ARG APP_NAME=rustdesk-server
+ARG DATA_PATH=/apps/rustdesk-server
+ARG SERVER
+
+MOUNT ${DATA_PATH}/data /var/db/rustdesk-server nullfs rw 0 0 rw 0 0
+
+CP ${APP_NAME}-install.sh /tmp
+
+SYSRC -f /tmp/${APP_NAME}-install.sh SERVER=${SERVER}
+
+CMD chmod +x /tmp/${APP_NAME}-install.sh
+CMD /tmp/${APP_NAME}-install.sh
