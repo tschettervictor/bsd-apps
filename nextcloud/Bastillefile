@@ -1,0 +1,50 @@
+# bsd-apps/nextcloud
+
+ARG APP_NAME=nextcloud
+ARG DATA_PATH=/apps/${APP_NAME}
+ARG MX_WINDOW=5
+ARG DB_TYPE=MariaDB
+ARG COUNTRY_CODE
+ARG HOST_NAME
+ARG TIME_ZONE
+ARG PHP_VERSION=83
+ARG MARIADB_VERSION=106
+ARG PG_VERSION=16
+ARG NO_CERT=0
+ARG STANDALONE_CERT=0
+ARG SELFSIGNED_CERT=0
+ARG DNS_CERT=0
+ARG DNS_PLUGIN
+ARG DNS_TOKEN
+ARG CERT_EMAIL
+
+CMD echo ${DB_TYPE} > /tmp/dbtype.txt
+CMD if [ "$(cat /tmp/dbtype.txt)" = "MariaDB" ]; then sysrc -f /tmp/${APP_NAME}-install.sh DB_PATH=/var/db/mysql; fi
+CMD if [ "$(cat /tmp/dbtype.txt)" = "PostgreSQL" ]; then sysrc -f /tmp/${APP_NAME}-install.sh DB_PATH=/var/db/pgsql; fi
+ARG DB_PATH
+
+MOUNT ${DATA_PATH}/files /mnt/files nullfs rw 0 0
+MOUNT ${DATA_PATH}/config /usr/local/www/${APP_NAME}/config nullfs rw 0 0
+MOUNT ${DATA_PATH}/db ${DB_PATH} nullfs rw 0 0
+MOUNT ${DATA_PATH}/themes /usr/local/www/${APP_NAME}/themes nullfs rw 0 0
+
+CP ${APP_NAME}-install.sh /tmp
+
+SYSRC -f /tmp/${APP_NAME}-install.sh MX_WINDOW=${MX_WINDOW}
+SYSRC -f /tmp/${APP_NAME}-install.sh DB_TYPE=${DB_TYPE}
+SYSRC -f /tmp/${APP_NAME}-install.sh COUNTRY_CODE=${COUNTRY_CODE}
+SYSRC -f /tmp/${APP_NAME}-install.sh HOSTNAME=${HOST_NAME}
+SYSRC -f /tmp/${APP_NAME}-install.sh TIME_ZONE=${TIME_ZONE}
+SYSRC -f /tmp/${APP_NAME}-install.sh PHP_VERSION=${PHP_VERSION}
+SYSRC -f /tmp/${APP_NAME}-install.sh MARIADB_VERSION=${MARIADB_VERSION}
+SYSRC -f /tmp/${APP_NAME}-install.sh PG_VERSION=${PG_VERSION}
+SYSRC -f /tmp/${APP_NAME}-install.sh NO_CERT=${NO_CERT}
+SYSRC -f /tmp/${APP_NAME}-install.sh STANDALONE_CERT=${STANDALONE_CERT}
+SYSRC -f /tmp/${APP_NAME}-install.sh SELFSIGNED_CERT=${SELFSIGNED_CERT}
+SYSRC -f /tmp/${APP_NAME}-install.sh DNS_CERT=${DNS_CERT}
+SYSRC -f /tmp/${APP_NAME}-install.sh DNS_PLUGIN=${DNS_PLUGIN}
+SYSRC -f /tmp/${APP_NAME}-install.sh DNS_TOKEN=${DNS_TOKEN}
+SYSRC -f /tmp/${APP_NAME}-install.sh CERT_EMAIL=${CERT_EMAIL}
+
+CMD chmod +x /tmp/${APP_NAME}-install.sh
+CMD /tmp/${APP_NAME}-install.sh
