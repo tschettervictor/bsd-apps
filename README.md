@@ -84,7 +84,8 @@ To apply a template, run the following command. Replace `APP` with the name of t
 bastille template jailname bsd-apps/APP
 ```
 
-# Mount Points
+## Mount Points
+
 Each application is set to install any data that should persist in a mount point outside the jail. This means you can run the template overtop a brand new jail, and pick up where you left off, providing your data is still present in the mount points.
 
 The default mount path for all applications is `/apps/APPNAME`.
