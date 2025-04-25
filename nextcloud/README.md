@@ -85,7 +85,7 @@ For more detailed documentation, see https://github.com/danb35/freenas-iocage-ne
 - Database (mount ONLY ONE depending on your database choice)
   - `/var/db/mysql` - database directory for mariadb
   - `/var/db/postgres` - database directory for postgresql
-- `/usr/local/www/nextcloud/config` - themes directory
+- `/usr/local/www/nextcloud/themes` - themes directory
 
 ## Jail Properties
 - `sysvshm=new` - only when using postgres database
