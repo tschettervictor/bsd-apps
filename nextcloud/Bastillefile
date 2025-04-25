@@ -24,6 +24,10 @@ MOUNT ${DATA_PATH}/config /usr/local/www/${APP_NAME}/config nullfs rw 0 0
 MOUNT ${DATA_PATH}/db ${DB_PATH} nullfs rw 0 0
 MOUNT ${DATA_PATH}/themes /usr/local/www/${APP_NAME}/themes nullfs rw 0 0
 
+CONFIG set sysvshm new
+
+RESTART
+
 CP ${APP_NAME}-install.sh /tmp
 
 SYSRC -f /tmp/${APP_NAME}-install.sh MX_WINDOW=${MX_WINDOW}
