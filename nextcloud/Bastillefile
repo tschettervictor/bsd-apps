@@ -2,6 +2,7 @@
 
 ARG APP_NAME=nextcloud
 ARG DATA_PATH=/apps/${APP_NAME}
+ARG DB_PATH=/var/db/mysql
 ARG MX_WINDOW=5
 ARG DB_TYPE=MariaDB
 ARG COUNTRY_CODE
@@ -17,11 +18,6 @@ ARG DNS_CERT=0
 ARG DNS_PLUGIN
 ARG DNS_TOKEN
 ARG CERT_EMAIL
-
-CMD echo ${DB_TYPE} > /tmp/dbtype.txt
-CMD if [ "$(cat /tmp/dbtype.txt)" = "MariaDB" ]; then sysrc -f /tmp/${APP_NAME}-install.sh DB_PATH=/var/db/mysql; fi
-CMD if [ "$(cat /tmp/dbtype.txt)" = "PostgreSQL" ]; then sysrc -f /tmp/${APP_NAME}-install.sh DB_PATH=/var/db/pgsql; fi
-ARG DB_PATH
 
 MOUNT ${DATA_PATH}/files /mnt/files nullfs rw 0 0
 MOUNT ${DATA_PATH}/config /usr/local/www/${APP_NAME}/config nullfs rw 0 0
