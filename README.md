@@ -102,10 +102,24 @@ bastille template jailname bsd-apps/guacamole --arg DATA_PATH=/my/path/to/guacam
 
 Any application that has a variable that can be changed, will allow changing that variable using `--arg VAR=VALUE` when applying the template.
 
-If for example you want to use node 18 instead of node 20 forbthe meshcentral template, you would run the following command.
+If for example you want to use node 18 instead of node 20 for the meshcentral template, you would run the following command.
 
 ```
 bastille template jailname bsd-apps/meshcentral --arg NODE_VERSION=18
 ```
 
-Ach application lists the variables at the top of its install script, so before you run a template, go over the install script and template to verify needed variables
+Each application lists the variables at the top of its install script, so before you run a template, go over the install script and template to verify needed variables.
+
+## Important
+
+Some applications have quite a few variables that need adjusting. I have tried to include each one in the Bastillefile, so it can be changed using the `--arg` flag. Nextcloud is probably the one that is the most complex, because it allows you to choose MariaDB or PostgreSQL as a database. This changes the database mount path. MariaDB stores data at `/var/db/mysql` while PostgreSQL stores data at `/var/db/pgsql`. If you run the nextcloud template, you should set the ``DB_PATH`` variable to the proper location (noted in the nextcloud README). See the below example for running the nextcloud template with a self-signed certificate.
+
+```
+bastille template jailname bsd-apps/nextcloud \
+  --arg DB_PATH=/var/db/mysql
+  --arg COUNTRY_CODE=US \
+  --arg HOST_NAME=mydomain.com \
+  --arg TIME_ZONE=America/Denver \
+  --arg SELFSIGNED_CERT=1
+```
+
