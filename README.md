@@ -86,7 +86,7 @@ bastille template jailname bsd-apps/APP
 
 ## Mount Points
 
-Each application is set to install any data that should persist in a mount point outside the jail. This means you can run the template overtop a brand new jail, and pick up where you left off, providing your data is still present in the mount points.
+Each template is set to install any data that should persist in a mount point outside the jail. This means you can run the template overtop a brand new jail, and pick up where you left off, providing your data is still present in the mount points.
 
 The default mount path for all applications is `/apps/APPNAME`.
 
@@ -97,3 +97,15 @@ This can easily be overidden if you store your data in a different location. Sim
 ```
 bastille template jailname bsd-apps/guacamole --arg DATA_PATH=/my/path/to/guacamole
 ```
+
+## Variables
+
+Any application that has a variable that can be changed, will allow changing that variable using `--arg VAR=VALUE` when applying the template.
+
+If for example you want to use node 18 instead of node 20 forbthe meshcentral template, you would run the following command.
+
+```
+bastille template jailname bsd-apps/meshcentral --arg NODE_VERSION=18
+```
+
+Ach application lists the variables at the top of its install script, so before you run a template, go over the install script and template to verify needed variables
