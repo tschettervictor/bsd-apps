@@ -1,0 +1,30 @@
+# bsd-apps/vaultwarden
+
+ARG APP_NAME=vaultwarden
+ARG DATA_PATH=/apps/${APP_NAME}
+ARG HOST_NAME
+ARG PYTHON_VERSION=311
+ARG NO_CERT=0
+ARG STANDALONE_CERT=0
+ARG SELFSIGNED_CERT=0
+ARG DNS_CERT=0
+ARG DNS_PLUGIN
+ARG DNS_TOKEN
+ARG CERT_EMAIL
+
+MOUNT ${DATA_PATH}/data /usr/local/www/${APP_NAME}/data nullfs rw 0 0
+
+CP ${APP_NAME}-install.sh /tmp
+
+SYSRC -f /tmp/${APP_NAME}-install.sh HOSTNAME=${HOST_NAME}
+SYSRC -f /tmp/${APP_NAME}-install.sh PYTHON_VERSION=${PYTHON_VERSION}
+SYSRC -f /tmp/${APP_NAME}-install.sh NO_CERT=${NO_CERT}
+SYSRC -f /tmp/${APP_NAME}-install.sh STANDALONE_CERT=${STANDALONE_CERT}
+SYSRC -f /tmp/${APP_NAME}-install.sh SELFSIGNED_CERT=${SELFSIGNED_CERT}
+SYSRC -f /tmp/${APP_NAME}-install.sh DNS_CERT=${DNS_CERT}
+SYSRC -f /tmp/${APP_NAME}-install.sh DNS_PLUGIN=${DNS_PLUGIN}
+SYSRC -f /tmp/${APP_NAME}-install.sh DNS_TOKEN=${DNS_TOKEN}
+SYSRC -f /tmp/${APP_NAME}-install.sh CERT_EMAIL=${CERT_EMAIL}
+
+CMD chmod +x /tmp/${APP_NAME}-install.sh
+CMD /tmp/${APP_NAME}-install.sh
