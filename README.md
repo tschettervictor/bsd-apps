@@ -112,11 +112,12 @@ Each application lists the variables at the top of its install script, so before
 
 ## Important
 
-Some applications have quite a few variables that need adjusting. I have tried to include each one in the Bastillefile, so it can be changed using the `--arg` flag. Nextcloud is probably the one that is the most complex, because it allows you to choose MariaDB or PostgreSQL as a database. This changes the database mount path. MariaDB stores data at `/var/db/mysql` while PostgreSQL stores data at `/var/db/pgsql`. If you run the nextcloud template, you should set the ``DB_PATH`` variable to the proper location (noted in the nextcloud README). See the below example for running the nextcloud template with a self-signed certificate.
+Some applications have quite a few variables that need adjusting. I have tried to include each one in the Bastillefile, so it can be changed using the `--arg` flag. Nextcloud is probably the one that is the most complex, because it allows you to choose MariaDB or PostgreSQL as a database. This changes the database mount path. MariaDB stores data at `/var/db/mysql` while PostgreSQL stores data at `/var/db/pgsql`. If you run the nextcloud template, you should set the ``DB_PATH`` variable to the proper location (noted in the nextcloud README). See the below example for running the nextcloud template with PostgreSQL and a self-signed certificate.
 
 ```
 bastille template jailname bsd-apps/nextcloud \
-  --arg DB_PATH=/var/db/mysql
+  --arg DB_TYPE=PostgreSQL \
+  --arg DB_PATH=/var/db/pgsql \
   --arg COUNTRY_CODE=US \
   --arg HOST_NAME=mydomain.com \
   --arg TIME_ZONE=America/Denver \
