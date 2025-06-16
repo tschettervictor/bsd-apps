@@ -1,15 +1,22 @@
 #!/bin/sh
 # Install MineOS
 
-PYTHON_VERSION="311"
-NODE_VERSION="23"
-JAVA_VERSION="22"
 HTTP="0"
+JAVA_VERSION="22"
+NODE_VERSION="23"
+PYTHON_VERSION="311"
+USE_LATEST_REPO=0
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
+fi
+
+# Switch to latest repo
+if [ "${USE_LATEST_REPO}" -eq 1 ]; then
+    mkdir -p /usr/local/etc/pkg/repos
+    echo 'FreeBSD: { url: "pkg+http://pkg.FreeBSD.org/${ABI}/latest" }' > /usr/local/etc/pkg/repos/FreeBSD.conf
 fi
 
 # Install Packages
