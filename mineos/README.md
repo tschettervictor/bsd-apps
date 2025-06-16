@@ -26,6 +26,9 @@ NODE_VERSION
 JAVA_VERSION
 - java version to use (currenlty defaults to 22)
 
+USE_LATEST_REPO
+- package repo version to use. Set to 1 to switch to latest packages (currenlty defaults to 0)
+
 ## Mount points (should be mounted outside the jail)
 - `/var/games/minecraft` - data directory
 
