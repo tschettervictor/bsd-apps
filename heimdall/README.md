@@ -15,10 +15,10 @@ chmod +x heimdall-install.sh
 These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at default unless you have a good reason to change them.
 
 PHP_VERSION
-- php version to use (currently defaults to 83)
+- php version to use (currently defaults to 84)
 
 APP_VERSION
-- Heimdall version to use (currently defaults to 2.6.1)
+- Heimdall version to use (currently defaults to 2.7.4)
 
 ## Mount points (should be mounted outside the jail)
 - `/usr/local/www` - html directory
