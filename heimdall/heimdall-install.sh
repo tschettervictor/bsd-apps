@@ -2,8 +2,8 @@
 # Install Heimdall Dashboard
 
 APP_NAME="Heimdall"
-APP_VERSION="2.6.1"
-PHP_VERSION="83"
+APP_VERSION="2.7.4"
+PHP_VERSION="84"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
