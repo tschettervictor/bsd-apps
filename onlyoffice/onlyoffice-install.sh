@@ -57,6 +57,7 @@ psql -U postgres -c "SELECT pg_reload_conf();"
 chown onlyoffice:onlyoffice /usr/local/etc/onlyoffice/documentserver/local.json
 
 # Configure RabbitMQ
+echo "127.0.0.1 onlyoffice" >> /etc/hosts
 sysrc rabbitmq_enable="YES"
 service rabbitmq start
 rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) add_user ${RABBITMQ_USER} ${RABBITMQ_PASSWORD}
