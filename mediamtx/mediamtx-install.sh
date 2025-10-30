@@ -1,7 +1,7 @@
 #!/bin/sh
 # Install MediaMTX
 
-GO_VERSION="122"
+GO_VERSION="125"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
@@ -20,8 +20,8 @@ mkdir -p /usr/local/etc/rc.d
 
 # MediaMTX Setup
 git clone https://github.com/bluenviron/mediamtx /mediamtx
-cd /mediamtx && go122 generate ./...
-cd /mediamtx && go122 build .
+cd /mediamtx && go${GO_VERSION} generate ./...
+cd /mediamtx && go${GO_VERSION} build .
 cp -f /mediamtx/mediamtx /usr/local/bin/mediamtx
 chmod +x /usr/local/bin/mediamtx
 if [ ! -f "/usr/local/etc/mediamtx/mediamtx.yml" ]; then
