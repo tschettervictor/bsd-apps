@@ -56,7 +56,7 @@ CONFIG_DETAILS="$(cat /var/log/graylog/server.log | grep -m 1 "Initial configura
 
 # Save Passwords
 echo "${APP_NAME} admin user is admin" > /root/${APP_NAME}-Info.txt
-echo "${APP_NAME} admin password is ${DB_PASSWORD}" >> /root/${APP_NAME}-Info.txt
+echo "${APP_NAME} admin password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}-Info.txt
 echo "${CONFIG_DETAILS}" >> /root/${APP_NAME}-Info.txt
 
 # Done
