@@ -2,7 +2,7 @@
 # Install Graylog
 
 APP_NAME="Graylog"
-ADMIN_PASSWORD="graylog"
+ADMIN_PASSWORD="$(openssl rand -base64 12)"
 ADMIN_PASSWORD_HASH="$(echo -n ${ADMIN_PASSWORD} | sha256)"
 MONGODB_VERSION="60"
 PASSWORD_SECRET="$(openssl rand -base64 128 | tr -dc 'A-Za-z0-9' | head -c 96)"
