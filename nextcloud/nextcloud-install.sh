@@ -2,7 +2,7 @@
 # Install Nextcloud
 
 APP_NAME="Nextcloud"
-APP_VERSION="30"
+APP_VERSION="32"
 ADMIN_PASSWORD=$(openssl rand -base64 12)
 MX_WINDOW="5"
 DB_TYPE="MariaDB"
@@ -20,9 +20,9 @@ CERT_EMAIL=""
 COUNTRY_CODE=""
 HOST_NAME=""
 TIME_ZONE=""
-PHP_VERSION="83"
-MARIADB_VERSION="106"
-PG_VERSION="16"
+PHP_VERSION="84"
+MARIADB_VERSION="118"
+PG_VERSION="17"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
