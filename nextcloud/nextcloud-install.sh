@@ -122,7 +122,6 @@ php${PHP_VERSION}-ftp \
 php${PHP_VERSION}-gd \
 php${PHP_VERSION}-gmp \
 php${PHP_VERSION}-iconv \
-php${PHP_VERSION}-imap \
 php${PHP_VERSION}-intl \
 php${PHP_VERSION}-ldap \
 php${PHP_VERSION}-mbstring \
@@ -130,6 +129,7 @@ php${PHP_VERSION}-opcache \
 php${PHP_VERSION}-pcntl \
 php${PHP_VERSION}-pecl-APCu \
 php${PHP_VERSION}-pecl-imagick \
+php${PHP_VERSION}-pecl-imap \
 php${PHP_VERSION}-pecl-memcache \
 php${PHP_VERSION}-pecl-redis \
 php${PHP_VERSION}-pecl-smbclient \
