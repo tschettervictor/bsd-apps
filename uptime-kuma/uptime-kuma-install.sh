@@ -17,6 +17,7 @@ pkg install -y \
 git-lite \
 npm-node"${NODE_VERSION}"
 
+# Check for reinstall
 if [ "$(ls -A ${DATA_PATH} 2>/dev/null)" ]; then
     REINSTALL="true"
 fi
@@ -30,6 +31,7 @@ mkdir -p /var/run/uptimekuma
 id -u uptimekuma 2>&1 || pw user add uptimekuma -c uptimekuma -u 3001 -d /nonexistent -s /usr/bin/nologin
 npm install npm -g
 if [ "${REINSTALL}" = "true" ]; then
+    service uptimekuma stop
     chown -R root:wheel /usr/local/uptime-kuma
     git -C /usr/local/uptime-kuma reset --hard HEAD
     git -C /usr/local/uptime-kuma pull
