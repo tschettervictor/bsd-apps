@@ -4,7 +4,7 @@
 APP_NAME="Uptime-Kuma"
 APP_VERSION="latest"
 DATA_PATH="/mnt/data"
-NODE_VERSION="18"
+NODE_VERSION="20"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
@@ -17,6 +17,10 @@ pkg install -y \
 git-lite \
 npm-node"${NODE_VERSION}"
 
+if [ "$(ls -A ${DATA_PATH} 2>/dev/null)" ]; then
+    REINSTALL="true"
+fi
+
 # Create Directories
 mkdir -p "${DATA_PATH}"
 mkdir -p /usr/local/etc/rc.d
@@ -25,7 +29,13 @@ mkdir -p /var/run/uptimekuma
 # Uptime-Kuma Setup
 id -u uptimekuma 2>&1 || pw user add uptimekuma -c uptimekuma -u 3001 -d /nonexistent -s /usr/bin/nologin
 npm install npm -g
-cd /usr/local/ && git clone https://github.com/louislam/uptime-kuma.git
+if [ "${REINSTALL}" = "true" ]; then
+    chown -R root:wheel /usr/local/uptime-kuma
+    git -C /usr/local/uptime-kuma reset --hard HEAD
+    git -C /usr/local/uptime-kuma pull
+else
+    git clone https://github.com/louislam/uptime-kuma.git /usr/local/uptime-kuma
+fi
 if [ "${APP_VERSION}" = "latest" ]; then
     cd /usr/local/uptime-kuma && npm run setup
 else
