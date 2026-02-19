@@ -6,6 +6,7 @@ ARG DATA_PATH=/apps/jellyfin
 CONFIG allow.mlock 1
 
 MOUNT ${DATA_PATH}/data /var/db/jellyfin nullfs rw 0 0
+MOUNT ${MEDIA_PATH}/media /mnt/media nullfs rw 0 0
 
 RESTART
 
