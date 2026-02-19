@@ -1,0 +1,14 @@
+# Jellyfin Bastillefile
+
+ARG APP_NAME=jellyfin
+ARG DATA_PATH=/apps/jellyfin
+
+CONFIG allow.mlock 1
+
+MOUNT ${DATA_PATH}/data /var/db/jellyfin nullfs rw 0 0
+
+RESTART
+
+CP ${APP_NAME}-install.sh /tmp
+CMD chmod +x /tmp/${APP_NAME}-install.sh
+CMD /tmp/${APP_NAME}-install.sh
