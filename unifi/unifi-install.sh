@@ -2,7 +2,7 @@
 # Install Unifi Controller
 
 APP_NAME="Unifi"
-UNIFI_VERSION="8"
+UNIFI_VERSION="10"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
