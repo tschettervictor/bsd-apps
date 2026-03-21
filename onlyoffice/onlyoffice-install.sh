@@ -8,7 +8,7 @@ DB_USER="onlyoffice"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
 RABBITMQ_USER="onlyoffice"
-RABBITMQ_PASSWORD=$(openssl rand -base64 15)
+RABBITMQ_PASSWORD=$(openssl rand -base64 15 | tr -d '/')
 JWT_SECRET=$(openssl rand -base64 20)
 PG_VERSION="17"
 
