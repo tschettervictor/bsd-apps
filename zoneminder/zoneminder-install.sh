@@ -15,13 +15,16 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+# Fix /tmp rights
+chmod g+rw,o+rw,+t /tmp
+
 # Install Packages
 pkg install -y \
 fcgiwrap \
 mysql${MYSQL_VERSION}-server \
 nginx \
 openssl \
-zoneminder
+zoneminder-php85
 
 # Create Directories
 mkdir -p /usr/local/etc/mysql/conf.d
@@ -55,11 +58,16 @@ service fcgiwrap start
 
 # Create and Configure Database
 mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';"
-mysql -u root -e "CREATE DATABASE ${DB_NAME};"
-mysql -u root -e "CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';"
-mysql -u root -e "GRANT SELECT,INSERT,UPDATE,DELETE ON ${DB_NAME}.* TO '${ZM_USER}'@'localhost';"
-mysql -u root -e "FLUSH PRIVILEGES;"
-mysql -u root --password=${DB_ROOT_PASSWORD} ${DB_NAME} < /usr/local/share/zoneminder/db/zm_create.sql
+mysql -u root --password=${DB_ROOT_PASSWORD} -e "CREATE DATABASE ${DB_NAME};"
+mysql -u root --password=${DB_ROOT_PASSWORD} -e "CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';"
+mysql -u root --password=${DB_ROOT_PASSWORD} -e "GRANT SELECT,INSERT,UPDATE,ALTER,DELETE ON ${DB_NAME}.* TO '${DB_USER}'@'localhost';"
+mysql -u root --password=${DB_ROOT_PASSWORD} -e "FLUSH PRIVILEGES;"
+#
+# Fix hardcoded zm database name
+#
+sed 's/^CREATE DATABASE.*//g;s/USE `zm`/USE `zoneminder`/g' < /usr/local/share/zoneminder/db/zm_create.sql | \
+mysql -u root --password=${DB_ROOT_PASSWORD} ${DB_NAME} < /tmp/zm_create.sql
+
 echo "ZM_DB_NAME=${DB_NAME}" > /usr/local/etc/zoneminder/zm-truenas.conf
 echo "ZM_DB_USER=${DB_USER}" >> /usr/local/etc/zoneminder/zm-truenas.conf
 echo "ZM_DB_PASS=${DB_PASS}" >> /usr/local/etc/zoneminder/zm-truenas.conf
@@ -91,7 +99,7 @@ echo "---------------"
 echo "Database Information"
 echo "${DB_TYPE} Username: root"
 echo "${DB_TYPE} Password: ${DB_ROOT_PASSWORD}"
-echo "${APP_NAME} DB User: ${ZM_USER}"
-echo "${APP_NAME} DB Password: ${ZM_PASS}"
+echo "${APP_NAME} DB User: ${DB_USER}"
+echo "${APP_NAME} DB Password: ${DB_PASS}"
 echo "---------------"
 echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
