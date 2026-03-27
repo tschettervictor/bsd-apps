@@ -1,13 +1,14 @@
 #!/bin/sh
 # Install Zoneminder
 
-APP_NAME="zoneminder"
+APP_NAME="ZoneMinder"
 DB_TYPE="MySQL"
 DB_NAME="zm"
-DB_USER="zoneminder"
+DB_USER="zm"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASS=$(openssl rand -base64 15)
 MYSQL_VERSION="80"
+PHP_VERSION="85"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
@@ -15,16 +16,13 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
-# Fix /tmp rights
-chmod g+rw,o+rw,+t /tmp
-
 # Install Packages
 pkg install -y \
 fcgiwrap \
 mysql${MYSQL_VERSION}-server \
 nginx \
 openssl \
-zoneminder-php85
+zoneminder-php${PHP_VERSION}
 
 # Create Directories
 mkdir -p /usr/local/etc/mysql/conf.d
@@ -36,6 +34,7 @@ mkdir -p /var/db/zoneminder/events
 mkdir -p /var/db/zoneminder/images
 mkdir -p /var/log/zm
 chown www:www /var/log/zm
+chmod g+rw,o+rw,+t /tmp
 
 # Enable and Configure Services
 sysrc nginx_enable="YES"
@@ -62,17 +61,12 @@ mysql -u root --password=${DB_ROOT_PASSWORD} -e "CREATE DATABASE ${DB_NAME};"
 mysql -u root --password=${DB_ROOT_PASSWORD} -e "CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';"
 mysql -u root --password=${DB_ROOT_PASSWORD} -e "GRANT SELECT,INSERT,UPDATE,ALTER,DELETE ON ${DB_NAME}.* TO '${DB_USER}'@'localhost';"
 mysql -u root --password=${DB_ROOT_PASSWORD} -e "FLUSH PRIVILEGES;"
-
 if [ "${DB_NAME}" != "zm" ]; then
-    #
-    # If $DB_NAME is not the default (hardcoded) `zm`, tweak the sql file accordingly.
-    #
     sed 's/^CREATE DATABASE.*//g;s/USE `zm`/USE `'${DB_NAME}'`/g' < /usr/local/share/zoneminder/db/zm_create.sql | \
       mysql -u root --password=${DB_ROOT_PASSWORD} ${DB_NAME}
 else
     mysql -u root --password=${DB_ROOT_PASSWORD} ${DB_NAME} < /usr/local/share/zoneminder/db/zm_create.sql
 fi
-
 echo "ZM_DB_NAME=${DB_NAME}" > /usr/local/etc/zoneminder/zm-truenas.conf
 echo "ZM_DB_USER=${DB_USER}" >> /usr/local/etc/zoneminder/zm-truenas.conf
 echo "ZM_DB_PASS=${DB_PASS}" >> /usr/local/etc/zoneminder/zm-truenas.conf
