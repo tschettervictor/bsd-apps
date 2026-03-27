@@ -20,6 +20,9 @@ These are the variables that are available to change along with their defaults a
 MYSQL_VERSION
 - MYSQL database version to use (currently defaults to 80)
 
+PHP_VERSION
+- PHP version to use (currently defaults to 85)
+
 ## Mount points (should be mounted outside the jail)
 - none
 
