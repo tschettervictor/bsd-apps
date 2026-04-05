@@ -22,6 +22,7 @@ fcgiwrap \
 mysql${MYSQL_VERSION}-server \
 nginx \
 openssl \
+p5-DateTime \
 zoneminder-php${PHP_VERSION}
 
 # Create Directories
