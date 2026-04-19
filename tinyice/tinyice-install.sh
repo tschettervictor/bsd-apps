@@ -50,7 +50,7 @@ sysrc tinyice_enable="YES"
 service tinyice start
 
 # Save Passwords
-SETUP_TOKEN="$(grep 'Setup Token:' /var/log/tinyice/tinyice.log | awk -F': ' '{print $2}')
+SETUP_TOKEN="$(grep 'Setup Token:' /var/log/tinyice/tinyice.log | awk -F': ' '{print $2}')"
 echo "${APP_NAME} setup token for first run is ${SETUP_TOKEN}" > /root/${APP_NAME}-Info.txt
 
 echo "---------------"
@@ -59,7 +59,7 @@ echo "${APP_NAME} is running on port 8000"
 echo "---------------"
 if [ "${REINSTALL}" != "true" ]; then
     echo "Setup Information"
-    echo "Setup Token: "${SETUP_TOKEN}""
+    echo "Setup Token: ${SETUP_TOKEN}"
     echo "---------------"
     echo "You will need the Setup Token when running TinyIce for the first time."
     echo "If you missed it, check /root/${APP_NAME}-Info.txt."
