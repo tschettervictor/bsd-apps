@@ -29,7 +29,7 @@ mkdir -p /usr/local/etc/tinyice
 mkdir -p /usr/local/etc/rc.d
 mkdir -p /var/run/tinyice
 mkdir -p /var/log/tinyice
-chown -R tinyice:tinyice /usr/local/tinyice
+chown -R tinyice:tinyice /usr/local/etc/tinyice
 chown -R tinyice:tinyice /var/log/tinyice
 chown -R tinyice:tinyice /var/run/tinyice
 
@@ -50,7 +50,7 @@ echo "---------------"
 echo "Installation complete."
 echo "${APP_NAME} is running on port 8000"
 echo "---------------"
-if [ "${REINSTALL}" = "false "]; then
+if [ "${REINSTALL}" != "true" ]; then
     echo "Note the 'Setup Token' that was just shown."
     echo "You will need it when first visiting TinyIce."
     echo "If you missed it, just remove the config file, and restart the service."
