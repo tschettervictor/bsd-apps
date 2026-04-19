@@ -1,0 +1,47 @@
+#!/bin/sh
+#
+# Tinyice FreeBSD Service Script
+#
+# PROVIDE: tinyice
+# REQUIRE: NETWORKING
+# KEYWORD: shutdown
+#
+# Optional settings:
+# tinyice_enable (YES/NO):      Enable or disable the service.
+# tinyice_user (system user):   User to run the service as.
+# tinyice_group (system group): Group to run the service as.
+# tinyice_host (IP):            Service host.
+# tinyice_port (port):          Service port.
+# tinyice_config (path):        Path to application config directory.
+#
+
+. /etc/rc.subr
+
+name=tinyice
+desc="Tinyice Streaming Server"
+rcvar=tinyice_enable
+
+load_rc_config $name
+
+: ${tinyice_enable:="NO"}
+: ${tinyice_host:="0.0.0.0"}
+: ${tinyice_port:="8000"}
+: ${tinyice_config:="/usr/local/etc/tinyice/tinyice.json"}
+: ${tinyice_user:="tinyice"}
+: ${tinyice_group:="tinyice"}
+
+pidfile="/var/run/${name}/${name}.pid"
+command="/usr/sbin/daemon"
+command_args="-P ${pidfile} -H -o /var/log/${name}/${name}.log /usr/local/bin/${name} --config ${tinyice_config} --host ${tinyice_host} --port ${tinyice_port}"
+
+start_precmd="tinyice_startprecmd"
+
+tinyice_startprecmd()
+{
+    mkdir -p /var/run/${name}
+    mkdir -p /var/log/${name}
+    chown -R ${tinyice_user}:${tinyice_group} /var/run/${name}
+    chown -R ${tinyice_user}:${tinyice_group} /var/log/${name}
+}
+
+run_rc_command "$1"

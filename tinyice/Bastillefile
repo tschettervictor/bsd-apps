@@ -1,0 +1,14 @@
+# TinyIce Bastillefile
+
+ARG APP_NAME=tinyice
+ARG DATA_PATH=/apps/tinyice
+ARG NODE_VERSION=20
+
+MOUNT ${DATA_PATH}/config /usr/local/etc/tinyice nullfs rw 0 0
+
+CP ${APP_NAME}-install.sh /tmp
+
+SYSRC -f /tmp/${APP_NAME}-install.sh NODE_VERSION=${NODE_VERSION}
+
+CMD chmod +x /tmp/${APP_NAME}-install.sh
+CMD /tmp/${APP_NAME}-install.sh
