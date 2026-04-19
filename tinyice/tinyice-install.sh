@@ -30,6 +30,7 @@ id -u tinyice 2>&1 || pw user add tinyice -c tinyice -u 8000 -d /nonexistent -s 
 git clone https://github.com/DatanoiseTV/tinyice /usr/local/tinyice
 cd /usr/local/tinyice && make build
 cp -f /usr/local/tinyice/tinyice /usr/local/bin/tinyice
+rm -rf /usr/local/tinyice
 chmod +x /usr/local/bin/tinyice
 fetch -o /usr/local/etc/rc.d/tinyice https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/tinyice/includes/tinyice
 chmod +x /usr/local/etc/rc.d/tinyice
