@@ -50,8 +50,10 @@ sysrc tinyice_enable="YES"
 service tinyice start
 
 # Save Passwords
-SETUP_TOKEN="$(grep 'Setup Token:' /var/log/tinyice/tinyice.log | awk -F': ' '{print $2}')"
-echo "${APP_NAME} setup token for first run is ${SETUP_TOKEN}" > /root/${APP_NAME}-Info.txt
+if [ "${REINSTALL}" != "true" ]; then
+    SETUP_TOKEN="$(grep 'Setup Token:' /var/log/tinyice/tinyice.log | awk -F': ' '{print $2}')"
+    echo "${APP_NAME} setup token for first run is: ${SETUP_TOKEN}" > /root/${APP_NAME}-Info.txt
+fi
 
 echo "---------------"
 echo "Installation complete."
