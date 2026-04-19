@@ -10,13 +10,21 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+# Check for Reinstall
+if [ -f "/usr/local/etc/tinyice/tinyice.json" ]; then
+	echo "Existing ${APP_NAME} config detected."
+   echo "Starting reinstall..."
+	REINSTALL="true"
+fi
+
 # Install Packages
 pkg install -y \
 node"${NODE_VERSION}" \
 git-lite \
 go
 
-# Create Directories
+# Directory Setup
+id -u tinyice 2>&1 || pw user add tinyice -c tinyice -u 8000 -d /nonexistent -s /usr/bin/nologin
 mkdir -p /usr/local/etc/tinyice
 mkdir -p /usr/local/etc/rc.d
 mkdir -p /var/run/tinyice
@@ -26,7 +34,6 @@ chown -R tinyice:tinyice /var/log/tinyice
 chown -R tinyice:tinyice /var/run/tinyice
 
 # TinyIce Setup
-id -u tinyice 2>&1 || pw user add tinyice -c tinyice -u 8000 -d /nonexistent -s /usr/bin/nologin
 git clone https://github.com/DatanoiseTV/tinyice /usr/local/tinyice
 cd /usr/local/tinyice && make build
 cp -f /usr/local/tinyice/tinyice /usr/local/bin/tinyice
@@ -43,7 +50,9 @@ echo "---------------"
 echo "Installation complete."
 echo "${APP_NAME} is running on port 8000"
 echo "---------------"
-echo "Not the 'Setup Token' that was just shown."
-ehco "You will need it when first visiting TinyIce."
-echo "If you missed it, just remove the config file, and restart the service."
-echo "---------------"
+if [ "${REINSTALL}" = "false "]; then
+    echo "Note the 'Setup Token' that was just shown."
+    echo "You will need it when first visiting TinyIce."
+    echo "If you missed it, just remove the config file, and restart the service."
+    echo "---------------"
+fi
