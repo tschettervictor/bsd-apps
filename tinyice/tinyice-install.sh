@@ -20,6 +20,7 @@ fi
 # Install Packages
 pkg install -y \
 node"${NODE_VERSION}" \
+npm-node"${NODE_VERSION}" \
 git-lite \
 go
 
