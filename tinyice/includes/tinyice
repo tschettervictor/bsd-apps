@@ -8,12 +8,15 @@
 #
 # Optional settings:
 # tinyice_enable (YES/NO):      Enable or disable the service.
-# tinyice_user (system user):   User to run the service as.
-# tinyice_group (system group): Group to run the service as.
 # tinyice_host (IP):            Service host.
 # tinyice_port (port):          Service port.
 # tinyice_config (path):        Path to application config directory.
+# tinyice_daemon_user (user):   User to run the service as.
+# tinyice_daemon_group (group): Group to run the service as.
 #
+# TinyIce will not work properly when setting "tinyice_user" and "tinyice_group" variables
+# therefore it is necessary to substitute "tinyice_user" with "tinyice_daemon_user"
+# and have the daemon invoke the command as the user
 
 . /etc/rc.subr
 
@@ -27,12 +30,12 @@ load_rc_config $name
 : ${tinyice_host:="0.0.0.0"}
 : ${tinyice_port:="8000"}
 : ${tinyice_config:="/usr/local/etc/tinyice/tinyice.json"}
-: ${tinyice_user:="tinyice"}
-: ${tinyice_group:="tinyice"}
+: ${tinyice_daemon_user:="tinyice"}
+: ${tinyice_daemon_group:="tinyice"}
 
 pidfile="/var/run/${name}/${name}.pid"
 command="/usr/sbin/daemon"
-command_args="-P ${pidfile} -H -o /var/log/${name}/${name}.log /usr/local/bin/${name} --config ${tinyice_config} --host ${tinyice_host} --port ${tinyice_port}"
+command_args="-u ${tinyice_daemon_user} -P ${pidfile} -H -o /var/log/${name}/${name}.log /usr/local/bin/${name} --config ${tinyice_config} --host ${tinyice_host} --port ${tinyice_port}"
 
 start_precmd="tinyice_startprecmd"
 
@@ -40,8 +43,8 @@ tinyice_startprecmd()
 {
     mkdir -p /var/run/${name}
     mkdir -p /var/log/${name}
-    chown -R ${tinyice_user}:${tinyice_group} /var/run/${name}
-    chown -R ${tinyice_user}:${tinyice_group} /var/log/${name}
+    chown -R ${tinyice_daemon_user}:${tinyice_daemon_group} /var/run/${name}
+    chown -R ${tinyice_daemon_user}:${tinyice_daemon_group} /var/log/${name}
 }
 
 run_rc_command "$1"
