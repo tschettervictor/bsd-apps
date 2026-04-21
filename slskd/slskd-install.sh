@@ -3,7 +3,7 @@
 set -eu
 
 APP_NAME="SLSKD"
-FREEBSD_VERSION="13"
+FREEBSD_VERSION="14"
 NODE_VERSION="20"
 
 # Check for Root Privileges
@@ -24,7 +24,7 @@ mkdir -p /usr/local/www
 mkdir -p /usr/local/etc/rc.d
 
 # SLSKD Setup
-id -u soulseek 2>&1 || pw user add soulseek -c soulseek -u 5030 -d /nonexistent -s /usr/bin/nologin
+id -u soulseek >/dev/null 2>&1 || pw user add soulseek -c soulseek -u 5030 -d /nonexistent -s /usr/bin/nologin
 if [ -d "/slskd" ]; then
     cd /slskd && git reset --hard HEAD
     cd /slskd && git pull
@@ -35,7 +35,7 @@ cd /slskd/src/web && npm install
 cd /slskd/src/web && npm run build
 rm -rf /slskd/src/slskd/wwwroot
 cp -a /slskd/src/web/build /slskd/src/slskd/wwwroot
-sed -i '' 's/net8.0/net9.0/g' /slskd/src/slskd/slskd.csproj
+sed -i '' -e 's/net8.0/net9.0/g' -e 's/net10.0/net9.0/g' /slskd/src/slskd/slskd.csproj
 cd /slskd/src/slskd && dotnet build \
     --no-incremental \
     --nologo \
