@@ -27,11 +27,11 @@ rcvar=tinyice_enable
 load_rc_config $name
 
 : ${tinyice_enable:="NO"}
+: ${tinyice_daemon_user:="tinyice"}
+: ${tinyice_daemon_group:="tinyice"}
 : ${tinyice_host:="0.0.0.0"}
 : ${tinyice_port:="8000"}
 : ${tinyice_config:="/usr/local/etc/tinyice/tinyice.json"}
-: ${tinyice_daemon_user:="tinyice"}
-: ${tinyice_daemon_group:="tinyice"}
 
 pidfile="/var/run/${name}/${name}.pid"
 command="/usr/sbin/daemon"
