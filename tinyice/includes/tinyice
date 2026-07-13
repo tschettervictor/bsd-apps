@@ -30,7 +30,7 @@ load_rc_config $name
 : ${tinyice_port:="8000"}
 : ${tinyice_config_dir:="/usr/local/etc/tinyice"}
 : ${tinyice_config:="${tinyice_config_dir}/tinyice.json"}
-: ${tinyice_chdir:="${tinyice_config_dir}"
+: ${tinyice_chdir:="${tinyice_config_dir}"}
 
 pidfile="/var/run/${name}/${name}.pid"
 command="/usr/sbin/daemon"
