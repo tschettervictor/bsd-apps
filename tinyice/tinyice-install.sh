@@ -48,7 +48,7 @@ chmod +x /usr/local/etc/rc.d/tinyice
 
 # Enable and Start Services
 sysrc tinyice_enable="YES"
-service tinyice start
+service tinyice start && sleep 5
 
 # Save Passwords
 if [ "${REINSTALL}" != "true" ]; then
