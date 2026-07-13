@@ -28,7 +28,9 @@ load_rc_config $name
 : ${tinyice_group:="tinyice"}
 : ${tinyice_host:="0.0.0.0"}
 : ${tinyice_port:="8000"}
-: ${tinyice_config:="/usr/local/etc/tinyice/tinyice.json"}
+: ${tinyice_config_dir:="/usr/local/etc/tinyice"}
+: ${tinyice_config:="${tinyice_config_dir}/tinyice.json"}
+: ${tinyice_chdir:="${tinyice_config_dir}"
 
 pidfile="/var/run/${name}/${name}.pid"
 command="/usr/sbin/daemon"
