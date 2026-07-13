@@ -4,6 +4,11 @@ Collection of scripts to install popular applications inside FreeBSD jails, or F
 
 Each application has a README file which explains some necessary steps before running the script.
 
+# Contributing
+
+Anyone is welcome to add additional apps to this repo. As long as the structure is readable, and the app
+works, I will add it. All I ask is that you try to follow the structure of other apps as much as possible.
+
 # Setup
 
 These scripts are designed to work inside any jail manager or FreeBSD host system. In order to get up and running, here are the necessary steps
