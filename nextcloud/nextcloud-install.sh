@@ -383,7 +383,7 @@ else
 	echo "User Information"
 	echo "Default ${APP_NAME} user is admin"
 	echo "Default ${APP_NAME} password is ${ADMIN_PASSWORD}"
-     	echo "--------------------"
+    echo "--------------------"
 fi
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
   	echo "You have obtained your Let's Encrypt certificate using the staging server."
