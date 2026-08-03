@@ -6,6 +6,12 @@ OPENJDK_VERSION="25"
 PYTHON_VERSION="312"
 TIMEZONE="America/Edmonton"
 
+# Check for Root Privileges
+if ! [ $(id -u) = 0 ]; then
+   echo "This script must be run with root privileges"
+   exit 1
+fi
+
 update_app() {
     su - crafty -c '. .venv/bin/activate
                     cd crafty
@@ -21,12 +27,6 @@ case "${1}" in
 		exit 0
         ;;
 esac
-
-# Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"
-   exit 1
-fi
 
 # Packages
 pkg install -y \
