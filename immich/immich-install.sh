@@ -37,6 +37,11 @@ if [ "$(ls -A /var/db/immich 2>/dev/null)" ]; then
     REINSTALL="true"
 fi
 
+# Switch to Latest Repo
+mkdir -p /usr/local/etc/pkg/repos
+cp /etc/pkg/FreeBSD.conf /usr/local/etc/pkg/repos/
+sed -i '' "s/quarterly/latest/" /usr/local/etc/pkg/repos/FreeBSD.conf
+
 # Package Installation
 pkg install -y \
 immich \
