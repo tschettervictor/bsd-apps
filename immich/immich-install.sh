@@ -8,7 +8,7 @@ DB_NAME="immich"
 DB_USER="immich"
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
-PG_VERSION="17"
+PG_VERSION="18"
 NODE_VERSION="24"
 TIME_ZONE="America/Edmonton"
 
@@ -42,14 +42,14 @@ pkg install -y \
 immich \
 immich-ml \
 node"${NODE_VERSION}" \
-npm-node"${NODE_VERSION}" \
 postgresql"${PG_VERSION}"-contrib \
-postgresql"${PG_VERSION}"-pgvector \
+postgresql"${PG_VERSION.}"-pgvector \
 postgresql"${PG_VERSION}"-server \
 postgresql"${PG_VERSION}"-vchord \
 redis
 
-# Create Directories
+# Create Directories/Users
+id -u immich 2>&1 || pw user add immich -c immich -u 2283 -d /nonexistent -s /usr/bin/nologin
 mkdir -p /var/db/immich
 mkdir -p /var/db/immich-ml
 mkdir -p /usr/local/etc
