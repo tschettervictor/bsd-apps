@@ -8,7 +8,6 @@ DB_USER="immich"
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
 PG_VERSION="18"
-NODE_VERSION="24"
 TIME_ZONE="America/Edmonton"
 
 # Check for Root Privileges
@@ -45,7 +44,6 @@ sed -i '' "s/quarterly/latest/" /usr/local/etc/pkg/repos/FreeBSD.conf
 pkg install -y \
 immich \
 immich-ml \
-node"${NODE_VERSION}" \
 postgresql"${PG_VERSION}"-contrib \
 postgresql"${PG_VERSION}"-pgvector \
 postgresql"${PG_VERSION}"-server \
@@ -85,7 +83,6 @@ if [ "${REINSTALL}" == "true" ]; then
  	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/immich/includes/pgpass
   	chmod 600 /root/.pgpass
    	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
-    sed -i '' "s|.*DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/etc/immich.env
     service postgresql start
 else
     sysrc postgresql_enable="YES"
@@ -100,6 +97,8 @@ else
 		echo "Failed to create ${APP_NAME} database, aborting"
 		exit 1
 	fi
+	sed -i '' "s/^#shared_preload_libraries = .*/shared_preload_libraries = \'vchord.so\'/" /var/db/postgres/data"${PG_VERSION}"/postgresql.conf
+	service postresql restart
     psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS vector;"
     psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS vchord CASCADE;"
     psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS cube;"
@@ -144,5 +143,5 @@ if [ "${REINSTALL}" == "true" ]; then
 	echo "---------------"
 else
     echo "Visit the ${APP_NAME} WebUI to start setup."
-    echo "Don't forget to enter 'http://127.0.0.1:3003' as the machine learning URL."
+	echo "---------------"
 fi
