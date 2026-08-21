@@ -2,7 +2,6 @@
 # Install Immich
 
 APP_NAME="Immich"
-ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_TYPE="PostgreSQL"
 DB_NAME="immich"
 DB_USER="immich"
@@ -26,14 +25,14 @@ fi
 
 # Check for Reinstall
 if [ "$(ls -A /var/db/immich 2>/dev/null)" ]; then
-	echo "Existing ${APP_NAME} data detected. Checking for compatible database..."
+    echo "Existing ${APP_NAME} data detected. Checking for compatible database..."
    	if [ "$(ls -A /var/db/postgres/data${PG_VERSION} 2>/dev/null)" ]; then
-    	echo "Database looks compatible. Starting reinstall..."
+    	  echo "Database looks compatible. Starting reinstall..."
     else
-		echo "ERROR: You cannot continue without the previous database."
-   		echo "Please try again after removing your config files or using the same database used previously."
-       	exit 1
-	fi
+		    echo "ERROR: You cannot continue without the previous database."
+   		  echo "Please try again after removing your config files or using the same database used previously."
+        exit 1
+	  fi
     REINSTALL="true"
 fi
 
