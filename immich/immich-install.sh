@@ -9,7 +9,8 @@ DB_USER="immich"
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
 PG_VERSION="17"
-TIMEZONE="America/Edmonton"
+NODE_VERSION="24"
+TIME_ZONE="America/Edmonton"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
@@ -40,6 +41,8 @@ fi
 pkg install -y \
 immich \
 immich-ml \
+node"${NODE_VERSION}" \
+npm-node"${NODE_VERSION}" \
 postgresql"${PG_VERSION}"-contrib \
 postgresql"${PG_VERSION}"-pgvector \
 postgresql"${PG_VERSION}"-server \
@@ -60,7 +63,6 @@ fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervi
 pw usermod immich -G redis
 sysrc redis_enable="YES"
 service redis start
-chmod 777 /var/run/redis/redis.sock
 
 # Env Setup
 echo "DB_HOSTNAME=127.0.0.1" >> /usr/local/etc/immich.env
@@ -69,7 +71,7 @@ echo "DB_DATABASE_NAME=immich" >> /usr/local/etc/immich.env
 echo "DB_PASSWORD=${DB_PASSWORD}" >> /usr/local/etc/immich.env
 echo "REDIS_HOSTNAME=127.0.0.1" >> /usr/local/etc/immich.env
 echo "IMMICH_MACHINE_LEARNING_URL=http://127.0.0.1:3003" >> /usr/local/etc/immich.env
-echo "TZ=${TIMEZOONE}" >> /usr/local/etc/immich.env
+echo "TZ=${TIME_ZONE}" >> /usr/local/etc/immich.env
 
 # Database
 if [ "${REINSTALL}" == "true" ]; then
@@ -80,7 +82,9 @@ if [ "${REINSTALL}" == "true" ]; then
   	chmod 600 /root/.pgpass
    	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
     sed -i '' "s|.*DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/etc/immich.env
+    service postgresql start
 else
+    sysrc postgresql_enable="YES"
 	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/immich/includes/pgpass
 	chmod 600 /root/.pgpass
     sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
@@ -92,23 +96,25 @@ else
 		echo "Failed to create ${APP_NAME} database, aborting"
 		exit 1
 	fi
+    psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS vector;"
+    psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS vchord CASCADE;"
+    psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS cube;"
+    psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS earthdistance;"
+    psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 	psql -U postgres -c "CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';"
 	psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};"
     psql -U postgres -c "GRANT ALL PRIVILEGES ON SCHEMA public TO ${DB_USER};"
 	psql -U postgres -c "ALTER DATABASE ${DB_NAME} OWNER TO ${DB_USER};"
-    psql -U postgres -c "CREATE EXTENTION vecotor;"
-    psql -U postgres -c "CREATE EXTENTION vchord CASCADE;"
-    psql -U postgres -c "CREATE EXTENTION cube;"
-    psql -U postgres -c "CREATE EXTENTION earthdistance;"
-    psql -U postgres -c "CREATE EXTENTION pg_trgm;"
 	psql -U postgres -c "SELECT pg_reload_conf();"
 fi
 
-# Restart Services
-service mysql-server restart
+# Services
+sysrc immich_ml_enable=YES
+sysrc immich_server_enable=YES
+service postgresql restart
 service redis restart
-service php_fpm restart
-service caddy restart
+service immich_ml start
+service immich_server start
 
 # Save Passwords
 echo "${DB_TYPE} root password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt

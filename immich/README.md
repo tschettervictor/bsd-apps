@@ -21,9 +21,12 @@ TIME_ZONE
 PG_VERSION
 - postgres version to use (currently defaults to 18)
 
+NODE_VERSION
+- node version to use (currently defaults to 24)
+
 ## Mount points (should be mounted outside the jail)
 - `/var/db/immich` - immich-server data directory
-- `/var/db/immich-ml` - immich machine learning cache directory
+- `/var/db/immich-ml` - immich-machine-learning cache directory
 - `/var/db/postgres` - database directory for postgresql
 
 ## Jail Properties
