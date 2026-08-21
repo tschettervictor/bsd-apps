@@ -48,13 +48,13 @@ immich \
 immich-ml \
 node"${NODE_VERSION}" \
 postgresql"${PG_VERSION}"-contrib \
-postgresql"${PG_VERSION.}"-pgvector \
+postgresql"${PG_VERSION}"-pgvector \
 postgresql"${PG_VERSION}"-server \
 postgresql"${PG_VERSION}"-vchord \
 redis
 
 # Create Directories/Users
-id -u immich 2>&1 || pw user add immich -c immich -u 2283 -d /nonexistent -s /usr/bin/nologin
+id -u immich >/dev/null 2>&1 || pw user add immich -c immich -u 2283 -d /nonexistent -s /usr/bin/nologin
 mkdir -p /var/db/immich
 mkdir -p /var/db/immich-ml
 mkdir -p /usr/local/etc
