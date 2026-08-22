@@ -18,7 +18,7 @@ APP_VERSION
 - app version to install (defaults to latest)
 
 NODE_VERSION
-- node version to use (currently defaults to 18)
+- node version to use (currently defaults to 24)
 
 DATA_PATH
 - data will be stored here (currently defaults to `/mnt/data`)
