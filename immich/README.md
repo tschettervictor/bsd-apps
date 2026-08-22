@@ -30,3 +30,11 @@ PG_VERSION
 ## Jail Properties
 - `sysvshm=new` - needed for postgres shared memory
 
+# Bastille Template
+
+```
+bastille template TARGET bsd-apps/immich \
+    --arg DATA_PATH=/mnt/tank/apps \
+    --arg PG_VERSION=18 \
+    --arg TIME_ZONE=America/Edmonton
+```
