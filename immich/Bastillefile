@@ -10,7 +10,7 @@ CONFIG set sysvshm new
 MOUNT ${DATA_PATH}/data /var/db/immich nullfs rw 0 0
 MOUNT ${DATA_PATH}/cache /var/db/immich-ml nullfs rw 0 0
 MOUNT ${DATA_PATH}/db /var/db/postgres nullfs rw 0 0
-MOUNT ${DATA_PATH}/immich.env /usr/local/etc/immich.env nullfs rw 0 0
+MOUNT ${DATA_PATH}/config /usr/local/etc/immich nullfs rw 0 0
 
 RESTART
 

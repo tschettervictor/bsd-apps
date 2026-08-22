@@ -25,7 +25,7 @@ PG_VERSION
 - `/var/db/immich` - immich-server data directory
 - `/var/db/immich-ml` - immich-machine-learning cache directory
 - `/var/db/postgres` - database directory for postgresql
-- `/usr/local/etc/immich.env` - immich env file (optional, but keep if you have many variables)
+- `/usr/local/etc/immich` - env config directory
 
 ## Jail Properties
 - `sysvshm=new` - needed for postgres shared memory

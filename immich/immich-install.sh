@@ -26,12 +26,12 @@ fi
 if [ "$(ls -A /var/db/immich 2>/dev/null)" ]; then
     echo "Existing ${APP_NAME} data detected. Checking for compatible database..."
    	if [ "$(ls -A /var/db/postgres/data${PG_VERSION} 2>/dev/null)" ]; then
-    	  echo "Database looks compatible. Starting reinstall..."
+        echo "Database looks compatible. Starting reinstall..."
     else
-		    echo "ERROR: You cannot continue without the previous database."
-   		  echo "Please try again after removing your config files or using the same database used previously."
+        echo "ERROR: You cannot continue without the previous database."
+        echo "Please try again after removing your config files or using the same database used previously."
         exit 1
-	  fi
+    fi
     REINSTALL="true"
 fi
 
@@ -54,9 +54,10 @@ redis
 id -u immich >/dev/null 2>&1 || pw user add immich -c immich -u 2283 -d /nonexistent -s /usr/bin/nologin
 mkdir -p /var/db/immich
 mkdir -p /var/db/immich-ml
-mkdir -p /usr/local/etc
+mkdir -p /usr/local/etc/immich
 chown -R immich:immich /var/db/immich
 chown -R immich:immich /var/db/immich-ml
+chown -R immich:immich /usr/local/etc/immich
 
 # Redis Setup
 fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/immich/includes/redis.conf
@@ -65,18 +66,18 @@ sysrc redis_enable="YES"
 service redis start
 
 # Env Setup
-if [ ! -f /usr/local/etc/immich.env ]; then
-    echo "DB_HOSTNAME=127.0.0.1" > /usr/local/etc/immich.env
-    echo "DB_USERNAME=immich" >> /usr/local/etc/immich.env
-    echo "DB_DATABASE_NAME=immich" >> /usr/local/etc/immich.env
-    echo "DB_PASSWORD=${DB_PASSWORD}" >> /usr/local/etc/immich.env
-    echo "REDIS_HOSTNAME=127.0.0.1" >> /usr/local/etc/immich.env
-    echo "IMMICH_MACHINE_LEARNING_URL=http://127.0.0.1:3003" >> /usr/local/etc/immich.env
-    echo "TZ=${TIME_ZONE}" >> /usr/local/etc/immich.env
+if [ ! -f /usr/local/etc/immich/immich.env ]; then
+    echo "DB_HOSTNAME=127.0.0.1" > /usr/local/etc/immich/immich.env
+    echo "DB_USERNAME=immich" >> /usr/local/etc/immich/immich.env
+    echo "DB_DATABASE_NAME=immich" >> /usr/local/etc/immich/immich.env
+    echo "DB_PASSWORD=${DB_PASSWORD}" >> /usr/local/etc/immich/immich.env
+    echo "REDIS_HOSTNAME=127.0.0.1" >> /usr/local/etc/immich/immich.env
+    echo "IMMICH_MACHINE_LEARNING_URL=http://127.0.0.1:3003" >> /usr/local/etc/immich/immich.env
+    echo "TZ=${TIME_ZONE}" >> /usr/local/etc/immich/immich.env
 else
-    sysrc -f /usr/local/etc/immich.env DB_PASSWORD="${DB_PASSWORD}" >/dev/null 2>&1
+    sysrc -f /usr/local/etc/immich/immich.env DB_PASSWORD="${DB_PASSWORD}" >/dev/null 2>&1
 fi
-chown -R immich:immich /usr/local/etc/immich.env
+chown -R immich:immich /usr/local/etc/immich
 
 # Database
 sysrc postgresql_enable="YES"
@@ -115,6 +116,7 @@ fi
 # Services
 sysrc immich_ml_enable=YES
 sysrc immich_server_enable=YES
+sysrc immich_server_env_file=/usr/local/etc/immich/immich.env
 service postgresql restart
 service redis restart
 service immich_ml start
