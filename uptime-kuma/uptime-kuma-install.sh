@@ -4,7 +4,7 @@
 APP_NAME="Uptime-Kuma"
 APP_VERSION="latest"
 DATA_PATH="/mnt/data"
-NODE_VERSION="20"
+NODE_VERSION="24"
 
 # Check for Root Privileges
 if ! [ $(id -u) = 0 ]; then
@@ -15,7 +15,8 @@ fi
 # Install Packages
 pkg install -y \
 git-lite \
-npm-node"${NODE_VERSION}"
+npm-node"${NODE_VERSION}" \
+python3
 
 # Check for reinstall
 if [ "$(ls -A ${DATA_PATH} 2>/dev/null)" ]; then
@@ -28,12 +29,13 @@ mkdir -p /usr/local/etc/rc.d
 mkdir -p /var/run/uptimekuma
 
 # Uptime-Kuma Setup
-id -u uptimekuma 2>&1 || pw user add uptimekuma -c uptimekuma -u 3001 -d /nonexistent -s /usr/bin/nologin
+id -u uptimekuma >/dev/null 2>&1 || pw user add uptimekuma -c uptimekuma -u 3001 -d /nonexistent -s /usr/bin/nologin
 npm install npm -g
 if [ "${REINSTALL}" = "true" ]; then
     service uptimekuma stop
     chown -R root:wheel /usr/local/uptime-kuma
     git -C /usr/local/uptime-kuma reset --hard HEAD
+    git -C /usr/local/uptime-kuma checkout master
     git -C /usr/local/uptime-kuma pull
 else
     git clone https://github.com/louislam/uptime-kuma.git /usr/local/uptime-kuma
@@ -44,7 +46,7 @@ else
     cd /usr/local/uptime-kuma && git checkout "${APP_VERSION}" && npm ci --production && npm run download-dist
 fi
 sed -i '' "s|console.log(\"Welcome to Uptime Kuma\");|process.chdir('/usr/local/uptime-kuma');\n&|" /usr/local/uptime-kuma/server/server.js
-fetch -o /usr/local/etc/rc.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/includes/uptimekuma
+fetch -o /usr/local/etc/rc.d https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/includes/uptimekuma
 chmod +x /usr/local/etc/rc.d/uptimekuma
 chown -R uptimekuma:uptimekuma /var/run/uptimekuma
 chown -R uptimekuma:uptimekuma /usr/local/uptime-kuma
