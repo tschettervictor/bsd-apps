@@ -12,7 +12,7 @@ PHP_VERSION="83"
 MARIADB_VERSION="106"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -60,7 +60,7 @@ mkdir -p /usr/local/www/zenphoto
 # Create and Configure Database
 sysrc mysql_enable="YES"
 service mysql-server start
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
@@ -85,7 +85,7 @@ fi
 # Install Zenphoto
 fetch -o /tmp https://github.com/zenphoto/zenphoto/archive/"v${APP_VERSION}.tar.gz"
 tar xjf /tmp/"v${APP_VERSION}.tar.gz" -C /tmp/
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	rm -R /usr/local/www/zenphoto/zp-core
 	cp -R -f /tmp/zenphoto-"${APP_VERSION}"/zp-core /usr/local/www/zenphoto/
 	cp -R /usr/local/www/zenphoto/themes /usr/local/www/zenphoto/themes.bak
@@ -137,7 +137,7 @@ echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
 echo "$APP_NAME DB User: $DB_USER"
 echo "$APP_NAME DB Password: $DB_PASSWORD"
 echo "---------------"
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall"
  	echo "Please user your old credentials to log in."
 	echo "---------------"

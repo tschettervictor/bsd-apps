@@ -11,7 +11,7 @@ PG_VERSION="18"
 TIME_ZONE="America/Edmonton"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -81,7 +81,7 @@ chown -R immich:immich /usr/local/etc/immich
 
 # Database
 sysrc postgresql_enable="YES"
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will be saved in the root directory."
  	psql -U postgres -c "ALTER USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';"
@@ -140,7 +140,7 @@ echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
 echo "---------------"
 echo "${APP_NAME} is running on port 2283."
 echo "---------------"
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall."
  	echo "Please user your old credentials to log in."
 	echo "---------------"

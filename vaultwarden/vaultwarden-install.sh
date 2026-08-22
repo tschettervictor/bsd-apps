@@ -14,7 +14,7 @@ CERT_EMAIL=""
 PYTHON_VERSION="311"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -80,7 +80,7 @@ else
 fi
 
 # Generate Secure Token/Hash Using argon2
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "Admin token will not be changed on a reinstall."
  	echo "Consult the docs to manually change it if needed."
 else
@@ -165,7 +165,7 @@ else
   	echo "Using your web browser, go to https://${HOST_NAME} to log in"
   	echo "---------------"
 fi
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, your admin token has not changed."
  	echo "If you need to generate a new one, please see the vaultwarden github."
 	echo "---------------"

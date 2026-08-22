@@ -20,7 +20,7 @@ PHP_VERSION="83"
 MARIADB_VERSION="106"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -108,7 +108,7 @@ mkdir -p /usr/local/etc/rc.d
 # Create and Configure Database
 sysrc mysql_enable=YES
 service mysql-server start
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
@@ -132,7 +132,7 @@ if [ "${REINSTALL}" == "true" ]; then
 
 # Wordpress Setup
 fetch -o /tmp https://wordpress.org/latest.tar.gz
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	tar --exclude 'wp-content' --exclude 'wp-config.php' -xjf /tmp/latest.tar.gz -C /usr/local/www/
 	sed -i '' "s|define( 'DB_PASSWORD',.*|define( 'DB_PASSWORD', '${DB_PASSWORD}' );|" /usr/local/www/wordpress/wp-config.php
 else

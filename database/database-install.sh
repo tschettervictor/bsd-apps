@@ -14,7 +14,7 @@ DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -124,7 +124,7 @@ echo "Database Information"
 echo "$DB_TYPE Username: root"
 echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
 echo "$DB_NAME User: $DB_USER"
-echo "$DB_NAME Password: "$DB_PASSWORD""
+echo "$DB_NAME Password: $DB_PASSWORD"
 echo "---------------"
 echo "All passwords are saved in /root/${DB_NAME}-Info.txt"
 echo "---------------"

@@ -13,7 +13,7 @@ MARIADB_VERSION="106"
 TIME_ZONE=""
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -73,7 +73,7 @@ sysrc mysql_enable=YES
 
 # Create and Configure Database
 service mysql-server start
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
@@ -106,7 +106,7 @@ fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervic
 fetch -o /tmp https://github.com/LycheeOrg/Lychee/releases/download/v${APP_VERSION}/Lychee.zip
 unzip -u -d /usr/local/www /tmp/Lychee.zip
 rm /tmp/Lychee.zip
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	sed -i '' "s|.*DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/Lychee/.env
 else
 	cp /usr/local/www/Lychee/.env.example /usr/local/www/Lychee/.env

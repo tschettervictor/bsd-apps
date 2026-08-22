@@ -13,7 +13,7 @@ JWT_SECRET=$(openssl rand -base64 20)
 PG_VERSION="17"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -60,9 +60,9 @@ chown onlyoffice:onlyoffice /usr/local/etc/onlyoffice/documentserver/local.json
 echo "127.0.0.1 onlyoffice" >> /etc/hosts
 sysrc rabbitmq_enable="YES"
 service rabbitmq start
-rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) add_user ${RABBITMQ_USER} ${RABBITMQ_PASSWORD}
-rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) set_user_tags ${RABBITMQ_USER} administrator
-rabbitmqctl --erlang-cookie $(cat /var/db/rabbitmq/.erlang.cookie) set_permissions -p / ${RABBITMQ_USER} ".*" ".*" ".*"
+rabbitmqctl --erlang-cookie "$(cat /var/db/rabbitmq/.erlang.cookie)" add_user ${RABBITMQ_USER} ${RABBITMQ_PASSWORD}
+rabbitmqctl --erlang-cookie "$(cat /var/db/rabbitmq/.erlang.cookie)" set_user_tags ${RABBITMQ_USER} administrator
+rabbitmqctl --erlang-cookie "$(cat /var/db/rabbitmq/.erlang.cookie)" set_permissions -p / ${RABBITMQ_USER} ".*" ".*" ".*"
 sed -i '' -e "s|guest:guest@localhost|${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@localhost|g" /usr/local/etc/onlyoffice/documentserver/local.json
 chown onlyoffice:onlyoffice /usr/local/etc/onlyoffice/documentserver/local.json
 
@@ -105,8 +105,8 @@ echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
 echo "$APP_NAME DB User: $DB_USER"
 echo "$APP_NAME DB Password: $DB_PASSWORD"
 echo "RabbitMQ User: $RABBITMQ_USER"
-echo "RabbitMQ Password: "$RABBITMQ_PASSWORD""
-echo "JWT Secret: "$JWT_SECRET""
+echo "RabbitMQ Password: $RABBITMQ_PASSWORD"
+echo "JWT Secret: $JWT_SECRET"
 echo "---------------"
 echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
 echo "---------------"

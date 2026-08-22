@@ -10,7 +10,7 @@ DB_PASSWORD=$(openssl rand -base64 15)
 MARIADB_VERSION="106"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -51,7 +51,7 @@ sed -i -e 's/'localhost'/'0.0.0.0'/g' /usr/local/etc/guacamole-server/guacd.conf
 
 # Create and Configure Database
 service mysql-server start
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but database passwords will still be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
@@ -102,7 +102,7 @@ echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
 echo "$APP_NAME DB User: $DB_USER"
 echo "$APP_NAME DB Password: $DB_PASSWORD"
 echo "---------------"
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall."
  	echo "Please user your old credentials to log in."
 	echo "---------------"

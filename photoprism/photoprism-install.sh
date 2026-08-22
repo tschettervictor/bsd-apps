@@ -23,7 +23,7 @@ PHOTOPRISM_PKG="https://github.com/Gaojianli/photoprism-freebsd-port/releases/do
 #PHOTOPRISM_PKG="https://github.com/Gaojianli/photoprism-freebsd-port/releases/download/240915-e1280b2fb/photoprism-g20240915-FreeBSD-14.1-RELEASE.pkg"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -55,7 +55,7 @@ chown -R 88:88 /var/db/mysql
 sysrc mysql_enable="YES"
 sysrc mysql_args="--bind-address=127.0.0.1"
 service mysql-server start
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
@@ -81,7 +81,7 @@ fi
 # Install Photoprism
 pkg add "${LIBTENSORFLOW_PKG}"
 pkg add "${PHOTOPRISM_PKG}"
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
   	sed -i '' -e "s|.*DatabasePassword:.*|DatabasePassword: ${DB_PASSWORD}|g" /mnt/photos/options.yml
 else
 	touch /mnt/photos/options.yml
@@ -94,7 +94,7 @@ else
 	ImportPath: /mnt/photos/import
 	DatabaseDriver: mysql
 	DatabaseName: ${DB_NAME}
-	DatabaseServer: "127.0.0.1:3306"
+	DatabaseServer: 127.0.0.1:3306
 	DatabaseUser: ${DB_USER}
 	DatabasePassword: ${DB_PASSWORD}
 	EOL"
@@ -124,7 +124,7 @@ echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
 echo "$APP_NAME DB User: $DB_USER"
 echo "$APP_NAME DB Password: $DB_PASSWORD"
 echo "---------------"
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall."
  	echo "Please use your old credentials to log in."
 else

@@ -6,7 +6,7 @@ APP_VERSION="2.7.4"
 PHP_VERSION="84"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi

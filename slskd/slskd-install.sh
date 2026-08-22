@@ -7,7 +7,7 @@ FREEBSD_VERSION="14"
 NODE_VERSION="20"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -47,7 +47,7 @@ cd /slskd/src/slskd && dotnet publish \
     -p:ReadyToRun=true \
     -p:PublishSingleFile=true \
     -p:IncludeNativeLibrariesForSelfExtract=true \
-    -p:Version=$(git describe --tags --abbrev=0)+$(git rev-parse --short HEAD) \
+    -p:Version="$(git describe --tags --abbrev=0)"+"$(git rev-parse --short HEAD)" \
     --output ../../../usr/local/www/slskd \
     --self-contained &&
 cd /usr/local/www/slskd && ln -s /usr/local/lib/libsqlite3.so libe_sqlite3.so

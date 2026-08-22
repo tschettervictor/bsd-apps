@@ -11,7 +11,7 @@ PHP_VERSION="83"
 MARIADB_VERSION="106"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -63,7 +63,7 @@ mkdir -p /usr/local/www/piwigo/local/config
 # Create and Configure Database
 sysrc mysql_enable=YES
 service mysql-server start
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
@@ -91,7 +91,7 @@ mv "/tmp/dlcounter.php?code=latest" /tmp/piwigo.zip
 unzip -n -d /usr/local/www /tmp/piwigo.zip
 sh -c 'find /usr/local/www/ -type d -print0 | xargs -0 chmod 775'
 sh -c 'find /usr/local/www/ -type f -print0 | xargs -0 chmod 644'
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	sed -i '' -e "s|.*db_password.*|\$conf['db_password'] = '${DB_PASSWORD}';|g" /usr/local/www/piwigo/local/config/database.inc.php	
 fi
 chown -R www:www /usr/local/www
@@ -120,7 +120,7 @@ echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
 echo "$APP_NAME DB User: $DB_USER"
 echo "$APP_NAME DB Password: $DB_PASSWORD"
 echo "---------------"
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall."
 	echo "Please user your old credentials to log in."
         echo "---------------"

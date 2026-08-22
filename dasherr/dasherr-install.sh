@@ -5,7 +5,7 @@ APP_NAME="Dasherr"
 APP_VERSION="1.05.02"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi

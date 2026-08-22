@@ -25,7 +25,7 @@ MARIADB_VERSION="118"
 PG_VERSION="17"
 
 # Check for Root Privileges
-if ! [ $(id -u) = 0 ]; then
+if ! [ "$(id -u)" = 0 ]; then
    echo "This script must be run with root privileges"
    exit 1
 fi
@@ -258,7 +258,7 @@ if [ "${DB_TYPE}" = "MariaDB" ]; then
 elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
   	sysrc postgresql_enable="YES"
 fi
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will be saved in the root directory."
 	if [ "${DB_TYPE}" = "MariaDB" ]; then
@@ -375,7 +375,7 @@ echo "$DB_TYPE Password: $DB_ROOT_PASSWORD"
 echo "$APP_NAME DB User: $DB_USER"
 echo "$APP_NAME DB Password: $DB_PASSWORD"
 echo "--------------------"
-if [ "${REINSTALL}" == "true" ]; then
+if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall."
 	echo "Please user your old credentials to log in."
         echo "---------------"
