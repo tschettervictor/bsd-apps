@@ -1,7 +1,7 @@
 name: ShellCheck Linting
 
 on:
-  pull_request:
+  workflow_dispatch:
     branches:
       - main
 
