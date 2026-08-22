@@ -1,0 +1,17 @@
+# bsd-apps/immich
+
+ARG APP_NAME=immich
+ARG DATA_PATH=/apps/immich
+
+CONFIG set sysvshm new
+
+MOUNT ${DATA_PATH}/data /var/db/immich nullfs rw 0 0
+MOUNT ${DATA_PATH}/cache /var/db/immich-ml nullfs rw 0 0
+MOUNT ${DATA_PATH}/db /var/db/postgres nullfs rw 0 0
+MOUNT ${DATA_PATH}/immich.env /usr/local/etc/immich.env nullfs rw 0 0
+
+RESTART
+
+CP ${APP_NAME}-install.sh /tmp
+CMD chmod +x /tmp/${APP_NAME}-install.sh
+CMD /tmp/${APP_NAME}-install.sh
