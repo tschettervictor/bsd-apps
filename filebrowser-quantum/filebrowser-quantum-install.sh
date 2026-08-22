@@ -28,6 +28,11 @@ chown -R www:www /usr/local/www/filebrowser-quantum
 chown -R www:www /var/db/filebrowser-quantum
 chown -R www:www /usr/local/etc/filebrowser-quantum
 
+# App Setup
+if [ ! -f "/usr/local/etc/filebrowser-quantum/filebrowser-quantum.yaml" ]; then
+    cp -f /usr/local/etc/filebrowser-quantum.yaml /usr/local/etc/filebrowser-quantum/filebrowser-quantum.yaml
+fi
+
 # Enable, Configure and Start Services
 sysrc filebrowser_quantum_enable=YES
 sysrc filebrowser_quantum_config=/usr/local/etc/filebrowser-quantum/filebrowser-quantum.yaml
