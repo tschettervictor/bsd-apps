@@ -31,12 +31,12 @@ chown -R www:www /usr/local/etc/filebrowser-quantum
 # Enable, Configure and Start Services
 sysrc filebrowser_quantum_enable=YES
 sysrc filebrowser_quantum_config=/usr/local/etc/filebrowser-quantum/filebrowser-quantum.yaml
-service filebrowser start
+service filebrowser-quantum start
 
 # Done
 echo "---------------"
 echo "Installation complete."
-echo "${APP_NAME} is running on port 8080."
+echo "${APP_NAME} is running on port 3080."
 echo "---------------"
 if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall."
