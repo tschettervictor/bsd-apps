@@ -55,10 +55,8 @@ id -u immich >/dev/null 2>&1 || pw user add immich -c immich -u 2283 -d /nonexis
 mkdir -p /var/db/immich
 mkdir -p /var/db/immich-ml
 mkdir -p /usr/local/etc
-touch /usr/local/etc/immich.env
 chown -R immich:immich /var/db/immich
 chown -R immich:immich /var/db/immich-ml
-chown -R immich:immich /usr/local/etc/immich.env
 
 # Redis Setup
 fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/immich/includes/redis.conf
@@ -67,15 +65,21 @@ sysrc redis_enable="YES"
 service redis start
 
 # Env Setup
-echo "DB_HOSTNAME=127.0.0.1" >> /usr/local/etc/immich.env
-echo "DB_USERNAME=immich" >> /usr/local/etc/immich.env
-echo "DB_DATABASE_NAME=immich" >> /usr/local/etc/immich.env
-echo "DB_PASSWORD=${DB_PASSWORD}" >> /usr/local/etc/immich.env
-echo "REDIS_HOSTNAME=127.0.0.1" >> /usr/local/etc/immich.env
-echo "IMMICH_MACHINE_LEARNING_URL=http://127.0.0.1:3003" >> /usr/local/etc/immich.env
-echo "TZ=${TIME_ZONE}" >> /usr/local/etc/immich.env
+if [ ! -f /usr/local/etc/immich.env ]; then
+    echo "DB_HOSTNAME=127.0.0.1" > /usr/local/etc/immich.env
+    echo "DB_USERNAME=immich" >> /usr/local/etc/immich.env
+    echo "DB_DATABASE_NAME=immich" >> /usr/local/etc/immich.env
+    echo "DB_PASSWORD=${DB_PASSWORD}" >> /usr/local/etc/immich.env
+    echo "REDIS_HOSTNAME=127.0.0.1" >> /usr/local/etc/immich.env
+    echo "IMMICH_MACHINE_LEARNING_URL=http://127.0.0.1:3003" >> /usr/local/etc/immich.env
+    echo "TZ=${TIME_ZONE}" >> /usr/local/etc/immich.env
+else
+    sysrc -f /usr/local/etc/immich.env DB_PASSWORD="${DB_PASSWORD}" >/dev/null 2>&1
+fi
+chown -R immich:immich /usr/local/etc/immich.env
 
 # Database
+sysrc postgresql_enable="YES"
 if [ "${REINSTALL}" == "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will be saved in the root directory."
