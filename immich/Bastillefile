@@ -1,7 +1,9 @@
 # bsd-apps/immich
 
-ARG APP_NAME=immich
-ARG DATA_PATH=/apps/immich
+ARG+ APP_NAME=immich
+ARG  DATA_PATH
+ARG  PG_VERSION=18
+ARG+ TIME_ZONE
 
 CONFIG set sysvshm new
 
@@ -11,6 +13,9 @@ MOUNT ${DATA_PATH}/db /var/db/postgres nullfs rw 0 0
 MOUNT ${DATA_PATH}/immich.env /usr/local/etc/immich.env nullfs rw 0 0
 
 RESTART
+
+SYSRC -f /tmp/${APP_NAME}-install.sh PG_VERSION=${PG_VERSION}
+SYSRC -f /tmp/${APP_NAME}-install.sh TIME_ZONE=${TIME_ZONE}
 
 CP ${APP_NAME}-install.sh /tmp
 CMD chmod +x /tmp/${APP_NAME}-install.sh
