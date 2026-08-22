@@ -18,8 +18,8 @@ fi
 
 # Variable Checks
 if [ -z "${TIME_ZONE}" ]; then
-  echo '[ERROR]: TIME_ZONE must be set'
-  exit 1
+    echo '[ERROR]: TIME_ZONE must be set'
+    exit 1
 fi
 
 # Check for Reinstall
@@ -89,7 +89,6 @@ if [ "${REINSTALL}" == "true" ]; then
    	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
     service postgresql start
 else
-    sysrc postgresql_enable="YES"
     fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/immich/includes/pgpass
     chmod 600 /root/.pgpass
     sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
@@ -101,14 +100,14 @@ else
 	  fi
 	  sed -i '' "s/^#shared_preload_libraries = .*/shared_preload_libraries = \'vchord.so\'/" /var/db/postgres/data"${PG_VERSION}"/postgresql.conf
 	  service postgresql restart
-    psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS vector;"
-    psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS vchord CASCADE;"
-    psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS cube;"
-    psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS earthdistance;"
-    psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+      psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS vector;"
+      psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS vchord CASCADE;"
+      psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS cube;"
+      psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS earthdistance;"
+      psql -U postgres -d "${DB_NAME}" -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 	  psql -U postgres -c "CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';"
 	  psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};"
-    psql -U postgres -c "GRANT ALL PRIVILEGES ON SCHEMA public TO ${DB_USER};"
+      psql -U postgres -c "GRANT ALL PRIVILEGES ON SCHEMA public TO ${DB_USER};"
 	  psql -U postgres -c "ALTER DATABASE ${DB_NAME} OWNER TO ${DB_USER};"
 	  psql -U postgres -c "SELECT pg_reload_conf();"
 fi
