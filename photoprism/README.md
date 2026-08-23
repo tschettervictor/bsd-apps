@@ -3,7 +3,7 @@ https://photoprism.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/photoprism/photoprism-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/photoprism/photoprism-install.sh
 ```
 
 Don't forget to

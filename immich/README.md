@@ -3,7 +3,7 @@ https://immich.app
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/immich/immich-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/immich/immich-install.sh
 ```
 
 Don't forget to

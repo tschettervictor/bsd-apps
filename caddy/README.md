@@ -4,7 +4,7 @@ https://caddyserver.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/caddy/caddy-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/caddy/caddy-install.sh
 ```
 
 Don't forget to

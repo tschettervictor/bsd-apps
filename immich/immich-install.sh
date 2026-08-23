@@ -60,7 +60,7 @@ chown -R immich:immich /var/db/immich-ml
 chown -R immich:immich /usr/local/etc/immich
 
 # Redis Setup
-fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/immich/includes/redis.conf
+fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/immich/includes/redis.conf
 pw usermod immich -G redis
 sysrc redis_enable="YES"
 service redis start
@@ -85,12 +85,12 @@ if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will be saved in the root directory."
  	psql -U postgres -c "ALTER USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';"
- 	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/immich/includes/pgpass
+ 	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/immich/includes/pgpass
   	chmod 600 /root/.pgpass
    	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
     service postgresql start
 else
-    fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/immich/includes/pgpass
+    fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/immich/includes/pgpass
     chmod 600 /root/.pgpass
     sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
     service postgresql initdb

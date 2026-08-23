@@ -3,7 +3,7 @@ https://prometheus.io
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/prometheus/prometheus-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/prometheus/prometheus-install.sh
 ```
 
 Don't forget to

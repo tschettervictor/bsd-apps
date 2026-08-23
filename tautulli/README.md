@@ -3,7 +3,7 @@ https://tautulli.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/tautulli/tautulli-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/tautulli/tautulli-install.sh
 ```
 
 Don't forget to

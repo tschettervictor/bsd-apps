@@ -64,7 +64,7 @@ if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zenphoto/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zenphoto/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
@@ -78,7 +78,7 @@ else
 	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 	mysql -u root -e "FLUSH PRIVILEGES;"
 	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zenphoto/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zenphoto/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 fi
 
@@ -98,7 +98,7 @@ if [ "${REINSTALL}" = "true" ]; then
 else
 	cp -r -f /tmp/zenphoto-"${APP_VERSION}"/ /usr/local/www/zenphoto/
 	rm -R /tmp/"v${APP_VERSION}.tar.gz" /tmp/zenphoto-"${APP_VERSION}"
-	fetch -o /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php.bak https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zenphoto/includes/zenphoto.cfg.php
+	fetch -o /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php.bak https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zenphoto/includes/zenphoto.cfg.php
 	cp -f /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php.bak /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
 	sed -i '' "s/zenphoto_db_user/${DB_USER}/" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
 	sed -i '' "s|zenphoto_db_pass|${DB_PASSWORD}|" /usr/local/www/zenphoto/zp-data/zenphoto.cfg.php
@@ -107,11 +107,11 @@ else
 	touch /usr/local/www/zenphoto/zp-data/charset_tést
 fi
 chown -R www:www /usr/local/www/zenphoto
-fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zenphoto/includes/php.ini
+fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zenphoto/includes/php.ini
 chown -R www:www /usr/local/etc/php.ini
 
 # Caddy Setup
-fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zenphoto/includes/Caddyfile-nossl
+fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zenphoto/includes/Caddyfile-nossl
 sysrc caddy_config="/usr/local/www/Caddyfile"
 sysrc caddy_enable="YES"
 

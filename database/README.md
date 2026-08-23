@@ -2,7 +2,7 @@
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/database/database-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/database/database-install.sh
 ```
 
 Don't forget to

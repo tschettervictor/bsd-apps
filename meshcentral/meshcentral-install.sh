@@ -29,7 +29,7 @@ cd /usr/local/meshcentral && npm install meshcentral
 chown -R meshcentral:meshcentral /usr/local/meshcentral
 chown -R meshcentral:meshcentral /var/log/meshcentral
 chown -R meshcentral:meshcentral /var/run/meshcentral
-fetch -o /usr/local/etc/rc.d/meshcentral https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/meshcentral/includes/meshcentral
+fetch -o /usr/local/etc/rc.d/meshcentral https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/meshcentral/includes/meshcentral
 chmod +x /usr/local/etc/rc.d/meshcentral
 
 # Enable and Start Services

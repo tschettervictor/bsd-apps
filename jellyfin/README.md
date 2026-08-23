@@ -3,7 +3,7 @@ https://jellyfin.org
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/jellyfin/jellyfin-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/jellyfin/jellyfin-install.sh
 ```
 
 Don't forget to

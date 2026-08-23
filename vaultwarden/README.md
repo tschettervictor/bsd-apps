@@ -3,7 +3,7 @@ https://github.com/dani-garcia/vaultwarden
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/vaultwarden/vaultwarden-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/vaultwarden/vaultwarden-install.sh
 ```
 
 Don't forget to

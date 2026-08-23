@@ -3,7 +3,7 @@ https://github.com/LycheeOrg/Lychee
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/lychee-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/lychee/lychee-install.sh
 ```
 
 Don't forget to

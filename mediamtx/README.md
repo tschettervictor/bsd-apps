@@ -3,7 +3,7 @@ https://github.com/bluenviron/mediamtx
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/mediamtx/mediamtx-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/mediamtx/mediamtx-install.sh
 ```
 
 Don't forget to

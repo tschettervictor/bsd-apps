@@ -189,23 +189,23 @@ if [ $SELFSIGNED_CERT -eq 1 ]; then
   	cp /tmp/fullchain.pem /usr/local/etc/pki/tls/certs/fullchain.pem
 fi
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
-	fetch -o /root/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/remove-staging.sh
+	fetch -o /root/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/remove-staging.sh
   	chmod +x /root/remove-staging.sh
 fi
 if [ $NO_CERT -eq 1 ]; then
 	echo "Fetching Caddyfile for no SSL"
-  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/Caddyfile-nossl
+  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/Caddyfile-nossl
 elif [ $SELFSIGNED_CERT -eq 1 ]; then
 	echo "Fetching Caddyfile for self-signed cert"
-  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/Caddyfile-selfsigned
+  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/Caddyfile-selfsigned
 elif [ $DNS_CERT -eq 1 ]; then
   	echo "Fetching Caddyfile for Let's Encrypt DNS cert"
-  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/Caddyfile-dns
+  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/Caddyfile-dns
 else
   	echo "Fetching Caddyfile for Let's Encrypt cert"
-  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/Caddyfile
+  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/Caddyfile
 fi
-fetch -o /usr/local/etc/rc.d/caddy https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/caddy
+fetch -o /usr/local/etc/rc.d/caddy https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/caddy
 chmod +x /usr/local/etc/rc.d/caddy
 sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/local/www/Caddyfile
 sed -i '' "s/dns_plugin/${DNS_PLUGIN}/" /usr/local/www/Caddyfile
@@ -234,10 +234,10 @@ tar xjf /tmp/"${FILE}" -C /usr/local/www/
 chown -R www:www /usr/local/www/nextcloud/
 
 # PHP Setup
-fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/php.ini
-fetch -o /usr/local/etc/php-fpm.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/www.conf
+fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/php.ini
+fetch -o /usr/local/etc/php-fpm.d/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/www.conf
 if [ "${DB_TYPE}" = "MariaDB" ]; then
-  fetch -o /usr/local/etc/mysql/conf.d/nextcloud.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/my-system.cnf
+  fetch -o /usr/local/etc/mysql/conf.d/nextcloud.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/my-system.cnf
 fi
 sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 chown -R www:www /usr/local/etc/php.ini
@@ -245,7 +245,7 @@ sysrc php_fpm_enable="YES"
 service php_fpm start
 
 # Redis Setup
-fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/redis.conf
+fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/redis.conf
 pw usermod www -G redis
 sysrc redis_enable="YES"
 service redis start
@@ -263,11 +263,11 @@ if [ "${REINSTALL}" = "true" ]; then
  	echo "New passwords will be saved in the root directory."
 	if [ "${DB_TYPE}" = "MariaDB" ]; then
    		mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-		fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/my.cnf
+		fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/my.cnf
 		sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 	elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
  		psql -U postgres -c "ALTER USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';"
- 		fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/pgpass
+ 		fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/pgpass
   		chmod 600 /root/.pgpass
    		sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
     	fi
@@ -285,10 +285,10 @@ else
 	  	mysql -u root -e "DROP DATABASE IF EXISTS test;"
 	  	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 	  	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-	  	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/my.cnf
+	  	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/my.cnf
 	  	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 	elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
-	  	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/pgpass
+	  	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/pgpass
 	  	chmod 600 /root/.pgpass
     	  	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
     		mkdir /var/db/postgres
@@ -352,7 +352,7 @@ else
 	su -m www -c 'php /usr/local/www/nextcloud/occ background:cron'
 fi
 su -m www -c 'php -f /usr/local/www/nextcloud/cron.php'
-fetch -o /tmp/www-crontab https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/includes/www-crontab
+fetch -o /tmp/www-crontab https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/www-crontab
 crontab -u www /tmp/www-crontab
 
 # Restart Services

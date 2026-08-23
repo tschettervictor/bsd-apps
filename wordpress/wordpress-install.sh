@@ -112,7 +112,7 @@ if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
  else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
@@ -126,7 +126,7 @@ if [ "${REINSTALL}" = "true" ]; then
 	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 	mysql -u root -e "FLUSH PRIVILEGES;"
 	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
  fi
 
@@ -155,8 +155,8 @@ else
 
 
 # PHP Setup
-fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/php.ini
-fetch -o /usr/local/etc/php-fpm.d/www.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/www.conf
+fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/php.ini
+fetch -o /usr/local/etc/php-fpm.d/www.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/www.conf
 sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 chown -R www:www /usr/local/etc/php.ini
 sysrc php_fpm_enable="YES"
@@ -164,7 +164,7 @@ service php_fpm start
 
 # Redis Setup
 sysrc redis_enable="YES"
-fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/redis.conf
+fetch -o /usr/local/etc/redis.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/redis.conf
 pw usermod www -G redis
 service redis start
 chmod 777 /var/run/redis/redis.sock
@@ -185,23 +185,23 @@ if [ $SELFSIGNED_CERT -eq 1 ]; then
   	cp /tmp/fullchain.pem /usr/local/etc/pki/tls/certs/fullchain.pem
 fi
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
-	fetch -o /root/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/remove-staging.sh
+	fetch -o /root/ https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/remove-staging.sh
   	chmod +x /root/remove-staging.sh
 fi
 if [ $NO_CERT -eq 1 ]; then
 	echo "Fetching Caddyfile for no SSL"
-  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/Caddyfile-nossl
+  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/Caddyfile-nossl
 elif [ $SELFSIGNED_CERT -eq 1 ]; then
 	echo "Fetching Caddyfile for self-signed cert"
-  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/Caddyfile-selfsigned
+  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/Caddyfile-selfsigned
 elif [ $DNS_CERT -eq 1 ]; then
   	echo "Fetching Caddyfile for Let's Encrypt DNS cert"
-  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/Caddyfile-dns
+  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/Caddyfile-dns
 else
   	echo "Fetching Caddyfile for Let's Encrypt cert"
-  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/Caddyfile
+  	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/Caddyfile
 fi
-fetch -o /usr/local/etc/rc.d/caddy https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/wordpress/includes/caddy
+fetch -o /usr/local/etc/rc.d/caddy https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/wordpress/includes/caddy
 chmod +x /usr/local/etc/rc.d/caddy
 sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/local/www/Caddyfile
 sed -i '' "s/dns_plugin/${DNS_PLUGIN}/" /usr/local/www/Caddyfile

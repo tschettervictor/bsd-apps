@@ -3,7 +3,7 @@ https://github.com/slskd/slskd
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/slskd/slskd-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/slskd/slskd-install.sh
 ```
 
 Don't forget to

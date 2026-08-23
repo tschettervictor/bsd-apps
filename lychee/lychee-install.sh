@@ -77,7 +77,7 @@ if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/lychee/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
@@ -91,18 +91,18 @@ else
 	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 	mysql -u root -e "FLUSH PRIVILEGES;"
 	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/lychee/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 fi
 
 # PHP Setup
-fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/includes/php.ini
+fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/lychee/includes/php.ini
 sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');"
 php /tmp/composer-setup.php --install-dir /usr/local/bin --filename composer
 
 # Install Lychee
-fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/lychee/includes/Caddyfile
+fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/lychee/includes/Caddyfile
 fetch -o /tmp https://github.com/LycheeOrg/Lychee/releases/download/v${APP_VERSION}/Lychee.zip
 unzip -u -d /usr/local/www /tmp/Lychee.zip
 rm /tmp/Lychee.zip

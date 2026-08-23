@@ -45,7 +45,7 @@ mkdir -p /usr/local/www
 install -d -g 8123 -o 8123 -m 775 -- /home/homeassistant
 pw adduser -u 8123 -n homeassistant -d /home/homeassistant -w no -s /usr/local/bin/bash -G dialer
 chown -R homeassistant:homeassistant /home/homeassistant
-fetch -o /usr/local/etc/rc.d/homeassistant https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/homeassistant/includes/homeassistant
+fetch -o /usr/local/etc/rc.d/homeassistant https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/homeassistant/includes/homeassistant
 chmod +x /usr/local/etc/rc.d/homeassistant
 sysrc homeassistant_python=/usr/local/bin/python${PYTHON_BINARY}
 sysrc homeassistant_venv=/usr/local/share/homeassistant

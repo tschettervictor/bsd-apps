@@ -46,7 +46,7 @@ sh -c 'cd /usr/local/www/html/ && php artisan key:generate'
 chown -R www:www /usr/local/www/html/
 
 # Enable and Start Services
-fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/heimdall/includes/Caddyfile-nossl
+fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/heimdall/includes/Caddyfile-nossl
 sysrc php_fpm_enable=YES
 sysrc caddy_enable=YES
 sysrc caddy_config=/usr/local/www/Caddyfile

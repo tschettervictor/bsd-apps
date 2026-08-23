@@ -4,7 +4,7 @@ https://github.com/filebrowser/filebrowser
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/filebrowser/filebrowser-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/filebrowser/filebrowser-install.sh
 ```
 
 Don't forget to

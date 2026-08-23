@@ -28,7 +28,7 @@ if [ ! -f "/usr/local/etc/mediamtx/mediamtx.yml" ]; then
     cp /mediamtx/mediamtx.yml /usr/local/etc/mediamtx/
 fi
 rm -R /mediamtx
-fetch -o /usr/local/etc/rc.d/mediamtx https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/mediamtx/includes/mediamtx
+fetch -o /usr/local/etc/rc.d/mediamtx https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/mediamtx/includes/mediamtx
 chmod +x /usr/local/etc/rc.d/mediamtx
 pw user add mediamtx -c mediamtx -u 1935 -d /nonexistent -s /usr/bin/nologin
 chown -R mediamtx:mediamtx /usr/local/etc/mediamtx

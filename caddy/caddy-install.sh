@@ -73,23 +73,23 @@ if [ $SELFSIGNED_CERT -eq 1 ]; then
 	cp /tmp/fullchain.pem /usr/local/etc/pki/tls/certs/fullchain.pem
 fi
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
-	fetch -o /root/remove-staging.sh https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/caddy/includes/remove-staging.sh
+	fetch -o /root/remove-staging.sh https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/caddy/includes/remove-staging.sh
 	chmod +x remove-staging.sh
 fi
 if [ $NO_CERT -eq 1 ]; then
 	echo "Fetching Caddyfile for no SSL"
- 	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/caddy/includes/Caddyfile-nossl
+ 	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/caddy/includes/Caddyfile-nossl
 elif [ $SELFSIGNED_CERT -eq 1 ]; then
 	echo "Fetching Caddyfile for self-signed cert"
-	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/caddy/includes/Caddyfile-selfsigned
+	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/caddy/includes/Caddyfile-selfsigned
 elif [ $DNS_CERT -eq 1 ]; then
 	echo "Fetching Caddyfile for Lets's Encrypt DNS cert"
-	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/caddy/includes/Caddyfile-dns
+	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/caddy/includes/Caddyfile-dns
 else
 	echo "Fetching Caddyfile for Let's Encrypt cert"
-	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/caddy/includes/Caddyfile-standalone	
+	fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/caddy/includes/Caddyfile-standalone	
 fi
-fetch -o /usr/local/etc/rc.d/caddy https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/caddy/includes/caddy
+fetch -o /usr/local/etc/rc.d/caddy https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/caddy/includes/caddy
 chmod +x /usr/local/etc/rc.d/caddy
 sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/local/www/Caddyfile
 sed -i '' "s/dns_plugin/${DNS_PLUGIN}/" /usr/local/www/Caddyfile

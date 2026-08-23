@@ -3,7 +3,7 @@ https://ui.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/unifi/unifi-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/unifi/unifi-install.sh
 ```
 
 Don't forget to

@@ -6,7 +6,7 @@ https://home-assistant.io
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/homeassistant/homeassistant-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/homeassistant/homeassistant-install.sh
 ```
 
 Don't forget to

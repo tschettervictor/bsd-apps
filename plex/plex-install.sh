@@ -27,9 +27,9 @@ sed -i '' "s/quarterly/latest/" /usr/local/etc/pkg/repos/FreeBSD.conf
 
 # Enable Daily Package Updates
 if [ ${BETA} -eq 1 ]; then
-	fetch -o /tmp/update_packages https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/plex/includes/update_packages.cron.beta
+	fetch -o /tmp/update_packages https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/plex/includes/update_packages.cron.beta
 else
-	fetch -o /tmp/update_packages https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/plex/includes/update_packages.cron
+	fetch -o /tmp/update_packages https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/plex/includes/update_packages.cron
 fi
 crontab /tmp/update_packages
 rm /tmp/update_packages

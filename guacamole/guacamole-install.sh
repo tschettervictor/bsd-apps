@@ -56,7 +56,7 @@ if [ "${REINSTALL}" = "true" ]; then
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
   	sed -i '' -e "s|.*mysql-password.*|mysql-password: ${DB_PASSWORD}|g" /usr/local/etc/guacamole-client/guacamole.properties
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/guacamole/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/guacamole/includes/my.cnf
   	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
@@ -70,7 +70,7 @@ else
 	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 	mysql -u root -e "FLUSH PRIVILEGES;"
 	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/guacamole/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/guacamole/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 	cat /tmp/guacamole-auth-jdbc-*/mysql/schema/*.sql | mysql -u root -p"${DB_ROOT_PASSWORD}" ${DB_NAME}
 	cp -f /usr/local/etc/guacamole-client/guacamole.properties.sample /usr/local/etc/guacamole-client/guacamole.properties

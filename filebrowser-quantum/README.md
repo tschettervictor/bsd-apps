@@ -4,7 +4,7 @@ https://filebrowserquantum.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/filebrowser-quantum/filebrowser-quantum-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/filebrowser-quantum/filebrowser-quantum-install.sh
 ```
 
 Don't forget to

@@ -3,7 +3,7 @@ https://github.com/linuxserver/heimdall
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/heimdall/heimdall-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/heimdall/heimdall-install.sh
 ```
 
 Don't forget to

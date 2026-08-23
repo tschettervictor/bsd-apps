@@ -4,7 +4,7 @@ https://github.com/erohtar/Dasherr
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/dasherr/dasherr-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/dasherr/dasherr-install.sh
 ```
 
 Don't forget to

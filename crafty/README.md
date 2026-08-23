@@ -4,7 +4,7 @@ https://craftycontroller.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/crafty/crafty-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/crafty/crafty-install.sh
 ```
 
 Don't forget to

@@ -3,7 +3,7 @@ https://www.navidrome.org
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/navidrome/navidrome-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/navidrome/navidrome-install.sh
 ```
 
 Don't forget to

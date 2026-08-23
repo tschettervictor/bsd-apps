@@ -67,7 +67,7 @@ if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but the ${DB_TYPE} root password AND ${APP_NAME} database password will be changed."
  	echo "New passwords will be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/piwigo/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/piwigo/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
 	if ! mysql -u root -e "CREATE DATABASE ${DB_NAME};"; then
@@ -81,7 +81,7 @@ else
 	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 	mysql -u root -e "FLUSH PRIVILEGES;"
 	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/piwigo/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/piwigo/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 fi
 
@@ -97,7 +97,7 @@ fi
 chown -R www:www /usr/local/www
 
 # Enable and Start Services
-fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/piwigo/includes/Caddyfile-nossl
+fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/piwigo/includes/Caddyfile-nossl
 sysrc php_fpm_enable=YES
 sysrc caddy_enable=YES
 sysrc caddy_config=/usr/local/www/Caddyfile

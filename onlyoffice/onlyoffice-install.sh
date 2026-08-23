@@ -26,7 +26,7 @@ postgresql"${PG_VERSION}"-server
 
 # Create and Configure Database
 sysrc postgresql_enable="YES"
-fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/onlyoffice/includes/pgpass
+fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/onlyoffice/includes/pgpass
 chmod 600 /root/.pgpass
 mkdir -p /var/db/postgres
 chown postgres /var/db/postgres/

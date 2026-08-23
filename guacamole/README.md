@@ -3,7 +3,7 @@ https://guacamole.apache.org
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/guacamole/guacamole-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/guacamole/guacamole-install.sh
 ```
 
 Don't forget to

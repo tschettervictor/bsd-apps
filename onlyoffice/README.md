@@ -3,7 +3,7 @@ https://onlyoffice.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/onlyoffice/onlyoffice-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/onlyoffice/onlyoffice-install.sh
 ```
 
 Don't forget to

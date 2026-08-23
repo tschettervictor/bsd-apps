@@ -3,7 +3,7 @@ https://wiki.codeemo.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/mineos/mineos-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/mineos/mineos-install.sh
 ```
 
 Don't forget to

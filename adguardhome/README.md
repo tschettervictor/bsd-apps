@@ -4,7 +4,7 @@ https://adguard.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/adguardhome/adguardhome-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/adguardhome/adguardhome-install.sh
 ```
 
 Don't forget to

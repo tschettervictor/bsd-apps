@@ -3,7 +3,7 @@ https://zoneminder.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/zoneminder-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zoneminder/zoneminder-install.sh
 ```
 
 Don't forget to

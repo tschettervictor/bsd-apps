@@ -3,7 +3,7 @@ https://meshcentral.com/
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/meshcentral/meshcentral-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/meshcentral/meshcentral-install.sh
 ```
 
 Don't forget to

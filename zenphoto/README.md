@@ -3,7 +3,7 @@ https://zenphoto.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zenphoto/zenphoto-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zenphoto/zenphoto-install.sh
 ```
 
 Don't forget to

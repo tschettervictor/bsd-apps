@@ -3,7 +3,7 @@ https://sabnzbd.org
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/sabnzbd/sabnzbd-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/sabnzbd/sabnzbd-install.sh
 ```
 
 Don't forget to

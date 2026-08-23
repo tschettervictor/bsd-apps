@@ -73,7 +73,7 @@ if [ "${MARIADB}" = 1 ]; then
 	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 	mysql -u root -e "FLUSH PRIVILEGES;"
 	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/database/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/database/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 elif [ "${MYSQL}" = 1 ]; then
 	pkg install -y mysql${MYSQL_VERSION}-server mysql${MYSQL_VERSION}-client
@@ -90,12 +90,12 @@ elif [ "${MYSQL}" = 1 ]; then
 	mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 	mysql -u root -e "FLUSH PRIVILEGES;"
 	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/database/includes/my.cnf
+	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/database/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 elif [ "${POSTGRESQL}" = 1 ]; then
 	pkg install -y postgresql${PGSQL_VERSION}-server postgresql${PGSQL_VERSION}-client
 	sysrc postgresql_enable=yes
-	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/database/includes/pgpass
+	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/database/includes/pgpass
 	chmod 600 /root/.pgpass
  	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
 	mkdir -p /var/db/postgres

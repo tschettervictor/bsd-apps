@@ -46,7 +46,7 @@ else
     cd /usr/local/uptime-kuma && git checkout "${APP_VERSION}" && npm ci --production && npm run download-dist
 fi
 sed -i '' "s|console.log(\"Welcome to Uptime Kuma\");|process.chdir('/usr/local/uptime-kuma');\n&|" /usr/local/uptime-kuma/server/server.js
-fetch -o /usr/local/etc/rc.d https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/uptime-kuma/includes/uptimekuma
+fetch -o /usr/local/etc/rc.d https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/uptime-kuma/includes/uptimekuma
 chmod +x /usr/local/etc/rc.d/uptimekuma
 chown -R uptimekuma:uptimekuma /var/run/uptimekuma
 chown -R uptimekuma:uptimekuma /usr/local/uptime-kuma

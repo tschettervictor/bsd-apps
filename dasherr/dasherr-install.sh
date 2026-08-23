@@ -22,7 +22,7 @@ fetch -o /tmp/dasherr.zip https://github.com/erohtar/Dasherr/releases/download/v
 unzip -u -d /usr/local/www/dasherr /tmp/dasherr.zip
 
 # Enable, Configure and Start Services
-fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/dasherr/includes/Caddyfile-nossl
+fetch -o /usr/local/www/Caddyfile https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/dasherr/includes/Caddyfile-nossl
 sysrc caddy_enable=YES
 sysrc caddy_config=/usr/local/www/Caddyfile
 service caddy start

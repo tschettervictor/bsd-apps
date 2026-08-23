@@ -3,7 +3,7 @@ https://nextcloud.com
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/nextcloud/nextcloud-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/nextcloud-install.sh
 ```
 
 Don't forget to

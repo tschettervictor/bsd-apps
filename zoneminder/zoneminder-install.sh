@@ -73,12 +73,12 @@ echo "ZM_DB_USER=${DB_USER}" >> /usr/local/etc/zoneminder/zm-truenas.conf
 echo "ZM_DB_PASS=${DB_PASS}" >> /usr/local/etc/zoneminder/zm-truenas.conf
 
 # Fetch Config Files
-fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/php.ini
-fetch -o /usr/local/etc/php-fpm.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/php-fpm.conf
-fetch -o /usr/local/etc/php-fpm.d/zoneminder.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/zoneminder.conf.php-fpm
-fetch -o /usr/local/etc/nginx/nginx.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/nginx.conf
-fetch -o /usr/local/etc/nginx/conf.d/zoneminder.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/zoneminder.conf.nginx.ssl
-fetch -o /usr/local/etc/mysql/conf.d/zoneminder.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/zoneminder/includes/my.cnf
+fetch -o /usr/local/etc/php.ini https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zoneminder/includes/php.ini
+fetch -o /usr/local/etc/php-fpm.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zoneminder/includes/php-fpm.conf
+fetch -o /usr/local/etc/php-fpm.d/zoneminder.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zoneminder/includes/zoneminder.conf.php-fpm
+fetch -o /usr/local/etc/nginx/nginx.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zoneminder/includes/nginx.conf
+fetch -o /usr/local/etc/nginx/conf.d/zoneminder.conf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zoneminder/includes/zoneminder.conf.nginx.ssl
+fetch -o /usr/local/etc/mysql/conf.d/zoneminder.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/zoneminder/includes/my.cnf
 
 # Restart Services and Start Zoneminder
 service mysql-server restart

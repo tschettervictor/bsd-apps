@@ -3,7 +3,7 @@ https://plex.tv
 
 ### Command to fetch script
 ```
-fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/plex/plex-install.sh
+fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/plex/plex-install.sh
 ```
 
 Don't forget to
