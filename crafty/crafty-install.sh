@@ -4,7 +4,7 @@
 APP_NAME="Crafty"
 OPENJDK_VERSION="25"
 PYTHON_VERSION="312"
-TIME_ZONE="America/Edmonton"
+TIME_ZONE=""
 
 # Check for Root Privileges
 if ! [ "$(id -u)" = 0 ]; then
@@ -27,6 +27,12 @@ case "${1}" in
 		exit 0
         ;;
 esac
+
+# Variable Checks
+if [ -z "${TIME_ZONE}" ]; then
+    echo '[ERROR]: TIME_ZONE must be set'
+    exit 1
+fi
 
 # Packages
 pkg install -y \
