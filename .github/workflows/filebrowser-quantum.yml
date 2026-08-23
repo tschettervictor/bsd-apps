@@ -5,13 +5,13 @@ on:
   push:
     branches: [master]
     paths:
-      - 'filebrowser-quantum/**'
+      - '${{ github.workflow }}/**'
   pull_request:
     paths:
-      - 'filebrowser-quantum/**'
+      - '${{ github.workflow }}/**'
 
 env:
-  APP: filebrowser-quantum
+  APP: "${{ github.workflow }}"
   APP_VARS:
 
 jobs:
@@ -51,9 +51,8 @@ jobs:
 
             echo "=== Running ${script} ==="
             log="/tmp/${APP}-install.log"
-            sh "./${script}" > "${log}" 2>&1 < /dev/null &
+            sh "./${script}" 2>&1 | tee "${log" &
             pid=$!
             wait "${pid}" || status=$?
             status=${status:-0}
-            cat "${log}"
             exit "${status}"

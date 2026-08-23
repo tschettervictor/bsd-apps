@@ -5,13 +5,13 @@ on:
   push:
     branches: [master]
     paths:
-      - 'crafty/**'
+      - '${{ github.workflow }}/**'
   pull_request:
     paths:
-      - 'crafty/**'
+      - '${{ github.workflow }}/**'
 
 env:
-  APP: crafty
+  APP: "${{ github.workflow }}"
   APP_VARS: |
     TIME_ZONE="America/Edmonton"
 
@@ -52,9 +52,8 @@ jobs:
 
             echo "=== Running ${script} ==="
             log="/tmp/${APP}-install.log"
-            sh "./${script}" > "${log}" 2>&1 < /dev/null &
+            sh "./${script}" 2>&1 | tee "${log" &
             pid=$!
             wait "${pid}" || status=$?
             status=${status:-0}
-            cat "${log}"
             exit "${status}"

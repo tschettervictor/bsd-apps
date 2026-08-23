@@ -5,13 +5,13 @@ on:
   push:
     branches: [master]
     paths:
-      - 'caddy/**'
+      - '${{ github.workflow }}/**'
   pull_request:
     paths:
-      - 'caddy/**'
+      - '${{ github.workflow }}/**'
 
 env:
-  APP: caddy
+  APP: "${{ github.workflow }}"
   APP_VARS: |
     HOST_NAME="app.local"
     SELFSIGNED_CERT=1
@@ -53,9 +53,8 @@ jobs:
 
             echo "=== Running ${script} ==="
             log="/tmp/${APP}-install.log"
-            sh "./${script}" 2>&1 | tee "${log}" &
+            sh "./${script}" 2>&1 | tee "${log" &
             pid=$!
             wait "${pid}" || status=$?
             status=${status:-0}
-            #cat "${log}"
             exit "${status}"

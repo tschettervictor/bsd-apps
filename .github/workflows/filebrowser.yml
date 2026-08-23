@@ -5,13 +5,13 @@ on:
   push:
     branches: [master]
     paths:
-      - 'filebrowser/**'
+      - '${{ github.workflow }}/**'
   pull_request:
     paths:
-      - 'filebrowser/**'
+      - '${{ github.workflow }}/**'
 
 env:
-  APP: filebrowser
+  APP: "${{ github.workflow }}"
   APP_VARS:
 
 jobs:
@@ -50,8 +50,8 @@ jobs:
             fi
 
             echo "=== Running ${script} ==="
-            #log="/tmp/${APP}-install.log"
-            sh "./${script}" &
+            log="/tmp/${APP}-install.log"
+            sh "./${script}" 2>&1 | tee "${log" &
             pid=$!
             wait "${pid}" || status=$?
             status=${status:-0}
