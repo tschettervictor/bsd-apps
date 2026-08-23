@@ -2,11 +2,11 @@
 # Install and configure your selected database with predefined variables
 
 MARIADB=0
-MARIADB_VERSION="106"
+MARIADB_VERSION="123"
 MYSQL=0
-MYSQL_VERSION="81"
+MYSQL_VERSION="97"
 POSTGRESQL=0
-PGSQL_VERSION="15"
+PGSQL_VERSION="18"
 DB_TYPE=""
 DB_NAME=""
 DB_USER=""

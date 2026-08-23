@@ -8,7 +8,7 @@ DB_NAME="photoprism"
 DB_USER="photoprism"
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
-MARIADB_VERSION="106"
+MARIADB_VERSION="123"
 
 # Libtensorflow Package
 # Uncomment for FreeBSD 13

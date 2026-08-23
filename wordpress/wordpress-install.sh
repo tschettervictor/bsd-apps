@@ -16,8 +16,8 @@ DNS_TOKEN=""
 CERT_EMAIL=""
 HOST_NAME=""
 TIME_ZONE=""
-PHP_VERSION="83"
-MARIADB_VERSION="106"
+PHP_VERSION="85"
+MARIADB_VERSION="123"
 
 # Check for Root Privileges
 if ! [ "$(id -u)" = 0 ]; then

@@ -7,8 +7,8 @@ DB_NAME="piwigo"
 DB_USER="piwigo"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
-PHP_VERSION="83"
-MARIADB_VERSION="106"
+PHP_VERSION="85"
+MARIADB_VERSION="123"
 
 # Check for Root Privileges
 if ! [ "$(id -u)" = 0 ]; then
@@ -28,7 +28,7 @@ pkg install -y \
 bzip2 \
 caddy \
 ffmpeg \
-imagemagick7 \
+#imagemagick7 \
 mariadb${MARIADB_VERSION}-client \
 mariadb${MARIADB_VERSION}-server \
 mediainfo \

@@ -2,14 +2,14 @@
 # Install Zenphoto
 
 APP_NAME="Zenphoto"
-APP_VERSION="1.6.4"
+APP_VERSION="1.6.8"
 DB_TYPE="MariaDB"
 DB_NAME="zenphoto"
 DB_USER="zenphoto"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
-PHP_VERSION="83"
-MARIADB_VERSION="106"
+PHP_VERSION="85"
+MARIADB_VERSION="123"
 
 # Check for Root Privileges
 if ! [ "$(id -u)" = 0 ]; then
