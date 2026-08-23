@@ -1,3 +1,5 @@
+![ShellCheck](https://github.com/tschettervictor/bsd-apps/actions/workflows/shellcheck.yml/badge.svg)
+
 # bsd-apps
 
 Collection of scripts to install popular applications inside FreeBSD jails, or FreeBSD host system.
