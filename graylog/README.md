@@ -1,3 +1,4 @@
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/graylog.yml/badge.svg)
 # Graylog
 https://graylog.org
 
