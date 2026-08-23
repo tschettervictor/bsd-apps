@@ -51,9 +51,9 @@ jobs:
 
             echo "=== Running ${script} ==="
             log="/tmp/${APP}-install.log"
-            sh "./${script}" > "${log}" 2>&1 < /dev/null &
+            sh "./${script}" | tee "${log}" 2>&1 < /dev/null &
             pid=$!
             wait "${pid}" || status=$?
-            cat "${log}"
+            #cat "${log}"
             status=${status:-0}
             exit "${status}"
