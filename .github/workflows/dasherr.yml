@@ -5,10 +5,10 @@ on:
   push:
     branches: [master]
     paths:
-      - '${{ github.workflow }}/**'
+      - 'dasherr/**'
   pull_request:
     paths:
-      - '${{ github.workflow }}/**'
+      - 'dasherr/**'
 
 env:
   APP: "${{ github.workflow }}"

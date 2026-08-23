@@ -5,10 +5,10 @@ on:
   push:
     branches: [master]
     paths:
-      - '${{ github.workflow }}/**'
+      - 'filebrowser-quantum/**'
   pull_request:
     paths:
-      - '${{ github.workflow }}/**'
+      - 'filebrowser-quantum/**'
 
 env:
   APP: "${{ github.workflow }}"
