@@ -133,6 +133,12 @@ bastille template jailname bsd-apps/nextcloud \
 
 ## App Status
 
+Monthly runs are conducted via Github Actions, so
+the status for each app below shouldnbe fairly recent.
+
+Runs are also conducted for wach app anytime there is
+a PR or commit to master.
+
 | App | Status |
 |-----|--------|
 | adguardhome | ![adguardhome](https://github.com/tschettervictor/bsd-apps/actions/workflows/adguardhome.yml/badge.svg) |
