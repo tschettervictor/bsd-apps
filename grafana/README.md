@@ -1,3 +1,4 @@
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/grafana.yml/badge.svg)
 # Grafana Dashboard
 https://grafana.com
 
