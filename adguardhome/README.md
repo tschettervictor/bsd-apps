@@ -1,3 +1,5 @@
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/adguardhome.yml/badge.svg)
+
 # AdGuard Home
 https://adguard.com
 
