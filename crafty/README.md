@@ -1,6 +1,8 @@
 # Crafty Controller
 https://craftycontroller.com
 
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/adguardhome.yml/badge.svg)
+
 ### Command to fetch script
 ```
 fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/crafty/crafty-install.sh

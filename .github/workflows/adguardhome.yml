@@ -2,47 +2,51 @@ name: adguardhome
 
 on:
   workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'adguardhome/**'
+  pull_request:
+    paths:
+      - 'adguardhome/**'
 
 env:
   APP: adguardhome
-  TEMPLATE_ARGS:
+  APP_VARS:
 
 jobs:
-  bastille-template:
+  run-install:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Run Bastille in FreeBSD VM
+      - name: Run install script in FreeBSD VM
         uses: vmactions/freebsd-vm@v1
         with:
           usesh: true
-          envs: 'APP TEMPLATE_ARGS'
-          prepare: |
-            pkg install -y bastille
+          envs: 'APP APP_VARS'
           run: |
             set -e
 
-            jail="app-${APP}"
-            release="$(freebsd-version -r | sed -E 's/-p[0-9]+$//')"
-            ifconfig
-            # Run bastille setup
-            bastille setup
+            script="${APP}/${APP}-install.sh"
 
-            echo "=== Bootstrapping FreeBSD ${release} ==="
-            bastille bootstrap "${release}"
+            if [ ! -f "${script}" ]; then
+              echo "[ERROR]: ${script} not found."
+              exit 1
+            fi
+            chmod +x "${script}"
 
-            echo "=== Creating jail: ${jail} ==="
-            bastille create "${jail}" "${release}" 10.0.0.2
+            if [ -n "${APP_VARS}" ]; then
+              echo "=== Setting required variables ==="
+              echo "${APP_VARS}" | while IFS= read -r line || [ -n "${line}" ]; do
+                case "${line}" in
+                  ''|'#'*) continue ;;
+                esac
+                echo "  ${line}"
+                sysrc -f "${script}" "${line}"
+              done
+            fi
 
-            echo "=== Staging bsd-apps repo into Bastille templates ==="
-            mkdir -p /usr/local/bastille/templates
-            cp -r "${GITHUB_WORKSPACE}" /usr/local/bastille/templates/bsd-apps
-
-            echo "=== Applying template bsd-apps/${APP} ==="
-            # TEMPLATE_ARGS is eval'd so quoted values with spaces work.
-            eval bastille template "${jail}" "bsd-apps/${APP}" ${TEMPLATE_ARGS}
-
-            echo "=== Done ==="
-            bastille list
+            echo "=== Running $script ==="
+            "./${script}"
