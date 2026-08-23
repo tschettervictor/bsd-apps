@@ -7,7 +7,7 @@ DB_NAME="guacamole"
 DB_USER="guacamole"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
-MARIADB_VERSION="106"
+MARIADB_VERSION="123"
 
 # Check for Root Privileges
 if ! [ "$(id -u)" = 0 ]; then
