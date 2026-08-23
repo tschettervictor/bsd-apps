@@ -1,5 +1,4 @@
-![ShellCheck](https://github.com/tschettervictor/bsd-apps/actions/workflows/shellcheck.yml/badge.svg)
-
+![shellcheck](https://github.com/tschettervictor/bsd-apps/actions/workflows/shellcheck.yml/badge.svg)
 # bsd-apps
 
 Collection of scripts to install popular applications inside FreeBSD jails, or FreeBSD host system.
@@ -134,7 +133,7 @@ bastille template jailname bsd-apps/nextcloud \
 ## App Status
 
 Monthly runs are conducted via Github Actions, so
-the status for each app below shouldnbe fairly recent.
+the status for each app below is fairly recent.
 
 Runs are also conducted for wach app anytime there is
 a PR or commit to master.
