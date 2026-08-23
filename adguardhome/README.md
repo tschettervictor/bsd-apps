@@ -1,7 +1,6 @@
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/adguardhome.yml/badge.svg)
 # AdGuard Home
 https://adguard.com
-
-![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/adguardhome.yml/badge.svg)
 
 ### Command to fetch script
 ```

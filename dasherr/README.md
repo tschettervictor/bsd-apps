@@ -1,7 +1,6 @@
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/dasherr.yml/badge.svg)
 # Dasherr Dashboard
 https://github.com/erohtar/Dasherr
-
-![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/dasherr.yml/badge.svg)
 
 ### Command to fetch script
 ```

@@ -1,7 +1,6 @@
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/filebrowser-quantum.yml/badge.svg)
 # FileBrowser Quantum
 https://filebrowserquantum.com
-
-![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/filebrowser-quantum.yml/badge.svg)
 
 ### Command to fetch script
 ```
