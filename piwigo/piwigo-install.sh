@@ -23,12 +23,11 @@ if [ "$(ls -A /var/db/mysql/"${DB_NAME}" 2>/dev/null)" ]; then
 	REINSTALL="true"
 fi
 
-# Package installation
+# Package installation (missing imagemagick7)
 pkg install -y \
 bzip2 \
 caddy \
 ffmpeg \
-#imagemagick7 \
 mariadb${MARIADB_VERSION}-client \
 mariadb${MARIADB_VERSION}-server \
 mediainfo \
