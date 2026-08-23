@@ -137,14 +137,18 @@ bastille template jailname bsd-apps/nextcloud \
 |-----|--------|
 | adguardhome | ![adguardhome](https://github.com/tschettervictor/bsd-apps/actions/workflows/adguardhome.yml/badge.svg) |
 | caddy | ![caddy](https://github.com/tschettervictor/bsd-apps/actions/workflows/caddy.yml/badge.svg) |
+| crafty | ![crafty](https://github.com/tschettervictor/bsd-apps/actions/workflows/crafty.yml/badge.svg) |
 | dasherr | ![dasherr](https://github.com/tschettervictor/bsd-apps/actions/workflows/dasherr.yml/badge.svg) |
 | database | ![database](https://github.com/tschettervictor/bsd-apps/actions/workflows/database.yml/badge.svg) |
+| filebrowser | ![filebrowser](https://github.com/tschettervictor/bsd-apps/actions/workflows/filebrowser.yml/badge.svg) |
+| filebrowser-quantum | ![filebrowser-quantum](https://github.com/tschettervictor/bsd-apps/actions/workflows/filebrowser-quantum.yml/badge.svg) |
 | grafana | ![grafana](https://github.com/tschettervictor/bsd-apps/actions/workflows/grafana.yml/badge.svg) |
 | graylog | ![graylog](https://github.com/tschettervictor/bsd-apps/actions/workflows/graylog.yml/badge.svg) |
 | guacamole | ![guacamole](https://github.com/tschettervictor/bsd-apps/actions/workflows/guacamole.yml/badge.svg) |
 | heimdall | ![heimdall](https://github.com/tschettervictor/bsd-apps/actions/workflows/heimdall.yml/badge.svg) |
 | homeassistant | ![homeassistant](https://github.com/tschettervictor/bsd-apps/actions/workflows/homeassistant.yml/badge.svg) |
 | icecast | ![icecast](https://github.com/tschettervictor/bsd-apps/actions/workflows/icecast.yml/badge.svg) |
+| immich | ![immich](https://github.com/tschettervictor/bsd-apps/actions/workflows/immich.yml/badge.svg) |
 | jellyfin | ![jellyfin](https://github.com/tschettervictor/bsd-apps/actions/workflows/jellyfin.yml/badge.svg) |
 | lychee | ![lychee](https://github.com/tschettervictor/bsd-apps/actions/workflows/lychee.yml/badge.svg) |
 | mediamtx | ![mediamtx](https://github.com/tschettervictor/bsd-apps/actions/workflows/mediamtx.yml/badge.svg) |
