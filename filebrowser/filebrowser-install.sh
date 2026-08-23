@@ -40,3 +40,4 @@ if [ "${REINSTALL}" = "true" ]; then
  	echo "Please user your old credentials to log in."
 	echo "---------------"
 fi
+exit
