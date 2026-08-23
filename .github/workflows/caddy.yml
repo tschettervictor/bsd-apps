@@ -46,6 +46,7 @@ jobs:
                 case "${line}" in
                   ''|'#'*) continue ;;
                 esac
+                echo "=== Setting var: ${line} ==="
                 sed -i '' "s|^${var}=.*|${line}|" "${script}"
               done
             fi
