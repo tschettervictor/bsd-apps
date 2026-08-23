@@ -1,6 +1,8 @@
 # FileBrowser
 https://github.com/filebrowser/filebrowser
 
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/filebrowser.yml/badge.svg)
+
 ### Command to fetch script
 ```
 fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/filebrowser/filebrowser-install.sh

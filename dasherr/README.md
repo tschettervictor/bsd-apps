@@ -1,6 +1,8 @@
 # Dasherr Dashboard
 https://github.com/erohtar/Dasherr
 
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/dasherr.yml/badge.svg)
+
 ### Command to fetch script
 ```
 fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/dasherr/dasherr-install.sh

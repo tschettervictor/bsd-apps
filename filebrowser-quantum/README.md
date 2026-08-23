@@ -1,6 +1,8 @@
 # FileBrowser Quantum
 https://filebrowserquantum.com
 
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/filebrowser-quantum.yml/badge.svg)
+
 ### Command to fetch script
 ```
 fetch https://raw.githubusercontent.com/tschettervictor/bsd-apps/main/filebrowser-quantum/filebrowser-quantum-install.sh
