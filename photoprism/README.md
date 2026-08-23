@@ -1,3 +1,4 @@
+![photoprism](https://github.com/tschettervictor/bsd-apps/actions/workflows/photoprism.yml/badge.svg)
 # Photoprism
 https://photoprism.com
 

@@ -1,3 +1,4 @@
+![minio](https://github.com/tschettervictor/bsd-apps/actions/workflows/minio.yml/badge.svg)
 # Minio
 https://min.io
 

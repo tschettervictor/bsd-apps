@@ -1,3 +1,4 @@
+![tinyice](https://github.com/tschettervictor/bsd-apps/actions/workflows/tinyice.yml/badge.svg)
 # TinyIce Streaming Server
 https://github.com/DatanoiseTV/tinyice
 

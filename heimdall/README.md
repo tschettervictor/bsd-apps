@@ -1,3 +1,4 @@
+![heimdall](https://github.com/tschettervictor/bsd-apps/actions/workflows/heimdall.yml/badge.svg)
 # Heimdall Dashboard
 https://github.com/linuxserver/heimdall
 

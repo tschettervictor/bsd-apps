@@ -1,3 +1,4 @@
+![meshcentral](https://github.com/tschettervictor/bsd-apps/actions/workflows/meshcentral.yml/badge.svg)
 # MeshCentral Management Server
 https://meshcentral.com/
 

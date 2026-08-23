@@ -1,4 +1,4 @@
-![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/dasherr.yml/badge.svg)
+![dasherr](https://github.com/tschettervictor/bsd-apps/actions/workflows/dasherr.yml/badge.svg)
 # Dasherr Dashboard
 https://github.com/erohtar/Dasherr
 

@@ -1,4 +1,4 @@
-![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/filebrowser.yml/badge.svg)
+![filebrowser](https://github.com/tschettervictor/bsd-apps/actions/workflows/filebrowser.yml/badge.svg)
 # FileBrowser
 https://github.com/filebrowser/filebrowser
 

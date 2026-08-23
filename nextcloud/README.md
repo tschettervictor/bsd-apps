@@ -1,3 +1,4 @@
+![nextcloud](https://github.com/tschettervictor/bsd-apps/actions/workflows/nextcloud.yml/badge.svg)
 # Nextcloud
 https://nextcloud.com
 

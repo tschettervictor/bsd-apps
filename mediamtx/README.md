@@ -1,3 +1,4 @@
+![mediamtx](https://github.com/tschettervictor/bsd-apps/actions/workflows/mediamtx.yml/badge.svg)
 # MediaMTX Streaming Service
 https://github.com/bluenviron/mediamtx
 

@@ -131,3 +131,42 @@ bastille template jailname bsd-apps/nextcloud \
   --arg SELFSIGNED_CERT=1
 ```
 
+## App Status
+
+| App | Status |
+|-----|--------|
+| adguardhome | ![adguardhome](https://github.com/tschettervictor/bsd-apps/actions/workflows/adguardhome.yml/badge.svg) |
+| caddy | ![caddy](https://github.com/tschettervictor/bsd-apps/actions/workflows/caddy.yml/badge.svg) |
+| dasherr | ![dasherr](https://github.com/tschettervictor/bsd-apps/actions/workflows/dasherr.yml/badge.svg) |
+| database | ![database](https://github.com/tschettervictor/bsd-apps/actions/workflows/database.yml/badge.svg) |
+| grafana | ![grafana](https://github.com/tschettervictor/bsd-apps/actions/workflows/grafana.yml/badge.svg) |
+| graylog | ![graylog](https://github.com/tschettervictor/bsd-apps/actions/workflows/graylog.yml/badge.svg) |
+| guacamole | ![guacamole](https://github.com/tschettervictor/bsd-apps/actions/workflows/guacamole.yml/badge.svg) |
+| heimdall | ![heimdall](https://github.com/tschettervictor/bsd-apps/actions/workflows/heimdall.yml/badge.svg) |
+| homeassistant | ![homeassistant](https://github.com/tschettervictor/bsd-apps/actions/workflows/homeassistant.yml/badge.svg) |
+| icecast | ![icecast](https://github.com/tschettervictor/bsd-apps/actions/workflows/icecast.yml/badge.svg) |
+| jellyfin | ![jellyfin](https://github.com/tschettervictor/bsd-apps/actions/workflows/jellyfin.yml/badge.svg) |
+| lychee | ![lychee](https://github.com/tschettervictor/bsd-apps/actions/workflows/lychee.yml/badge.svg) |
+| mediamtx | ![mediamtx](https://github.com/tschettervictor/bsd-apps/actions/workflows/mediamtx.yml/badge.svg) |
+| meshcentral | ![meshcentral](https://github.com/tschettervictor/bsd-apps/actions/workflows/meshcentral.yml/badge.svg) |
+| mineos | ![mineos](https://github.com/tschettervictor/bsd-apps/actions/workflows/mineos.yml/badge.svg) |
+| minio | ![minio](https://github.com/tschettervictor/bsd-apps/actions/workflows/minio.yml/badge.svg) |
+| navidrome | ![navidrome](https://github.com/tschettervictor/bsd-apps/actions/workflows/navidrome.yml/badge.svg) |
+| nextcloud | ![nextcloud](https://github.com/tschettervictor/bsd-apps/actions/workflows/nextcloud.yml/badge.svg) |
+| onlyoffice | ![onlyoffice](https://github.com/tschettervictor/bsd-apps/actions/workflows/onlyoffice.yml/badge.svg) |
+| photoprism | ![photoprism](https://github.com/tschettervictor/bsd-apps/actions/workflows/photoprism.yml/badge.svg) |
+| piwigo | ![piwigo](https://github.com/tschettervictor/bsd-apps/actions/workflows/piwigo.yml/badge.svg) |
+| plex | ![plex](https://github.com/tschettervictor/bsd-apps/actions/workflows/plex.yml/badge.svg) |
+| prometheus | ![prometheus](https://github.com/tschettervictor/bsd-apps/actions/workflows/prometheus.yml/badge.svg) |
+| rustdesk-server | ![rustdesk-server](https://github.com/tschettervictor/bsd-apps/actions/workflows/rustdesk-server.yml/badge.svg) |
+| sabnzbd | ![sabnzbd](https://github.com/tschettervictor/bsd-apps/actions/workflows/sabnzbd.yml/badge.svg) |
+| slskd | ![slskd](https://github.com/tschettervictor/bsd-apps/actions/workflows/slskd.yml/badge.svg) |
+| sonarr | ![sonarr](https://github.com/tschettervictor/bsd-apps/actions/workflows/sonarr.yml/badge.svg) |
+| tautulli | ![tautulli](https://github.com/tschettervictor/bsd-apps/actions/workflows/tautulli.yml/badge.svg) |
+| tinyice | ![tinyice](https://github.com/tschettervictor/bsd-apps/actions/workflows/tinyice.yml/badge.svg) |
+| unifi | ![unifi](https://github.com/tschettervictor/bsd-apps/actions/workflows/unifi.yml/badge.svg) |
+| uptime-kuma | ![uptime-kuma](https://github.com/tschettervictor/bsd-apps/actions/workflows/uptime-kuma.yml/badge.svg) |
+| vaultwarden | ![vaultwarden](https://github.com/tschettervictor/bsd-apps/actions/workflows/vaultwarden.yml/badge.svg) |
+| wordpress | ![wordpress](https://github.com/tschettervictor/bsd-apps/actions/workflows/wordpress.yml/badge.svg) |
+| zenphoto | ![zenphoto](https://github.com/tschettervictor/bsd-apps/actions/workflows/zenphoto.yml/badge.svg) |
+| zoneminder | ![zoneminder](https://github.com/tschettervictor/bsd-apps/actions/workflows/zoneminder.yml/badge.svg) |

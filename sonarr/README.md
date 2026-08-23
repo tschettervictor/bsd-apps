@@ -1,3 +1,4 @@
+![sonarr](https://github.com/tschettervictor/bsd-apps/actions/workflows/sonarr.yml/badge.svg)
 # Sonarr
 https://sonarr.tv
 

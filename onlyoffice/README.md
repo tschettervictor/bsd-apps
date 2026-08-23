@@ -1,3 +1,4 @@
+![onlyoffice](https://github.com/tschettervictor/bsd-apps/actions/workflows/onlyoffice.yml/badge.svg)
 # OnlyOffice Document Server
 https://onlyoffice.com
 

@@ -1,3 +1,4 @@
+![lychee](https://github.com/tschettervictor/bsd-apps/actions/workflows/lychee.yml/badge.svg)
 # Lychee Photo Gallery
 https://github.com/LycheeOrg/Lychee
 

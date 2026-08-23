@@ -1,3 +1,4 @@
+![icecast](https://github.com/tschettervictor/bsd-apps/actions/workflows/icecast.yml/badge.svg)
 # Icecast Server
 https://icecast.org
 

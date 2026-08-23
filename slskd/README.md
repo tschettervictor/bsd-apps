@@ -1,3 +1,4 @@
+![slskd](https://github.com/tschettervictor/bsd-apps/actions/workflows/slskd.yml/badge.svg)
 # SLSKD Soulseek Client
 https://github.com/slskd/slskd
 

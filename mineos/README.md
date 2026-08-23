@@ -1,3 +1,4 @@
+![mineos](https://github.com/tschettervictor/bsd-apps/actions/workflows/mineos.yml/badge.svg)
 # MineOS Minecraft Server Management
 https://wiki.codeemo.com
 

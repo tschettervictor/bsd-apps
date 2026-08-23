@@ -1,3 +1,4 @@
+![wordpress](https://github.com/tschettervictor/bsd-apps/actions/workflows/wordpress.yml/badge.svg)
 # Wordpress
 https://wordpress.org
 

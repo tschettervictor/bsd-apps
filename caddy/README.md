@@ -1,4 +1,4 @@
-![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/caddy.yml/badge.svg)
+![caddy](https://github.com/tschettervictor/bsd-apps/actions/workflows/caddy.yml/badge.svg)
 # Caddy
 https://caddyserver.com
 

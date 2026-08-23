@@ -1,3 +1,4 @@
+![zoneminder](https://github.com/tschettervictor/bsd-apps/actions/workflows/zoneminder.yml/badge.svg)
 # Zoneminder Video Monitoring
 https://zoneminder.com
 

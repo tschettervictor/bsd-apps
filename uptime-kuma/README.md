@@ -1,3 +1,4 @@
+![uptime-kuma](https://github.com/tschettervictor/bsd-apps/actions/workflows/uptime-kuma.yml/badge.svg)
 # Uptime-Kuma Monitoring Server
 https://github.com/louislam/uptime-kuma
 

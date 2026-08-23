@@ -1,4 +1,5 @@
-# MYSQL/MariaDB/PostgreSQL Database
+![database](https://github.com/tschettervictor/bsd-apps/actions/workflows/database.yml/badge.svg)
+#MYSQL/MariaDB/PostgreSQL Database
 
 ### Command to fetch script
 ```

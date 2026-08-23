@@ -1,4 +1,4 @@
-![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/filebrowser-quantum.yml/badge.svg)
+![filebrowser-quantum](https://github.com/tschettervictor/bsd-apps/actions/workflows/filebrowser-quantum.yml/badge.svg)
 # FileBrowser Quantum
 https://filebrowserquantum.com
 

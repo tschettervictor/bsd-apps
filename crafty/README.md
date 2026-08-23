@@ -1,4 +1,4 @@
-![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/crafty.yml/badge.svg)
+![crafty](https://github.com/tschettervictor/bsd-apps/actions/workflows/crafty.yml/badge.svg)
 # Crafty Controller
 https://craftycontroller.com
 

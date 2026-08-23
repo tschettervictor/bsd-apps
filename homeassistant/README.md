@@ -1,3 +1,4 @@
+![homeassistant](https://github.com/tschettervictor/bsd-apps/actions/workflows/homeassistant.yml/badge.svg)
 # Homeassistant
 https://home-assistant.io
 

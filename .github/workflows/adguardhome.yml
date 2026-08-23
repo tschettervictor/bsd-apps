@@ -9,7 +9,8 @@ on:
   pull_request:
     paths:
       - 'adguardhome/**'
-
+  schedule:
+    - cron: '0 0 1 * *'
 env:
   APP: "${{ github.workflow }}"
   APP_VARS:

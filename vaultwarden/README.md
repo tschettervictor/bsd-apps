@@ -1,3 +1,4 @@
+![vaultwarden](https://github.com/tschettervictor/bsd-apps/actions/workflows/vaultwarden.yml/badge.svg)
 # Vaultwarden
 https://github.com/dani-garcia/vaultwarden
 

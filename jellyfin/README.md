@@ -1,3 +1,4 @@
+![jellyfin](https://github.com/tschettervictor/bsd-apps/actions/workflows/jellyfin.yml/badge.svg)
 # Jellyfin
 https://jellyfin.org
 

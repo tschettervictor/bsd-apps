@@ -1,3 +1,4 @@
+![sabnzbd](https://github.com/tschettervictor/bsd-apps/actions/workflows/sabnzbd.yml/badge.svg)
 # SABnzbd
 https://sabnzbd.org
 

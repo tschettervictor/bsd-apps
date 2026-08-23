@@ -1,3 +1,4 @@
+![piwigo](https://github.com/tschettervictor/bsd-apps/actions/workflows/piwigo.yml/badge.svg)
 # Piwigo Photo Gallery
 https://piwigo.org
 

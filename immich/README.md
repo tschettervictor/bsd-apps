@@ -1,3 +1,4 @@
+![immich](https://github.com/tschettervictor/bsd-apps/actions/workflows/immich.yml/badge.svg)
 # Immich
 https://immich.app
 

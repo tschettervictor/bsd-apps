@@ -9,6 +9,8 @@ on:
   pull_request:
     paths:
       - 'crafty/**'
+  schedule:
+    - cron: '0 0 1 * *'
 
 env:
   APP: "${{ github.workflow }}"

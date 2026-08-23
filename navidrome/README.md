@@ -1,3 +1,4 @@
+![navidrome](https://github.com/tschettervictor/bsd-apps/actions/workflows/navidrome.yml/badge.svg)
 # Navidrome
 https://www.navidrome.org
 

@@ -1,3 +1,4 @@
+![rustdesk-server](https://github.com/tschettervictor/bsd-apps/actions/workflows/rustdesk-server.yml/badge.svg)
 # Self Hosted Rustdesk Server
 https://rustdesk.com/
 

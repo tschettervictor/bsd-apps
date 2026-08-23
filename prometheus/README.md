@@ -1,3 +1,4 @@
+![prometheus](https://github.com/tschettervictor/bsd-apps/actions/workflows/prometheus.yml/badge.svg)
 # Prometheus
 https://prometheus.io
 

@@ -1,3 +1,4 @@
+![plex](https://github.com/tschettervictor/bsd-apps/actions/workflows/plex.yml/badge.svg)
 # Plex Media Server
 https://plex.tv
 

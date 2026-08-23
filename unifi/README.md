@@ -1,3 +1,4 @@
+![unifi](https://github.com/tschettervictor/bsd-apps/actions/workflows/unifi.yml/badge.svg)
 # Unifi Controller
 https://ui.com
 

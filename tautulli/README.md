@@ -1,3 +1,4 @@
+![tautulli](https://github.com/tschettervictor/bsd-apps/actions/workflows/tautulli.yml/badge.svg)
 # Tautulli
 https://tautulli.com
 

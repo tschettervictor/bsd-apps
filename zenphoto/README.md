@@ -1,3 +1,4 @@
+![zenphoto](https://github.com/tschettervictor/bsd-apps/actions/workflows/zenphoto.yml/badge.svg)
 # Zenphoto
 https://zenphoto.com
 

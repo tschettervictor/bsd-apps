@@ -1,4 +1,4 @@
-![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/guacamole.yml/badge.svg)
+![guacamole](https://github.com/tschettervictor/bsd-apps/actions/workflows/guacamole.yml/badge.svg)
 # Apache Guacamole
 https://guacamole.apache.org
 
