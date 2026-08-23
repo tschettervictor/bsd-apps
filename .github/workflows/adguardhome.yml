@@ -1,0 +1,48 @@
+name: adguardhome
+
+on:
+  workflow_dispatch:
+
+env:
+  APP: adguardhome
+  TEMPLATE_ARGS:
+
+jobs:
+  bastille-template:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run Bastille in FreeBSD VM
+        uses: vmactions/freebsd-vm@v1
+        with:
+          usesh: true
+          envs: 'APP TEMPLATE_ARGS'
+          prepare: |
+            pkg install -y bastille
+          run: |
+            set -e
+
+            jail="app-${APP}"
+            release="$(freebsd-version -r | sed -E 's/-p[0-9]+$//')"
+ifconfig
+            # Run bastille setup
+            bastille setup
+
+            echo "=== Bootstrapping FreeBSD ${release} ==="
+            bastille bootstrap "${release}"
+
+            echo "=== Creating jail: ${jail} ==="
+            bastille create "${jail}" "${release}" 10.0.0.2
+
+            echo "=== Staging bsd-apps repo into Bastille templates ==="
+            mkdir -p /usr/local/bastille/templates
+            cp -r "${GITHUB_WORKSPACE}" /usr/local/bastille/templates/bsd-apps
+
+            echo "=== Applying template bsd-apps/${APP} ==="
+            # TEMPLATE_ARGS is eval'd so quoted values with spaces work.
+            eval bastille template "${jail}" "bsd-apps/${APP}" ${TEMPLATE_ARGS}
+
+            echo "=== Done ==="
+            bastille list
