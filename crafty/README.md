@@ -1,7 +1,7 @@
 # Crafty Controller
 https://craftycontroller.com
 
-![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/adguardhome.yml/badge.svg)
+![CI](https://github.com/tschettervictor/bsd-apps/actions/workflows/crafty.yml/badge.svg)
 
 ### Command to fetch script
 ```
