@@ -1,0 +1,7 @@
+# bsd-apps/adguardhome
+
+ARG+ APP_NAME="adguardhome"
+
+CP ${APP_NAME}-install.sh /tmp
+CMD chmod +x /tmp/${APP_NAME}-install.sh
+CMD /tmp/${APP_NAME}-install.sh
