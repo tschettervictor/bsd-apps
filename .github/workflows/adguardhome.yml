@@ -26,7 +26,7 @@ jobs:
 
             jail="app-${APP}"
             release="$(freebsd-version -r | sed -E 's/-p[0-9]+$//')"
-ifconfig
+            ifconfig
             # Run bastille setup
             bastille setup
 
