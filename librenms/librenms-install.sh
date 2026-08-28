@@ -31,8 +31,8 @@ mariadb"${MARIADB_VERSION}"-server
 
 # Directories
 mkdir -p /var/db/mysql
-mkdir -p /var/db/librenms/rrd
 chown -R 88:88 /var/db/mysql
+mkdir -p /var/db/librenms/rrd
 chown -R www:www /var/db/librenms
 chmod 775 /var/db/librenms/rrd
 
@@ -43,7 +43,7 @@ if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but database passwords will still be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-  	sed -i '' -e "s|.*DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|g" /usr/local/www/librenms/.env
+  	sed -i '' "s|.*DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|g" /usr/local/www/librenms/.env
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/librenms/includes/my.cnf
   	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
@@ -66,11 +66,11 @@ fi
 # PHP
 sysrc php_fpm_enable="YES"
 cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
-sed -i '' "s/^;date.timezone.*/date.timezone = ${TIME_ZONE}" /usr/local/etc/php.ini
-sed -i '' "s/^;?listen = .*/listen = 127.0.0.1:9000/" /usr/local/etc/php-fpm.d/www.conf
-sed -i '' "s/^;?listen.owner = .*/listen.owner = www/" /usr/local/etc/php-fpm.d/www.conf
-sed -i '' "s/^;?listen.group = .*/listen.group = www/" /usr/local/etc/php-fpm.d/www.conf
-sed -i '' "s/^;?listen.mode = .*/listen.mode = 0660/" /usr/local/etc/php-fpm.d/www.conf
+sed -i '' "s/^.*date.timezone.*/date.timezone = ${TIME_ZONE}" /usr/local/etc/php.ini
+sed -i '' "s/^.*listen = .*/listen = 127.0.0.1:9000/" /usr/local/etc/php-fpm.d/www.conf
+sed -i '' "s/^.*listen.owner = .*/listen.owner = www/" /usr/local/etc/php-fpm.d/www.conf
+sed -i '' "s/^.*listen.group = .*/listen.group = www/" /usr/local/etc/php-fpm.d/www.conf
+sed -i '' "s/^.*listen.mode = .*/listen.mode = 0660/" /usr/local/etc/php-fpm.d/www.conf
 service php_fpm start
 
 # Caddy

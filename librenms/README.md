@@ -1,5 +1,5 @@
-![guacamole](https://github.com/tschettervictor/bsd-apps/actions/workflows/librenms.yml/badge.svg)
-# Apache Guacamole
+![librenms](https://github.com/tschettervictor/bsd-apps/actions/workflows/librenms.yml/badge.svg)
+# LibreNMS
 https://www.librenms.org
 
 ### Command to fetch script
