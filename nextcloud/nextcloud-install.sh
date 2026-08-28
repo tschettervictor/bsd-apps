@@ -290,8 +290,8 @@ else
 	elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
 	  	fetch -o /root/.pgpass https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/nextcloud/includes/pgpass
 	  	chmod 600 /root/.pgpass
-    	  	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
-    		mkdir /var/db/postgres
+      	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
+    	mkdir /var/db/postgres
 	  	chown postgres /var/db/postgres
 	  	service postgresql initdb
 	  	service postgresql start

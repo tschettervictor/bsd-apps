@@ -1,0 +1,4 @@
+# MySQL client config file
+[mysqld]
+innodb_file_per_table=1
+lower_case_table_names=0
