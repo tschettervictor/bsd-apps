@@ -97,6 +97,7 @@ else
     sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/.env
     sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
     sed -i '' "s|^DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/librenms/.env
+    sed -i '' "s|^SESSION_SECURE_COOKIE=.*|SESSION_SECURE_COOKIE=false|" /usr/local/www/librenms/.env
     chmod 600 /usr/local/www/librenms/.env
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
     su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
