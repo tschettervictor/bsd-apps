@@ -88,6 +88,7 @@ sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/.en
 sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
 sed -i '' "s|^DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/librenms/.env
 echo "INSTALL=true" >> /usr/local/www/librenms/.env
+chown -R www:www /usr/local/www/librenms
 su -m www -c 'cd /usr/local/www/librenms && php artisan key:generate'
 chmod 600 /usr/local/www/librenms/.env
 su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'

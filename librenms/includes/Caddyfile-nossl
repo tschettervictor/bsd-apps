@@ -2,4 +2,5 @@
   root * /usr/local/www/librenms/html
   file_server
   php_fastcgi 127.0.0.1:9000
+  rewrite /api/v0* /api_v0.php?{uri}
 }
