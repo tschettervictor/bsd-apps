@@ -86,9 +86,13 @@ service caddy start
 # LibreNMS Setup
 if [ "${REINSTALL}" = "true" ]; then
     sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
+    su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
+    su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
+    service librenms restart
 else
     cp /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.php
     cp /usr/local/www/librenms/.env.example /usr/local/www/librenms/.env
+    chown -R www:www /usr/local/www/librenms
     sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/.env
     sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/.env
     sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
@@ -103,11 +107,11 @@ else
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
     su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
     su -m www -c "cd /usr/local/www/librenms && lnms user:add -n --password=${ADMIN_PASSWORD} --role=admin -- admin"
+    su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
+    su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
+    sysrc librenms_enable="YES"
+    service librenms start
 fi
-su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
-su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
-sysrc librenms_enable="YES"
-service librenms start
 
 # Save Passwords
 echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt

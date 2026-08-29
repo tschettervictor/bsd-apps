@@ -155,6 +155,7 @@ a PR or commit to master.
 | icecast | ![icecast](https://github.com/tschettervictor/bsd-apps/actions/workflows/icecast.yml/badge.svg) |
 | immich | ![immich](https://github.com/tschettervictor/bsd-apps/actions/workflows/immich.yml/badge.svg) |
 | jellyfin | ![jellyfin](https://github.com/tschettervictor/bsd-apps/actions/workflows/jellyfin.yml/badge.svg) |
+| librenms | ![lychee](https://github.com/tschettervictor/bsd-apps/actions/workflows/librenms.yml/badge.svg) |
 | lychee | ![lychee](https://github.com/tschettervictor/bsd-apps/actions/workflows/lychee.yml/badge.svg) |
 | mediamtx | ![mediamtx](https://github.com/tschettervictor/bsd-apps/actions/workflows/mediamtx.yml/badge.svg) |
 | meshcentral | ![meshcentral](https://github.com/tschettervictor/bsd-apps/actions/workflows/meshcentral.yml/badge.svg) |
