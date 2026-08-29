@@ -2,13 +2,14 @@
 # Install LibreNMS
 
 APP_NAME="LibreNMS"
+ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_TYPE="MariaDB"
 DB_NAME="librenms"
 DB_USER="librenms"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
 MARIADB_VERSION="123"
-TIME_ZONE="America/Edmonton"
+TIME_ZONE=""
 
 # Check for Root Privileges
 if ! [ "$(id -u)" = 0 ]; then
@@ -64,11 +65,12 @@ else
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/librenms/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 fi
+service mysql-server restart
 
 # PHP
 sysrc php_fpm_enable="YES"
 cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
-sed -i '' "s|^.*date.timezone.*|date.timezone = ${TIME_ZONE}|" /usr/local/etc/php.ini
+sed -i '' "s|^.*date.timezone = .*|date.timezone = ${TIME_ZONE}|" /usr/local/etc/php.ini
 sed -i '' "s|^.*listen = .*|listen = 127.0.0.1:9000|" /usr/local/etc/php-fpm.d/www.conf
 sed -i '' "s|^.*listen.owner = .*|listen.owner = www|" /usr/local/etc/php-fpm.d/www.conf
 sed -i '' "s|^.*listen.group = .*|listen.group = www|" /usr/local/etc/php-fpm.d/www.conf
@@ -82,16 +84,26 @@ sysrc caddy_config=/usr/local/www/Caddyfile
 service caddy start
 
 # LibreNMS Setup
-cp /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.php
-cp /usr/local/www/librenms/.env.example /usr/local/www/librenms/.env
-sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/.env
-sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/.env
-sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
-sed -i '' "s|^DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/librenms/.env
-echo "INSTALL=true" >> /usr/local/www/librenms/.env
-chown -R www:www /usr/local/www/librenms
-su -m www -c 'cd /usr/local/www/librenms && php artisan key:generate'
-chmod 600 /usr/local/www/librenms/.env
+if [ "${REINSTALL}" = "true" ]; then
+    sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
+else
+    cp /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.php
+    cp /usr/local/www/librenms/.env.example /usr/local/www/librenms/.env
+    sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/.env
+    sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/.env
+    sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
+    sed -i '' "s|^DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/librenms/.env
+    chmod 600 /usr/local/www/librenms/.env
+    su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
+    su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
+    su -m www -c 'cd /usr/local/www/librenms && php artisan -n key:generate --force'
+    su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
+    su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
+    su -m www -c 'cd /usr/local/www/librenms && lnms migrate -n --force --seed'
+    su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
+    su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
+    su -m www -c "cd /usr/local/www/librenms && lnms user:add -n --password=${ADMIN_PASSWORD} --role=admin -- admin"
+fi
 su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
 su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
 sysrc librenms_enable="YES"
@@ -100,12 +112,12 @@ service librenms start
 # Save Passwords
 echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt
 echo "${APP_NAME} database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}-Info.txt
-echo "${APP_NAME} default username and password are both guacadmin." >> /root/${APP_NAME}-Info.txt
+echo "${APP_NAME} username is admin and password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}-Info.txt
 
 # Done
 echo "---------------"
 echo "Installation complete."
-echo "${APP_NAME} is running on port 8080."
+echo "${APP_NAME} is running on port 80."
 echo "---------------"
 echo "Database Information"
 echo "$DB_TYPE Username: root"
@@ -118,9 +130,9 @@ if [ "${REINSTALL}" = "true" ]; then
  	echo "Please user your old credentials to log in."
 	echo "---------------"
 else
-	echo "Please visit http://IP/install to start setup."
-    echo "You MUST REMOVE 'INSTALL=true' from"
-    echo "/usr/local/www/librenms/.env when setup is complete."
+	echo "User Information"
+	echo "Default ${APP_NAME} user is admin"
+	echo "Default ${APP_NAME} password is ${ADMIN_PASSWORD}"
 	echo "---------------"
 fi
 echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
