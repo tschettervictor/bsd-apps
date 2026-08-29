@@ -66,11 +66,11 @@ fi
 # PHP
 sysrc php_fpm_enable="YES"
 cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
-sed -i '' "s/^.*date.timezone.*/date.timezone = ${TIME_ZONE}" /usr/local/etc/php.ini
-sed -i '' "s/^.*listen = .*/listen = 127.0.0.1:9000/" /usr/local/etc/php-fpm.d/www.conf
-sed -i '' "s/^.*listen.owner = .*/listen.owner = www/" /usr/local/etc/php-fpm.d/www.conf
-sed -i '' "s/^.*listen.group = .*/listen.group = www/" /usr/local/etc/php-fpm.d/www.conf
-sed -i '' "s/^.*listen.mode = .*/listen.mode = 0660/" /usr/local/etc/php-fpm.d/www.conf
+sed -i '' "s|^.*date.timezone.*|date.timezone = ${TIME_ZONE}|" /usr/local/etc/php.ini
+sed -i '' "s|^.*listen = .*|listen = 127.0.0.1:9000|" /usr/local/etc/php-fpm.d/www.conf
+sed -i '' "s|^.*listen.owner = .*|listen.owner = www|" /usr/local/etc/php-fpm.d/www.conf
+sed -i '' "s|^.*listen.group = .*|listen.group = www|" /usr/local/etc/php-fpm.d/www.conf
+sed -i '' "s|^.*listen.mode = .*|listen.mode = 0660|" /usr/local/etc/php-fpm.d/www.conf
 service php_fpm start
 
 # Caddy
@@ -85,6 +85,7 @@ cp /usr/local/www/librenms/.env.example /usr/local/www/librenms/.env
 sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/.env
 sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/.env
 sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
+sed -i '' "s|^DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/librenms/.env
 echo "INSTALL=true" >> /usr/local/www/librenms/.env
 sh -c 'cd /usr/local/www/librenms/html && php artisan key:generate'
 chmod 600 /usr/local/www/librenms/.env
