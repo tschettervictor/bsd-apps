@@ -8,6 +8,7 @@ DB_USER="librenms"
 DB_ROOT_PASSWORD=$(openssl rand -base64 15)
 DB_PASSWORD=$(openssl rand -base64 15)
 MARIADB_VERSION="123"
+TIME_ZONE="America/Edmonton"
 
 # Check for Root Privileges
 if ! [ "$(id -u)" = 0 ]; then
@@ -87,10 +88,10 @@ sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/.en
 sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
 sed -i '' "s|^DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/librenms/.env
 echo "INSTALL=true" >> /usr/local/www/librenms/.env
-sh -c 'cd /usr/local/www/librenms/html && php artisan key:generate'
+su -m www -c 'cd /usr/local/www/librenms && php artisan key:generate'
 chmod 600 /usr/local/www/librenms/.env
-sh -c 'cd /usr/local/www/html/ && lnms config:clear'
-sh -c 'cd /usr/local/www/html/ && lnms config:cache'
+su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
+su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
 sysrc librenms_enable="YES"
 service librenms start
 
@@ -116,7 +117,8 @@ if [ "${REINSTALL}" = "true" ]; then
 	echo "---------------"
 else
 	echo "Please visit http://IP/install to start setup."
-    echo "You MUST remove 'INSTALL=true' from /usr/local/www/librenms/.env when setup is complete."
+    echo "You MUST REMOVE 'INSTALL=true' from"
+    echo "/usr/local/www/librenms/.env when setup is complete."
 	echo "---------------"
 fi
 echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
