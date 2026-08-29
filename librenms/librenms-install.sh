@@ -28,7 +28,8 @@ pkg install -y \
 caddy \
 librenms \
 mariadb"${MARIADB_VERSION}"-client \
-mariadb"${MARIADB_VERSION}"-server
+mariadb"${MARIADB_VERSION}"-server \
+python3
 
 # Directories
 mkdir -p /var/db/mysql
@@ -39,6 +40,7 @@ chmod 775 /var/db/librenms/rrd
 
 # Database
 sysrc mysql_enable="YES"
+fetch -o /usr/local/etc/mysql/conf.d/librenms.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/librenms/includes/librenms.cnf
 service mysql-server start
 if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but database passwords will still be changed."
@@ -61,7 +63,6 @@ else
 	mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/librenms/includes/my.cnf
 	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
-    fetch -o /usr/local/etc/mysql/conf.d/librenms.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/librenms/includes/librenms.cnf
 fi
 
 # PHP
