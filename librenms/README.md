@@ -20,7 +20,9 @@ MARIADB_VERSION
 
 ## Mount points (should be mounted outside the jail)
 - `/var/db/mysql` - database directory
-- `/usr/local/www/librenms` - data directory
+- `/usr/local/www/librenms/.env` - env file
+- `/usr/local/www/librenms/config.php` - config file
+- `/var/db/librenms` - rrd/graphs directory
 
 ## Jail Properties
 - none
