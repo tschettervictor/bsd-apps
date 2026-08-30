@@ -179,8 +179,8 @@ else
     if [ "${NO_CERT}" -eq 1 ]; then
         sed -i '' "s|^SESSION_SECURE_COOKIE=.*|SESSION_SECURE_COOKIE=false|" /usr/local/librenms/.env
     else
-        echo "APP_URL=https://${HOSTNAME}" >> /usr/local/www/librenms/.env
-        echo "ASSET_URL=https://${HOSTNAME}" >> /usr/local/www/librenms/.env
+        sed -i '' "s|^.*APP_URL=.*|APP_URL=https://${HOST_NAME}|" /usr/local/www/librenms/.env
+        echo "ASSET_URL=https://${HOST_NAME}" >> /usr/local/www/librenms/.env
     fi
     chmod 600 /usr/local/www/librenms/.env
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
