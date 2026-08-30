@@ -184,6 +184,7 @@ else
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
     su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
     su -m www -c 'cd /usr/local/www/librenms && php artisan -n key:generate --force'
+    cp -f /usr/local/www/librenms/.env /usr/local/www/librenms/config.d/.env
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
     su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
     su -m www -c 'cd /usr/local/www/librenms && lnms migrate -n --force --seed'
