@@ -92,7 +92,9 @@ if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but database passwords will still be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-  	sed -i '' "s|.*DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|g" /usr/local/www/librenms/.env
+  	sed -i '' "s|.*DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|g" /usr/local/www/librenms/config.d/.env
+   cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
+   chown www:www /usr/local/www/librenms/.env
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/librenms/includes/my.cnf
   	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
@@ -169,14 +171,16 @@ sysrc librenms_enable="YES"
 if [ "${REINSTALL}" = "true" ]; then
     sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/config.d/.env
     cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
+    chown www:www /usr/local/www/librenms/.env
 else
     cp /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.d/config.php
     cp /usr/local/www/librenms/.env.example /usr/local/www/librenms/config.d/.env
     sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/config.d/.env
-    sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/config.d/env
-    sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/config.d/env
+    sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/config.d/.env
+    sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/config.d/.env
     sed -i '' "s|^DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/librenms/config.d/.env
     cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
+    chown www:www /usr/local/www/librenms/.env
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
     su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
     su -m www -c 'cd /usr/local/www/librenms && php artisan -n key:generate --force'
@@ -190,8 +194,8 @@ fi
 if [ "${NO_CERT}" -eq 1 ]; then
     sed -i '' "s|^SESSION_SECURE_COOKIE=.*|SESSION_SECURE_COOKIE=false|" /usr/local/www/librenms/.env
 else
-    sed -i '' "s|^.*APP_URL=.*|APP_URL=https://${HOST_NAME}|" /usr/local/www/librenms/.env
-    echo "ASSET_URL=https://${HOST_NAME}" >> /usr/local/www/librenms/.env
+    sed -i '' "s|^.*APP_URL=.*|APP_URL=https://${HOST_NAME}|" /usr/local/www/librenms/config.d/.env
+    echo "ASSET_URL=https://${HOST_NAME}" >> /usr/local/www/librenms/config.d/.env
 fi
 cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
 chown -R www:www /usr/local/www/librenms
