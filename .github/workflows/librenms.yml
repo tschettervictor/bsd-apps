@@ -15,7 +15,9 @@ on:
 env:
   APP: "${{ github.workflow }}"
   APP_VARS: |
+    HOST_NAME="app.local"
     TIME_ZONE="America/Edmonton"
+    SELFSIGNED_CERT=1
 
 jobs:
   run-install:

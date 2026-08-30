@@ -314,7 +314,7 @@ else
     			echo "Failed to install ${APP_NAME}, aborting"
     			exit 1
 		fi
-	su -m www -c "php /usr/local/www/nextcloud/occ config:system:set mysql.utf8mb4 --type boolean --value=\"true\""
+        su -m www -c "php /usr/local/www/nextcloud/occ config:system:set mysql.utf8mb4 --type boolean --value=\"true\""
 	elif [ "${DB_TYPE}" = "PostgreSQL" ]; then
   		if ! su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"pgsql\" --database-name=\"${DB_NAME}\" --database-user=\"${DB_USER}\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"127.0.0.1\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
   			then
@@ -336,7 +336,7 @@ else
 	su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set memcache.distributed --value="\OC\Memcache\Redis"'
 	su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set memcache.locking --value="\OC\Memcache\Redis"'
 	su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwritehost --value=\"${HOST_NAME}\""
-	if [ $NO_CERT -eq 1 ]; then
+	if [ "${NO_CERT}" -eq 1 ]; then
 		su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwrite.cli.url --value=\"http://${HOST_NAME}/\""
 		su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwriteprotocol --value=\"http\""
 	else
@@ -378,13 +378,15 @@ echo "--------------------"
 if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall."
 	echo "Please user your old credentials to log in."
-        echo "---------------"
+    echo "---------------"
 else
 	echo "User Information"
 	echo "Default ${APP_NAME} user is admin"
 	echo "Default ${APP_NAME} password is ${ADMIN_PASSWORD}"
-    echo "--------------------"
+    echo "---------------"
 fi
+echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
+echo "---------------"
 if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
   	echo "You have obtained your Let's Encrypt certificate using the staging server."
   	echo "This certificate will not be trusted by your browser and will cause SSL errors"
@@ -404,8 +406,8 @@ elif [ $SELFSIGNED_CERT -eq 1 ]; then
 fi
 if [ $NO_CERT -eq 1 ]; then
 	echo "Using your web browser, go to http://${HOST_NAME} to log in"
- 	echo "--------------------"
+ 	echo "---------------"
 else
 	echo "Using your web browser, go to https://${HOST_NAME} to log in"
- 	echo "--------------------"
+ 	echo "---------------"
 fi
