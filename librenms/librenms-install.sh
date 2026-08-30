@@ -93,8 +93,8 @@ if [ "${REINSTALL}" = "true" ]; then
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
   	sed -i '' "s|.*DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|g" /usr/local/www/librenms/config.d/.env
-   cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
-   chown www:www /usr/local/www/librenms/.env
+    cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
+    chown www:www /usr/local/www/librenms/.env
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/librenms/includes/my.cnf
   	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
@@ -171,9 +171,11 @@ sysrc librenms_enable="YES"
 if [ "${REINSTALL}" = "true" ]; then
     sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/config.d/.env
     cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
+    cp -f /usr/local/www/librenms/config.d/config.php /usr/local/www/librenms/config.php
     chown www:www /usr/local/www/librenms/.env
+	chown www:www /usr/local/www/librenms/config.php
 else
-    cp /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.d/config.php
+    cp /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.php
     cp /usr/local/www/librenms/.env.example /usr/local/www/librenms/config.d/.env
     sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/config.d/.env
     sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/config.d/.env
@@ -199,6 +201,7 @@ else
     echo "ASSET_URL=https://${HOST_NAME}" >> /usr/local/www/librenms/config.d/.env
 fi
 cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
+cp -f /usr/lcoal/www/librenms/config.php /usr/local/www/librenms/config.d/config.php
 chown -R www:www /usr/local/www/librenms
 chmod 600 /usr/local/www/librenms/.env
 su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
