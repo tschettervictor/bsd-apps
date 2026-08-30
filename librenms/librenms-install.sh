@@ -164,25 +164,19 @@ service caddy start
 
 # LibreNMS Setup
 sysrc librenms_enable="YES"
+chown -R www:www /usr/local/www/librenms
 if [ "${REINSTALL}" = "true" ]; then
     sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
+    chown -R www:www /usr/local/www/librenms
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
     su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
 else
     cp /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.php
     cp /usr/local/www/librenms/.env.example /usr/local/www/librenms/.env
-    chown -R www:www /usr/local/www/librenms
     sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/.env
     sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/.env
     sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
     sed -i '' "s|^DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/librenms/.env
-    if [ "${NO_CERT}" -eq 1 ]; then
-        sed -i '' "s|^SESSION_SECURE_COOKIE=.*|SESSION_SECURE_COOKIE=false|" /usr/local/librenms/.env
-    else
-        sed -i '' "s|^.*APP_URL=.*|APP_URL=https://${HOST_NAME}|" /usr/local/www/librenms/.env
-        echo "ASSET_URL=https://${HOST_NAME}" >> /usr/local/www/librenms/.env
-    fi
-    chmod 600 /usr/local/www/librenms/.env
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
     su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
     su -m www -c 'cd /usr/local/www/librenms && php artisan -n key:generate --force'
@@ -195,12 +189,21 @@ else
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
     su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
 fi
+if [ "${NO_CERT}" -eq 1 ]; then
+    sed -i '' "s|^SESSION_SECURE_COOKIE=.*|SESSION_SECURE_COOKIE=false|" /usr/local/www/librenms/.env
+else
+    sed -i '' "s|^.*APP_URL=.*|APP_URL=https://${HOST_NAME}|" /usr/local/www/librenms/.env
+    echo "ASSET_URL=https://${HOST_NAME}" >> /usr/local/www/librenms/.env
+fi
+chmod 600 /usr/local/www/librenms/.env
 service librenms start
 
 # Save Passwords
 echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/${APP_NAME}-Info.txt
 echo "${APP_NAME} database user is ${DB_USER} and password is ${DB_PASSWORD}" >> /root/${APP_NAME}-Info.txt
-echo "${APP_NAME} username is admin and password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}-Info.txt
+if [ "${REINSTALL}" != "true" ]; then
+    echo "${APP_NAME} username is admin and password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}-Info.txt
+fi
 
 # Done
 echo "---------------"
