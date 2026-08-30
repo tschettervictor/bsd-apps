@@ -78,6 +78,8 @@ python3
 # Directories
 mkdir -p /var/db/mysql
 chown -R 88:88 /var/db/mysql
+mkdir -p /usr/local/www/librenms/config.d
+chown -R www:www /usr/local/www/librenms
 mkdir -p /var/db/librenms/rrd
 chown -R www:www /var/db/librenms
 chmod 775 /var/db/librenms/rrd
@@ -164,19 +166,17 @@ service caddy start
 
 # LibreNMS Setup
 sysrc librenms_enable="YES"
-chown -R www:www /usr/local/www/librenms
 if [ "${REINSTALL}" = "true" ]; then
-    sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
-    chown -R www:www /usr/local/www/librenms
-    su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
-    su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
+    sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/config.d/.env
+    cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
 else
-    cp /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.php
-    cp /usr/local/www/librenms/.env.example /usr/local/www/librenms/.env
-    sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/.env
-    sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/.env
-    sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/.env
-    sed -i '' "s|^DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/librenms/.env
+    cp /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.d/config.php
+    cp /usr/local/www/librenms/.env.example /usr/local/www/librenms/config.d/.env
+    sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/config.d/.env
+    sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/config.d/env
+    sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/config.d/env
+    sed -i '' "s|^DB_HOST.*|DB_HOST=127.0.0.1|" /usr/local/www/librenms/config.d/.env
+    cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
     su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
     su -m www -c 'cd /usr/local/www/librenms && php artisan -n key:generate --force'
@@ -186,8 +186,6 @@ else
     su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
     su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
     su -m www -c "cd /usr/local/www/librenms && lnms user:add -n --password=${ADMIN_PASSWORD} --role=admin -- admin"
-    su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
-    su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
 fi
 if [ "${NO_CERT}" -eq 1 ]; then
     sed -i '' "s|^SESSION_SECURE_COOKIE=.*|SESSION_SECURE_COOKIE=false|" /usr/local/www/librenms/.env
@@ -195,7 +193,11 @@ else
     sed -i '' "s|^.*APP_URL=.*|APP_URL=https://${HOST_NAME}|" /usr/local/www/librenms/.env
     echo "ASSET_URL=https://${HOST_NAME}" >> /usr/local/www/librenms/.env
 fi
+cp -f /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
+chown -R www:www /usr/local/www/librenms
 chmod 600 /usr/local/www/librenms/.env
+su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
+su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
 service librenms start
 
 # Save Passwords
