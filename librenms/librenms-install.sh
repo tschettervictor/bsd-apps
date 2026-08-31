@@ -83,6 +83,7 @@ touch /usr/local/www/librenms/config.d/.env
 touch /usr/local/www/librenms/config.d/config.php
 ln -sf /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
 ln -sf /usr/local/www/librenms/config.d/config.php /usr/local/www/librenms/config.php
+chmod 600 /usr/local/www/librenms/config.d/.env
 chown -R www:www /usr/local/www/librenms
 mkdir -p /var/db/librenms/rrd
 chown -R www:www /var/db/librenms
@@ -199,7 +200,6 @@ else
         echo "ASSET_URL=https://${HOST_NAME}" >> /usr/local/www/librenms/config.d/.env
     fi
 fi
-chmod 600 /usr/local/www/librenms/config.d/.env
 su -m www -c 'cd /usr/local/www/librenms && lnms config:clear'
 su -m www -c 'cd /usr/local/www/librenms && lnms config:cache'
 service librenms start
