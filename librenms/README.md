@@ -25,8 +25,8 @@ other than `NO_CERT`, these are automatically filled with `HOST_NAME`.
 - for any change you make to the `/usr/local/www/librenms/.env` file, you will probably have to update the config. Do so by
 running `su -m www -c 'cd /usr/local/www/librenms && lnms config:clear` then
 `su -m www -c 'cd /usr/local/www/librenms && lnms config:cache`.
-- the config directory (see below) is mounted with `config.php` and `.env` inside. These two files are linked using `ln -sf` to
-`/usr/local/www/librenms` as that is where they are expected to be. This is done so we can save them outside the jail. Otherwise
+- the config directory (see below) is mounted with `config.php` and `.env` inside. These two files are linked using `ln -sf` into
+`/usr/local/www/librenms/` as that is where they are expected to be. This is done so we can save them outside the jail. Otherwise
 we need to mount the entire `/usr/local/www/librenms` directory, which isn't practical.
 
 ## Variables
