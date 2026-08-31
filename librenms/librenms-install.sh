@@ -77,15 +77,14 @@ python3
 
 # Directories/Files
 mkdir -p /var/db/mysql
-chown -R 88:88 /var/db/mysql
 mkdir -p /usr/local/www/librenms/config.d
+mkdir -p /var/db/librenms/rrd
 touch /usr/local/www/librenms/config.d/.env
 touch /usr/local/www/librenms/config.d/config.php
 ln -sf /usr/local/www/librenms/config.d/.env /usr/local/www/librenms/.env
 ln -sf /usr/local/www/librenms/config.d/config.php /usr/local/www/librenms/config.php
-chmod 600 /usr/local/www/librenms/config.d/.env
+chown -R 88:88 /var/db/mysql
 chown -R www:www /usr/local/www/librenms
-mkdir -p /var/db/librenms/rrd
 chown -R www:www /var/db/librenms
 chmod 775 /var/db/librenms/rrd
 
@@ -176,6 +175,8 @@ if [ "${REINSTALL}" = "true" ]; then
 else
     cp -f /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.d/config.php
     cp -f /usr/local/www/librenms/.env.example /usr/local/www/librenms/config.d/.env
+    chmod 600 /usr/local/www/librenms/config.d/config.php
+    chmod 600 /usr/local/www/librenms/config.d/.env
     sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/config.d/.env
     sed -i '' "s|^DB_USERNAME.*|DB_USERNAME=${DB_USER}|" /usr/local/www/librenms/config.d/.env
     sed -i '' "s|^DB_PASSWORD.*|DB_PASSWORD=${DB_PASSWORD}|" /usr/local/www/librenms/config.d/.env
