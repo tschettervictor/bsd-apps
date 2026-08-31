@@ -175,6 +175,7 @@ if [ "${REINSTALL}" = "true" ]; then
 else
     cp -f /usr/local/www/librenms/config.php.default /usr/local/www/librenms/config.d/config.php
     cp -f /usr/local/www/librenms/.env.example /usr/local/www/librenms/config.d/.env
+    chown -R www:www /usr/local/www/librenms/config.d
     chmod 600 /usr/local/www/librenms/config.d/config.php
     chmod 600 /usr/local/www/librenms/config.d/.env
     sed -i '' "s|^DB_DATABASE.*|DB_DATABASE=${DB_NAME}|" /usr/local/www/librenms/config.d/.env
