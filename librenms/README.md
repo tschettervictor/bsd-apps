@@ -13,18 +13,21 @@ chmod +x librenms-install.sh
 ```
 
 ## Notes
-- if you select `NO_CERT`, (see below) the script will set `SESSION_SECURE_COOKIE=false`. If you are going to set up
-a reverse proxy or https of any kind AFTER INSTALLING WITH `NO_CERT` , you should set this to `true`. Any other `*_CERT`
-option will leave this set to `true`.
+- if you select `NO_CERT`, (see below) the script will set `SESSION_SECURE_COOKIE=false` inside `/usr/local/www/librenms/.env`.
+If you are going to set up a reverse proxy or https of any kind AFTER INSTALLING WITH `NO_CERT` , you should set this
+to `true`. Any other `*_CERT` option will leave this set to `true`.
 - if you want to set up a reverse proxy in front of LibreNMS, you will have to make sure caddy trusts the proxy. See
 https://caddyserver.com/docs/caddyfile/options#trusted-proxies for details. You will also have to set
-`APP_TRUSTED_PROXIES=my.proxy.ip` in `.env`.
+`APP_TRUSTED_PROXIES=my.proxy.ip` in `/usr/local/www/librenms/.env`.
 - for LibreNMS to generate proper URLs behind a reverse proxy, you should set `APP_URL=https://my.app.local` and
 `ASSET_URL=https://my.app.local`. Also make sure caddy trusts proxies in front of it. See above. Again, for any `*_CERT` option
 other than `NO_CERT`, these are automatically filled with `HOST_NAME`.
-- for any change you make to the `.env` file, you will probably have to update the config. Do so by
+- for any change you make to the `/usr/local/www/librenms/.env` file, you will probably have to update the config. Do so by
 running `su -m www -c 'cd /usr/local/www/librenms && lnms config:clear` then
 `su -m www -c 'cd /usr/local/www/librenms && lnms config:cache`.
+- the config directory (see below) is mounted with `config.php` and `.env` inside. These two files are linked using `ln -sf` to
+`/usr/local/www/librenms` as that is where they are expected to be. This is done so we can save them outside the jail. Otherwise
+we need to mount the entire `/usr/local/www/librenms` directory, which isn't practical.
 
 ## Variables
 These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at default unless you have a good reason to change them.
