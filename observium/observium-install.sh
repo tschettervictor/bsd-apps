@@ -129,7 +129,7 @@ if [ "${REINSTALL}" = "true" ]; then
 	echo "You did a reinstall, but database passwords will still be changed."
  	echo "New passwords will still be saved in the root directory."
  	mysql -u root -e "SET PASSWORD FOR '${DB_USER}'@localhost = PASSWORD('${DB_PASSWORD}');"
-  	sed -i '' "s|.*['db_pass'].*=.*|\$config['db_pass']      = \'${DB_PASSWORD}\'\;|" /opt/observium/config.php
+  	sed -i '' "s|^.*\['db_pass'\].*=.*$|\$config['db_pass']      = \'${DB_PASSWORD}\'\;|" /var/db/observium/config/config.php
 	fetch -o /root/.my.cnf https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/observium/includes/my.cnf
   	sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 else
@@ -221,9 +221,9 @@ if [ "${REINSTALL}" != "true" ]; then
 
 \$config['db_extension'] = 'mysqli';
 \$config['db_host']      = '127.0.0.1';
-\$config['db_user']      = 'observium';
+\$config['db_user']      = '${DB_USER}';
 \$config['db_pass']      = '${DB_PASSWORD}';
-\$config['db_name']      = 'observium';
+\$config['db_name']      = '${DB_NAME}';
 
 \$config['base_url']     = '${PROTO}://${HOST_NAME}';
 
