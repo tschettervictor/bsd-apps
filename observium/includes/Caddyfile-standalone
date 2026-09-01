@@ -1,0 +1,26 @@
+{
+	# debug
+	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+	email youremailhere
+	# default_sni yourhostnamehere
+}
+
+yourhostnamehere {
+    root * /opt/observium/html
+    file_server
+	log {
+		output file /var/log/yourhostnamehere.log
+	}
+
+	header {
+		# enable HSTS
+		# Strict-Transport-Security max-age=31536000;
+	}
+
+	@forbidden {
+		path /.htaccess
+	}
+    respond @forbidden 404
+
+    php_fastcgi 127.0.0.1:9000
+}

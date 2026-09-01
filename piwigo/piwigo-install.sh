@@ -28,6 +28,7 @@ pkg install -y \
 bzip2 \
 caddy \
 ffmpeg \
+ImageMagick7-nox11 \
 mariadb${MARIADB_VERSION}-client \
 mariadb${MARIADB_VERSION}-server \
 mediainfo \

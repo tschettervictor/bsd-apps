@@ -1,0 +1,21 @@
+{
+	# debug
+	# default_sni yourhostnamehere
+}
+
+yourhostnamehere {
+    root * /opt/observium/html
+    file_server
+	log {
+		output file /var/log/yourhostnamehere.log
+	}
+
+	tls /usr/local/etc/pki/tls/certs/fullchain.pem /usr/local/etc/pki/tls/private/privkey.pem
+
+	@forbidden {
+		path /.htaccess
+	}
+    respond @forbidden 404
+
+    php_fastcgi 127.0.0.1:9000
+}

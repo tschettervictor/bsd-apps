@@ -163,6 +163,7 @@ a PR or commit to master.
 | minio | ![minio](https://github.com/tschettervictor/bsd-apps/actions/workflows/minio.yml/badge.svg) |
 | navidrome | ![navidrome](https://github.com/tschettervictor/bsd-apps/actions/workflows/navidrome.yml/badge.svg) |
 | nextcloud | ![nextcloud](https://github.com/tschettervictor/bsd-apps/actions/workflows/nextcloud.yml/badge.svg) |
+| observium | ![observium](https://github.com/tschettervictor/bsd-apps/actions/workflows/observium.yml/badge.svg) |
 | onlyoffice | ![onlyoffice](https://github.com/tschettervictor/bsd-apps/actions/workflows/onlyoffice.yml/badge.svg) |
 | photoprism | ![photoprism](https://github.com/tschettervictor/bsd-apps/actions/workflows/photoprism.yml/badge.svg) |
 | piwigo | ![piwigo](https://github.com/tschettervictor/bsd-apps/actions/workflows/piwigo.yml/badge.svg) |
