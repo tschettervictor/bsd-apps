@@ -113,7 +113,9 @@ mkdir -p /var/db/mysql
 mkdir -p /var/db/observium/config
 mkdir -p /var/db/observium/logs
 mkdir -p /var/db/observium/rrd
+mkdir -p /opt/observium
 mkdir -p /usr/local/etc/cron.d
+mkdir -p /usr/local/www
 touch /var/db/observium/config/config.php
 ln -sf /var/db/observium/config/config.php /opt/observium/config.php
 chown -R 88:88 /var/db/mysql
@@ -204,53 +206,56 @@ sysrc caddy_config="/usr/local/www/Caddyfile"
 service caddy start
 
 # Observium
-fetch -o /tmp/"${APP_NAME}".tar.gz
-tar -xv -f /tmp/"${APP_NAME}".tar.gz -C /tmp/"${APP_NAME}"
-cp -au /tmp/"${APP_NAME}"/. /opt/observium/
+fetch -o /tmp/"${APP_NAME}".tar.gz https://www.observium.org/observium-community-"${APP_VERSION}".tar.gz
+tar -xv -f /tmp/"${APP_NAME}".tar.gz --strip-components=1 -C /opt/observium
 rm -r /tmp/"${APP_NAME}"*
 chown -R www:www /opt/observium
-if [ "${NO_CERT}" -eq 1 ]; then
-    PROTO="http"
-else
-    PROTO="https"
-fi
-cat > /opt/observium/config.php <<EOF
+if [ "${REINSTALL}" != "true" ]; then
+    if [ "${NO_CERT}" -eq 1 ]; then
+        PROTO="http"
+    else
+        PROTO="https"
+    fi
+    cat > /opt/observium/config.php <<EOF
 <?php
 
-$config['db_extension'] = 'mysqli';
-$config['db_host']      = '127.0.0.1';
-$config['db_user']      = 'observium';
-$config['db_pass']      = '${DB_PASSWORD}';
-$config['db_name']      = 'observium';
+\$config['db_extension'] = 'mysqli';
+\$config['db_host']      = '127.0.0.1';
+\$config['db_user']      = 'observium';
+\$config['db_pass']      = '${DB_PASSWORD}';
+\$config['db_name']      = 'observium';
 
-$config['base_url']     = '${PROTO}://${HOST_NAME}';
+\$config['base_url']     = '${PROTO}://${HOST_NAME}';
 
-$config['rrd_dir']      = "/var/db/observium/rrd";
-$config['log_dir']      = "/var/db/observium/logs";
+\$config['rrd_dir']      = "/var/db/observium/rrd";
+\$config['log_dir']      = "/var/db/observium/logs";
 
-$config['rrdtool']                   = "/usr/local/bin/rrdtool";
-$config['fping']                     = "/usr/local/sbin/fping";
-$config['fping6']                    = "/usr/local/sbin/fping6";
-$config['snmpwalk']                  = "/usr/local/bin/snmpwalk";
-$config['snmpget']                   = "/usr/local/bin/snmpget";
-$config['snmpgetnext']               = "/usr/local/bin/snmpgetnext";
-$config['snmpbulkget']               = "/usr/local/bin/snmpbulkget";
-$config['snmpbulkwalk']              = "/usr/local/bin/snmpbulkwalk";
-$config['snmptranslate']             = "/usr/local/bin/snmptranslate";
-$config['mtr']                       = "/usr/local/sbin/mtr";
-$config['nmap']                      = "/usr/local/bin/nmap";
-$config['ipmitool']                  = "/usr/local/bin/ipmitool";
-$config['git']                       = "/usr/local/bin/git";
-$config['dot']                       = "/usr/local/bin/dot";
-$config['unflatten']                 = "/usr/local/bin/unflatten";
-$config['neato']                     = "/usr/local/bin/neato";
-$config['sfdp']                      = "/usr/local/bin/sfdp";
+\$config['rrdtool']                   = "/usr/local/bin/rrdtool";
+\$config['fping']                     = "/usr/local/sbin/fping";
+\$config['fping6']                    = "/usr/local/sbin/fping6";
+\$config['snmpwalk']                  = "/usr/local/bin/snmpwalk";
+\$config['snmpget']                   = "/usr/local/bin/snmpget";
+\$config['snmpgetnext']               = "/usr/local/bin/snmpgetnext";
+\$config['snmpbulkget']               = "/usr/local/bin/snmpbulkget";
+\$config['snmpbulkwalk']              = "/usr/local/bin/snmpbulkwalk";
+\$config['snmptranslate']             = "/usr/local/bin/snmptranslate";
+\$config['mtr']                       = "/usr/local/sbin/mtr";
+\$config['nmap']                      = "/usr/local/bin/nmap";
+\$config['ipmitool']                  = "/usr/local/bin/ipmitool";
+\$config['git']                       = "/usr/local/bin/git";
+\$config['dot']                       = "/usr/local/bin/dot";
+\$config['unflatten']                 = "/usr/local/bin/unflatten";
+\$config['neato']                     = "/usr/local/bin/neato";
+\$config['sfdp']                      = "/usr/local/bin/sfdp";
 
-$config['nagplug_dir']               = "/usr/local/libexec/nagios";
-$config['rrdcached']                 = "unix:/var/run/rrdcached.sock";
+\$config['nagplug_dir']               = "/usr/local/libexec/nagios";
+\$config['rrdcached']                 = "unix:/var/run/rrdcached.sock";
 EOF
-chown www:www /opt/observium/config.php
-chmod 600 /opt/observium/config.php
+/opt/observium/discovery.php -u
+/opt/observium/adduser.php admin "${ADMIN_PASSWORD}" 10
+fi
+chown www:www /var/db/observium/config/config.php
+chmod 600 /var/db/observium/config/config.php
 cat > /usr/local/etc/cron.d/observium <<EOF
 # Run a complete discovery of all devices once every 6 hours
 33 */6 * * * /opt/observium/observium-wrapper discovery >/dev/null 2>&1
@@ -263,7 +268,6 @@ cat > /usr/local/etc/cron.d/observium <<EOF
 # Run housekeeping script daily for rrds, ports, orphaned entries in the database and performance data
 47 4 * * * /opt/observium/housekeeping.php -yrptb >/dev/null 2>&1
 EOF
-/opt/observium/adduser.php admin "${ADMIN_PASSWORD}" 10
 
 # Save Passwords
 echo "${DB_TYPE} root user is root and password is ${DB_ROOT_PASSWORD}" > /root/"${APP_NAME}"-Info.txt
