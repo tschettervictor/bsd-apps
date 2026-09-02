@@ -119,7 +119,7 @@ service mysql-server restart
 # PHP
 sysrc php_fpm_enable="YES"
 cp /usr/local/etc/php.ini-production /usr/local/etc/php.ini
-sed -i '' "s|^.*date.timezone = .*|date.timezone = ${TIME_ZONE}|" /usr/local/etc/php.ini
+sed -i '' "s|^.*date.timezone =.*|date.timezone = ${TIME_ZONE}|" /usr/local/etc/php.ini
 sed -i '' "s|^.*listen = .*|listen = 127.0.0.1:9000|" /usr/local/etc/php-fpm.d/www.conf
 sed -i '' "s|^.*listen.owner = .*|listen.owner = www|" /usr/local/etc/php-fpm.d/www.conf
 sed -i '' "s|^.*listen.group = .*|listen.group = www|" /usr/local/etc/php-fpm.d/www.conf
