@@ -24,11 +24,6 @@ npm-node"${NODE_VERSION}" \
 python3 \
 sqlite3
 
-# Check for Reinstall
-if [ "$(ls -A ${DATA_PATH} 2>/dev/null)" ]; then
-    REINSTALL="true"
-fi
-
 # Directories/Files
 mkdir -p "${DATA_PATH}"/audiobookshelf/metadata
 mkdir -p "${DATA_PATH}"/audiobookshelf/backups
