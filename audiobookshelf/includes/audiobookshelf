@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+# Audiobookshelf FreeBSD Service Script
+#
+# PROVIDE: audiobookshelf
+# REQUIRE: DAEMON NETWORKING
+# KEYWORD: shutdown
+#
+# Optional settings:
+# audiobookshelf_enable (YES/NO): Enable or disable the service.
+# audiobookshelf_user (system user): User to run the service as.
+# audiobookshelf_group (system group): Group to run the service as.
+# audiobookshelf_datadir (path): Path to application data.
+# audiobookshelf_configdir (path): Configuration directory.
+# audiobookshelf_env_file (file): Environment (.env) file.
+# audiobookshelf_chdir (path): Path to application server files.
+
+. /etc/rc.subr
+
+name=audiobookshelf
+desc="Self-hosted Audiobook/Podcast Server"
+rcvar=audiobookshelf_enable
+
+load_rc_config $name
+
+: ${audiobookshelf_enable:="NO"}
+: ${audiobookshelf_user:="audiobookshelf"}
+: ${audiobookshelf_group:="audiobookshelf"}
+: ${audiobookshelf_port:="3333"}
+: ${audiobookshelf_datadir:="/mnt/data"}
+: ${audiobookshelf_configdir:="/usr/local/etc/audiobookshelf"}
+: ${audiobookshelf_chdir:="/usr/local/www/audiobookshelf"}
+: ${audiobookshelf_env_file:="${audiobookshelf_configdir}/.env"}
+: ${audiobookshelf_env:="SOURCE=docker \
+    NUSQLITE3_PATH=/usr/local/lib/nusqlite3/libnusqlite3 \
+    FFMPEG_PATH=/usr/local/bin/ffmpeg \
+    FFPROBE_PATH=/usr/local/bin/ffprobe \
+	CONFIG_PATH=${audiobookshelf_configdir}/config \
+	METADATA_PATH=${audiobookshelf_datadir}/metadata \
+	BACKUP_PATH=${audiobookshelf_datadir}/backups \
+	PORT=${audiobookshelf_port}"}
+
+pidfile="/var/run/${name}/${name}.pid"
+node="/usr/local/bin/node"
+command=/usr/sbin/daemon
+command_args="-P ${pidfile} -H -o /var/log/${name}/${name}.log ${node} index.js"
+start_precmd=audiobookshelf_startprecmd
+
+audiobookshelf_startprecmd()
+{
+    mkdir -p /var/run/${name}
+    mkdir -p /var/log/${name}
+    chown -R ${audiobookshelf_user}:${audiobookshelf_user} /var/run/${name}
+    chown -R ${audiobookshelf_user}:${audiobookshelf_user} /var/log/${name}
+}
+
+run_rc_command "$1"
