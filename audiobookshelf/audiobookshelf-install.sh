@@ -36,8 +36,7 @@ mkdir -p /usr/local/etc/audiobookshelf/config
 mkdir -p /usr/local/www/audiobookshelf
 mkdir -p /usr/local/etc/rc.d
 mkdir -p /usr/local/lib/nusqlite3
-chown -R audiobookshelf:audiobookshelf /usr/local/etc/audiobookshelf
-chown -R audiobookshelf:audiobookshelf "${DATA_PATH}"
+touch /usr/local/etc/audiobookshelf/.env
 
 # SQlite3
 NUSQLITE3="$(fetch -qo - "https://api.github.com/repos/mikiher/nunicode-sqlite/releases/latest" | jq -r '.tag_name')"
@@ -56,7 +55,7 @@ rm -r /tmp/nunicode*
 # Audiobookshelf
 id -u audiobookshelf >/dev/null 2>&1 || pw user add audiobookshelf -c audiobookshelf -u 3333 -d /nonexistent -s /usr/bin/nologin
 npm install npm -g
-fetch -qo /tmp/"${APP_NAME}".tar.gz "https://github.com/advplyr/audiobookshelf/archive/refs/tags/v"${APP_VERSION}".tar.gz"
+fetch -qo /tmp/"${APP_NAME}".tar.gz "https://github.com/advplyr/audiobookshelf/archive/refs/tags/v${APP_VERSION}.tar.gz"
 mkdir /tmp/"${APP_NAME}"
 tar -xz -f /tmp/"${APP_NAME}".tar.gz --strip-components=1 -C /usr/local/www/audiobookshelf
 rm -r /tmp/"${APP_NAME}".tar.gz
@@ -65,8 +64,8 @@ cd /usr/local/www/audiobookshelf/client && npm run generate
 cd /usr/local/www/audiobookshelf/server && npm install --omit=dev --omit=optional --ignore-scripts
 cd /usr/local/www/audiobookshelf/server && npm rebuild sqlite3
 chown -R audiobookshelf:audiobookshelf /usr/local/www/audiobookshelf
-chown -R audiobookshelf:audiobookshelf "${DATA_PATH}"
 chown -R audiobookshelf:audiobookshelf /usr/local/etc/audiobookshelf
+chown -R audiobookshelf:audiobookshelf "${DATA_PATH}"
 
 # Services
 fetch -o /usr/local/etc/rc.d https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/audiobookshelf/includes/audiobookshelf

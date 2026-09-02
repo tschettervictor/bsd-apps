@@ -12,6 +12,10 @@ Don't forget to
 chmod +x audiobookshelf-install.sh
 ```
 
+## Notes
+- you will have to mount any additional media folders into your jail so Audiobookshelf
+can access them. The mounts below are only for the metadata, backups and configuration directories.
+
 ## Variables
 These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at defalut unless you have a good reason to change them.
 

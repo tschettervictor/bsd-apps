@@ -141,6 +141,7 @@ a PR or commit to master.
 | App | Status |
 |-----|--------|
 | adguardhome | ![adguardhome](https://github.com/tschettervictor/bsd-apps/actions/workflows/adguardhome.yml/badge.svg) |
+| audiobookshelf | ![audiobookshelf](https://github.com/tschettervictor/bsd-apps/actions/workflows/audiobookshelf.yml/badge.svg) |
 | caddy | ![caddy](https://github.com/tschettervictor/bsd-apps/actions/workflows/caddy.yml/badge.svg) |
 | crafty | ![crafty](https://github.com/tschettervictor/bsd-apps/actions/workflows/crafty.yml/badge.svg) |
 | dasherr | ![dasherr](https://github.com/tschettervictor/bsd-apps/actions/workflows/dasherr.yml/badge.svg) |

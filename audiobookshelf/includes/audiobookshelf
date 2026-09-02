@@ -27,7 +27,7 @@ load_rc_config $name
 : ${audiobookshelf_user:="audiobookshelf"}
 : ${audiobookshelf_group:="audiobookshelf"}
 : ${audiobookshelf_port:="3333"}
-: ${audiobookshelf_datadir:="/mnt/data"}
+: ${audiobookshelf_datadir:="/mnt/data/audiobookshelf"}
 : ${audiobookshelf_configdir:="/usr/local/etc/audiobookshelf"}
 : ${audiobookshelf_chdir:="/usr/local/www/audiobookshelf"}
 : ${audiobookshelf_env_file:="${audiobookshelf_configdir}/.env"}
