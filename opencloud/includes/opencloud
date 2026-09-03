@@ -25,6 +25,8 @@ load_rc_config $name
 : ${opencloud_enable:="NO"}
 : ${opencloud_user:="www"}
 : ${opencloud_group:="www"}
+: ${opencloud_datadir:="/mnt/data/opencloud"}
+: ${opencloud_configdir:="/usr/local/etc/opencloud"}
 : ${opencloud_env_file:="${opencloud_configdir}/.env"}
 
 pidfile="/var/run/${name}/${name}.pid"

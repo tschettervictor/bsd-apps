@@ -12,19 +12,24 @@ Don't forget to
 chmod +x opencloud-install.sh
 ```
 
-## Notes
-
 ## Variables
 These are the variables that are available to change along with their defaults and a description of what they do. Other variables should be left at defalut unless you have a good reason to change them.
 
 APP_VERSION
-- app version to install (defaults to 2.36.0)
+- app version to install (defaults to latest)
+
+APP_HTTP_MODE
+- run app in `http` mode or `https` mode
 
 NODE_VERSION
 - node version to use (currently defaults to 20)
 
 DATA_PATH
 - data will be stored here (currently defaults to `/mnt/data`)
+
+HOST_NAME
+- sets the hostname to use for the webserver
+- must be set to your FQDN ie: my.domain.com or IP address
 
 ## Mount points (should be mounted outside the jail)
 - `/mnt/data` - data directory
