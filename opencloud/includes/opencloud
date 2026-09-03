@@ -28,6 +28,8 @@ load_rc_config $name
 : ${opencloud_datadir:="/mnt/data/opencloud"}
 : ${opencloud_configdir:="/usr/local/etc/opencloud"}
 : ${opencloud_env_file:="${opencloud_configdir}/.env"}
+: ${opencloud_env:="OC_BASE_DATA_PATH=${opencloud_datadir}/data \
+                    OC_CONFIG_DIR=${opencloud_configdir}"}
 
 pidfile="/var/run/${name}/${name}.pid"
 command=/usr/sbin/daemon

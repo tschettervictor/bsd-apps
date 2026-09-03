@@ -51,7 +51,7 @@ if [ "${APP_VERSION}" = "latest" ]; then
 else
     fetch -o /tmp/"${APP_NAME}".tar.gz https://github.com/opencloud-eu/opencloud/archive/refs/tags/v"${APP_VERSION}".tar.gz
     mkdir -p /tmp/"${APP_NAME}"
-    tar --strip-components=1 -xv -f /tmp/"${APP_NAME}".tar.gz -C /tmp/"${APP_NAME}"
+    tar -xv -f /tmp/"${APP_NAME}".tar.gz --strip-components=1 -C /tmp/"${APP_NAME}"
 fi
 fetch -o /tmp/patch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/opencloud/includes/patch
 cd /tmp/"${APP_NAME}" && patch < /tmp/patch
@@ -66,13 +66,13 @@ if [ "${REINSTALL}" != "true" ]; then
     else
         echo "OC_URL=https://${HOST_NAME}:9200" >> /usr/local/etc/opencloud/.env
     fi
-    echo "OC_CONFIG_DIR=/usr/local/etc/opencloud" >> /usr/local/etc/opencloud/.env
-    echo "OC_BASE_DATA_PATH=${DATA-PATH}/opencloud/data" >> /usr/local/etc/opencloud/.env
 fi
 
 # Services
 fetch -o /usr/local/etc/rc.d https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/opencloud/includes/opencloud
 chmod +x /usr/local/etc/rc.d/opencloud
+sysrc opencloud_datadir="${DATA_PATH}/opencloud/data"
+sysrc opencloud_configdir=/usr/local/etc/opencloud"
 sysrc opencloud_enable="YES"
 service opencloud start
 
