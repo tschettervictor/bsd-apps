@@ -166,6 +166,7 @@ a PR or commit to master.
 | nextcloud | ![nextcloud](https://github.com/tschettervictor/bsd-apps/actions/workflows/nextcloud.yml/badge.svg) |
 | observium | ![observium](https://github.com/tschettervictor/bsd-apps/actions/workflows/observium.yml/badge.svg) |
 | onlyoffice | ![onlyoffice](https://github.com/tschettervictor/bsd-apps/actions/workflows/onlyoffice.yml/badge.svg) |
+| opencloud | ![opencloud](https://github.com/tschettervictor/bsd-apps/actions/workflows/opencloud.yml/badge.svg) |
 | photoprism | ![photoprism](https://github.com/tschettervictor/bsd-apps/actions/workflows/photoprism.yml/badge.svg) |
 | piwigo | ![piwigo](https://github.com/tschettervictor/bsd-apps/actions/workflows/piwigo.yml/badge.svg) |
 | plex | ![plex](https://github.com/tschettervictor/bsd-apps/actions/workflows/plex.yml/badge.svg) |

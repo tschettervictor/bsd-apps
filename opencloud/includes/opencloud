@@ -1,0 +1,43 @@
+#!/bin/sh
+#
+# Opencloud FreeBSD Service Script
+#
+# PROVIDE: opencloud
+# REQUIRE: DAEMON NETWORKING
+# KEYWORD: shutdown
+#
+# Optional settings:
+# opencloud_enable (YES/NO): Enable or disable the service.
+# opencloud_user (system user): User to run the service as.
+# opencloud_group (system group): Group to run the service as.
+# opencloud_datadir (path): Path to application data.
+# opencloud_configdir (path): Configuration directory.
+# opencloud_env_file (file): Environment (.env) file.
+
+. /etc/rc.subr
+
+name=opencloud
+desc="Excellent File Sharing"
+rcvar=opencloud_enable
+
+load_rc_config $name
+
+: ${opencloud_enable:="NO"}
+: ${opencloud_user:="www"}
+: ${opencloud_group:="www"}
+: ${opencloud_env_file:="${opencloud_configdir}/.env"}
+
+pidfile="/var/run/${name}/${name}.pid"
+command=/usr/sbin/daemon
+command_args="-P ${pidfile} -H -o /var/log/${name}/${name}.log /usr/local/bin/opencloud server"
+start_precmd=opencloud_startprecmd
+
+opencloud_startprecmd()
+{
+    mkdir -p /var/run/${name}
+    mkdir -p /var/log/${name}
+    chown -R ${opencloud_user}:${opencloud_group} /var/run/${name}
+    chown -R ${opencloud_user}:${opencloud_group} /var/log/${name}
+}
+
+run_rc_command "$1"
