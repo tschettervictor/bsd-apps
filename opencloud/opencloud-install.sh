@@ -51,7 +51,7 @@ if [ "${APP_VERSION}" = "latest" ]; then
 else
     fetch -o /tmp/"${APP_NAME}".tar.gz https://github.com/opencloud-eu/opencloud/archive/refs/tags/v"${APP_VERSION}".tar.gz
     mkdir -p /tmp/"${APP_NAME}"
-    tar -C /tmp/"${APP_NAME}" -xv -f /tmp/"${APP_NAME}".tar.gz
+    tar --strip-components=1 -xv -f /tmp/"${APP_NAME}".tar.gz -C /tmp/"${APP_NAME}"
 fi
 fetch -o /tmp/patch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/opencloud/includes/patch
 cd /tmp/"${APP_NAME}" && patch < /tmp/patch
