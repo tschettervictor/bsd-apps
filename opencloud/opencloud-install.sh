@@ -2,9 +2,9 @@
 # Install OpenCloud
 
 APP_NAME="OpenCloud"
-APP_VERSION="7.5.0"
+APP_VERSION="latest"
 APP_HTTP_MODE="https"
-ADMIN_PASSWORD=$(openssl rand -base64 12)
+ADMIN_PASSWORD="$(openssl rand -base64 12)"
 DATA_PATH="/mnt/data"
 NODE_VERSION="24"
 HOST_NAME=""
@@ -44,7 +44,7 @@ chown -R www:www "${DATA_PATH}"
 chown -R www:www /usr/local/etc/opencloud
 
 # OpenCloud
-npm install -g corepack
+npm install -g corepack@latest
 corepack enable pnpm
 if [ "${APP_VERSION}" = "latest" ]; then
     git clone https://github.com/opencloud-eu/opencloud /tmp/"${APP_NAME}"
@@ -55,10 +55,14 @@ else
 fi
 fetch -o /tmp/patch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/opencloud/includes/patch
 cd /tmp/"${APP_NAME}" && patch < /tmp/patch
-cd /tmp/"${APP_NAME}" && gmake clean generate
-cd /tmp/"${APP_NAME}" && gmake -C opencloud build
+EDITION="rolling" \
+cd /tmp/"${APP_NAME}" && gmake clean generate VERSION="${APP_VERSION}"
+COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
+EDITION="rolling" \
+cd /tmp/"${APP_NAME}" && gmake -C opencloud build VERSION="${APP_VERSION}"
 cp -f /tmp/"${APP_NAME}"/opencloud/bin/opencloud /usr/local/bin/opencloud
 rm -r /tmp/"${APP_NAME}"*
+rm -r /tmp/patch
 if [ "${REINSTALL}" != "true" ]; then
     if [ "${APP_HTTP_MODE}" = "http" ]; then
         echo "OC_INSECURE=true" >> /usr/local/etc/opencloud/.env
@@ -66,10 +70,12 @@ if [ "${REINSTALL}" != "true" ]; then
     else
         echo "OC_URL=https://${HOST_NAME}:9200" >> /usr/local/etc/opencloud/.env
     fi
-    OC_BASE_DATA_PATH="${DATA_PATH}/opencloud/data" \
+    OC_BASE_DATA_PATH="${DATA_PATH}/opencloud" \
     OC_CONFIG_DIR="/usr/local/etc/opencloud" \
     /usr/local/bin/opencloud init --insecure true --admin-password "${ADMIN_PASSWORD}"
 fi
+chown -R www:www "${DATA_PATH}"
+chown -R www:www /usr/local/etc/opencloud
 
 # Services
 fetch -o /usr/local/etc/rc.d https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/opencloud/includes/opencloud
