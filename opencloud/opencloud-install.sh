@@ -55,6 +55,7 @@ else
 fi
 fetch -o /tmp/patch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/opencloud/includes/patch
 cd /tmp/"${APP_NAME}" && patch < /tmp/patch
+export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 export EDITION="rolling"
 cd /tmp/"${APP_NAME}" && gmake clean generate
 cd /tmp/"${APP_NAME}" && gmake -C opencloud build
