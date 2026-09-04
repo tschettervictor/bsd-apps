@@ -18,11 +18,8 @@ These are the variables that are available to change along with their defaults a
 APP_VERSION
 - app version to install (defaults to latest)
 
-APP_HTTP_MODE
-- run app in `http` mode or `https` mode
-
 NODE_VERSION
-- node version to use (currently defaults to 20)
+- node version to use (currently defaults to 24)
 
 DATA_PATH
 - data will be stored here (currently defaults to `/mnt/data`)
@@ -33,7 +30,7 @@ HOST_NAME
 
 ## Mount points (should be mounted outside the jail)
 - `/mnt/data` - data directory
-- `/usr/local/etc/audiobookshelf` - config directory
+- `/usr/local/etc/opencloud` - config directory
 
 ## Jail Properties
 - none
