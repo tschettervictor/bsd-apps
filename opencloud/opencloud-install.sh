@@ -4,10 +4,10 @@
 APP_NAME="OpenCloud"
 APP_VERSION="7.5.0"
 APP_HTTP_MODE="https"
+ADMIN_PASSWORD=$(openssl rand -base64 12)
 DATA_PATH="/mnt/data"
-NODE_VERSION="20"
+NODE_VERSION="24"
 HOST_NAME=""
-
 
 # Check for Root Privileges
 if ! [ "$(id -u)" = 0 ]; then
@@ -66,13 +66,16 @@ if [ "${REINSTALL}" != "true" ]; then
     else
         echo "OC_URL=https://${HOST_NAME}:9200" >> /usr/local/etc/opencloud/.env
     fi
+    OC_BASE_DATA_PATH="${DATA_PATH}/opencloud/data" \
+    OC_CONFIG_DIR="/usr/local/etc/opencloud" \
+    /usr/local/bin/opencloud init --insecure true --admin-password "${ADMIN_PASSWORD}"
 fi
 
 # Services
 fetch -o /usr/local/etc/rc.d https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/opencloud/includes/opencloud
 chmod +x /usr/local/etc/rc.d/opencloud
 sysrc opencloud_datadir="${DATA_PATH}/opencloud/data"
-sysrc opencloud_configdir=/usr/local/etc/opencloud"
+sysrc opencloud_configdir="/usr/local/etc/opencloud"
 sysrc opencloud_enable="YES"
 service opencloud start
 
