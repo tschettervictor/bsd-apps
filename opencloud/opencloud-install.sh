@@ -3,7 +3,6 @@
 
 APP_NAME="OpenCloud"
 APP_VERSION="latest"
-APP_HTTP_MODE="https"
 ADMIN_PASSWORD="$(openssl rand -base64 12)"
 DATA_PATH="/mnt/data"
 NODE_VERSION="24"
@@ -46,6 +45,7 @@ chown -R www:www /usr/local/etc/opencloud
 # OpenCloud
 npm install -g corepack@latest
 corepack enable pnpm
+corepack install --global pnpm@latest
 if [ "${APP_VERSION}" = "latest" ]; then
     git clone https://github.com/opencloud-eu/opencloud /tmp/"${APP_NAME}"
 else
@@ -55,21 +55,14 @@ else
 fi
 fetch -o /tmp/patch https://raw.githubusercontent.com/tschettervictor/bsd-apps/master/opencloud/includes/patch
 cd /tmp/"${APP_NAME}" && patch < /tmp/patch
-EDITION="rolling" \
-cd /tmp/"${APP_NAME}" && gmake clean generate VERSION="${APP_VERSION}"
-COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
-EDITION="rolling" \
-cd /tmp/"${APP_NAME}" && gmake -C opencloud build VERSION="${APP_VERSION}"
+export EDITION="rolling"
+cd /tmp/"${APP_NAME}" && gmake clean generate
+cd /tmp/"${APP_NAME}" && gmake -C opencloud build
 cp -f /tmp/"${APP_NAME}"/opencloud/bin/opencloud /usr/local/bin/opencloud
 rm -r /tmp/"${APP_NAME}"*
 rm -r /tmp/patch
 if [ "${REINSTALL}" != "true" ]; then
-    if [ "${APP_HTTP_MODE}" = "http" ]; then
-        echo "OC_INSECURE=true" >> /usr/local/etc/opencloud/.env
-        echo "OC_URL=http://${HOST_NAME}:9200" >> /usr/local/etc/opencloud/.env
-    else
-        echo "OC_URL=https://${HOST_NAME}:9200" >> /usr/local/etc/opencloud/.env
-    fi
+    echo "OC_URL=https://${HOST_NAME}:9200" >> /usr/local/etc/opencloud/.env
     OC_BASE_DATA_PATH="${DATA_PATH}/opencloud" \
     OC_CONFIG_DIR="/usr/local/etc/opencloud" \
     /usr/local/bin/opencloud init --insecure true --admin-password "${ADMIN_PASSWORD}"
@@ -85,8 +78,22 @@ sysrc opencloud_configdir="/usr/local/etc/opencloud"
 sysrc opencloud_enable="YES"
 service opencloud start
 
+# Save Passwords
+echo "${APP_NAME} default username is admin and password is ${ADMIN_PASSWORD}" >> /root/${APP_NAME}-Info.txt
+
 # Done
 echo "---------------"
 echo "Installation Complete!"
-echo "${APP_NAME} is running on port 9200"
+echo "---------------"
+if [ "${REINSTALL}" = "true" ]; then
+	echo "You did a reinstall."
+ 	echo "Please user your old credentials to log in."
+	echo "---------------"
+else
+	echo "User Information"
+	echo "Default ${APP_NAME} user is admin"
+	echo "Default ${APP_NAME} password is ${ADMIN_PASSWORD}"
+	echo "---------------"
+fi
+echo "All passwords are saved in /root/${APP_NAME}-Info.txt"
 echo "---------------"
