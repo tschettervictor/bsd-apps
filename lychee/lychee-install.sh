@@ -53,7 +53,7 @@ php${PHP_VERSION}-mysqli \
 php${PHP_VERSION}-pdo \
 php${PHP_VERSION}-pdo_mysql \
 php${PHP_VERSION}-pecl-imagick \
-php${PHP_VERSION}-pecl-redis \
+php${PHP_VERSION}-redis \
 php${PHP_VERSION}-simplexml \
 php${PHP_VERSION}-tokenizer \
 php${PHP_VERSION}-xml \

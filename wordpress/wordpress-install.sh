@@ -89,8 +89,8 @@ php${PHP_VERSION}-mysqli \
 php${PHP_VERSION}-pecl-imagick \
 php${PHP_VERSION}-pecl-libsodium \
 php${PHP_VERSION}-pecl-mcrypt \
-php${PHP_VERSION}-pecl-redis \
 php${PHP_VERSION}-pecl-ssh2 \
+php${PHP_VERSION}-redis \
 php${PHP_VERSION}-session \
 php${PHP_VERSION}-simplexml \
 php${PHP_VERSION}-sockets \

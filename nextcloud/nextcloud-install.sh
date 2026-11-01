@@ -131,10 +131,10 @@ php${PHP_VERSION}-pecl-APCu \
 php${PHP_VERSION}-pecl-imagick \
 php${PHP_VERSION}-pecl-imap \
 php${PHP_VERSION}-pecl-memcache \
-php${PHP_VERSION}-pecl-redis \
 php${PHP_VERSION}-pecl-smbclient \
 php${PHP_VERSION}-phar \
 php${PHP_VERSION}-posix \
+php${PHP_VERSION}-redis \
 php${PHP_VERSION}-session \
 php${PHP_VERSION}-simplexml \
 php${PHP_VERSION}-sodium \
