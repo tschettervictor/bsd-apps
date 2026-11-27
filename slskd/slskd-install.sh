@@ -35,7 +35,7 @@ cd /slskd/src/web && npm install
 cd /slskd/src/web && npm run build
 rm -rf /slskd/src/slskd/wwwroot
 cp -a /slskd/src/web/build /slskd/src/slskd/wwwroot
-sed -i '' -e 's/net8.0/net9.0/g' -e 's/net10.0/net9.0/g' /slskd/src/slskd/slskd.csproj
+sed -i '' -e 's/net8.0/net10.0/g' -e 's/net9.0/net10.0/g' /slskd/src/slskd/slskd.csproj
 cd /slskd/src/slskd && dotnet build \
     --no-incremental \
     --nologo \
@@ -43,7 +43,7 @@ cd /slskd/src/slskd && dotnet build \
 cd /slskd/src/slskd && dotnet publish \
     -c Release \
     --runtime freebsd."${FREEBSD_VERSION}"-x64 \
-    --framework net9.0 \
+    --framework net10.0 \
     -p:ReadyToRun=true \
     -p:PublishSingleFile=true \
     -p:IncludeNativeLibrariesForSelfExtract=true \
