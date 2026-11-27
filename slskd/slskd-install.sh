@@ -3,7 +3,7 @@
 set -eu
 
 APP_NAME="SLSKD"
-FREEBSD_VERSION="14"
+FREEBSD_VERSION="15"
 NODE_VERSION="20"
 
 # Check for Root Privileges
